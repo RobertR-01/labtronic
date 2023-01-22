@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckMenuItem?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<BorderPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+            prefHeight="400.0" prefWidth="600.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/18"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.labtronic.ui.MainWindowController">
+    <top>
+        <VBox BorderPane.alignment="CENTER">
+            <children>
+                <MenuBar>
+                    <menus>
+                        <Menu text="_File">
+                            <items>
+                                <MenuItem mnemonicParsing="false" text="New calibration..."/>
+                                <MenuItem mnemonicParsing="false" text="Close"/>
+                                <MenuItem mnemonicParsing="false" text="Open..."/>
+                                <MenuItem mnemonicParsing="false" text="Save..."/>
+                                <MenuItem mnemonicParsing="false" text="Save as..."/>
+                                <SeparatorMenuItem mnemonicParsing="false"/>
+                                <MenuItem mnemonicParsing="false" text="Exit"/>
+                            </items>
+                        </Menu>
+                        <Menu text="_Edit">
+                            <items>
+                                <MenuItem mnemonicParsing="false" text="Delete"/>
+                                <MenuItem mnemonicParsing="false" text="Copy"/>
+                                <MenuItem mnemonicParsing="false" text="Paste"/>
+                            </items>
+                        </Menu>
+                        <Menu text="_View">
+                            <items>
+                                <CheckMenuItem mnemonicParsing="false" text="Toolbar"/>
+                                <SeparatorMenuItem mnemonicParsing="false"/>
+                                <Menu mnemonicParsing="false" text="UI language">
+                                    <items>
+                                        <MenuItem mnemonicParsing="false" text="English"/>
+                                        <MenuItem mnemonicParsing="false" text="Polish"/>
+                                    </items>
+                                </Menu>
+                            </items>
+                        </Menu>
+                        <Menu text="_Settings">
+                            <items>
+                                <MenuItem mnemonicParsing="false" text="Action 1"/>
+                            </items>
+                        </Menu>
+                        <Menu text="_Help">
+                            <items>
+                                <MenuItem mnemonicParsing="false" text="About LabTronic..."/>
+                            </items>
+                        </Menu>
+                    </menus>
+                </MenuBar>
+                <ToolBar prefHeight="40.0" prefWidth="200.0">
+                    <items>
+                        <Button id="toolbarButton" mnemonicParsing="false" onMouseEntered="#handleToolbarOnMouseEntered"
+                                onMouseExited="#handleToolbarOnMouseExited" onAction="#handleNewButton">
+                            <tooltip>
+                                <Tooltip showDelay="500ms" text="New"/>
+                            </tooltip>
+                            <graphic>
+                                <FontIcon iconLiteral="bx-file-blank" iconSize="32"/>
+                            </graphic>
+                        </Button>
+                        <Button id="toolbarButton" mnemonicParsing="false" onMouseEntered="#handleToolbarOnMouseEntered"
+                                onMouseExited="#handleToolbarOnMouseExited">
+                            <tooltip>
+                                <Tooltip showDelay="500ms" text="Open"/>
+                            </tooltip>
+                            <graphic>
+                                <FontIcon iconLiteral="bx-folder-open" iconSize="32"/>
+                            </graphic>
+                        </Button>
+                        <Button id="toolbarButton" mnemonicParsing="false" onMouseEntered="#handleToolbarOnMouseEntered"
+                                onMouseExited="#handleToolbarOnMouseExited">
+                            <tooltip>
+                                <Tooltip showDelay="500ms" text="Save"/>
+                            </tooltip>
+                            <graphic>
+                                <FontIcon iconLiteral="bx-save" iconSize="32"/>
+                            </graphic>
+                        </Button>
+                        <Button id="toolbarButton" mnemonicParsing="false" onMouseEntered="#handleToolbarOnMouseEntered"
+                                onMouseExited="#handleToolbarOnMouseExited">
+                            <tooltip>
+                                <Tooltip showDelay="500ms" text="About"/>
+                            </tooltip>
+                            <graphic>
+                                <FontIcon iconLiteral="bx-info-circle" iconSize="32"/>
+                            </graphic>
+                        </Button>
+                    </items>
+                </ToolBar>
+            </children>
+        </VBox>
+    </top>
+</BorderPane>

@@ -1,0 +1,7 @@
+.mnemonic-underline {
+    -fx-stroke: -fx-text-fill;
+}
+
+#toolbarButton {
+    -fx-background-color: transparent;
+}
