@@ -1,14 +1,16 @@
 package com.app.labtronic.ui;
 
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
@@ -37,33 +39,79 @@ public class MainWindowController {
 
     @FXML
     private void handleNewButton() {
-        StringBuilder tabTitle = new StringBuilder("new1");
-        Tab newTab = new Tab();
+        // set up the new dialog:
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.initOwner(rootPane.getScene().getWindow());
+        dialog.setTitle("Editing profile");
+        dialog.setHeaderText("Edit the selected profile:");
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource("new-calibration-dialog.fxml"));
 
-        if (rootPane.getCenter() == null) {
-            TabPane tabPane = new TabPane();
-            tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.ALL_TABS);
-            rootPane.setCenter(tabPane);
+        try {
+            dialog.getDialogPane().setContent(fxmlLoader.load());
+        } catch (IOException e) {
+            System.out.println("Couldn't load the dialog.");
+            e.printStackTrace();
+            return;
         }
 
-        // new tab title setup:
-        List<Tab> tabs = ((TabPane) rootPane.centerProperty().get()).getTabs();
-        int tabTitleIndex = 1;
-        boolean wasTitleChanged = true;
-        while (wasTitleChanged) {
-            wasTitleChanged = false;
-            for (Tab t : tabs) {
-                if (t.getText().equals(tabTitle.toString())) {
-                    tabTitle = new StringBuilder("new").append(tabTitleIndex++);
-                    wasTitleChanged = true;
+        dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
+        dialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
+
+        NewCalibrationDialogController controller = fxmlLoader.getController();
+        // event filter for input validation:
+        final Button buttonOK = (Button) dialog.getDialogPane().lookupButton(ButtonType.OK);
+        buttonOK.addEventFilter(ActionEvent.ACTION, actionEvent -> {
+            // Check whether some conditions are fulfilled
+            if (controller.validateNameArgument() == null) {
+                // the TextField contents are prohibited, so we consume the event
+                // to prevent the dialog from closing - forces the user to retry entering data
+                actionEvent.consume();
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Profile edition error");
+                alert.setHeaderText("Invalid profile name!");
+                alert.setContentText("The profile name cannot be set to: \"Empty\" or left void.");
+                alert.showAndWait();
+            }
+        });
+
+        // dialog result processing:
+        Optional<ButtonType> result = dialog.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            // TODO: add some real dialog results processing
+            // controller.processTextInput();
+
+            // creating a new calibration tab:
+            // TODO: add alternative title - registry number or something
+            StringBuilder calibrationTabTitle = new StringBuilder("new1");
+            Tab newCalibrationTab = new Tab();
+
+            if (rootPane.getCenter() == null) {
+                TabPane tabPane = new TabPane();
+                tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.ALL_TABS);
+                rootPane.setCenter(tabPane);
+            }
+
+            // new default tab title setup:
+            List<Tab> tabs = ((TabPane) rootPane.centerProperty().get()).getTabs();
+            int tabTitleIndex = 1;
+            boolean wasTitleChanged = true;
+            while (wasTitleChanged) {
+                wasTitleChanged = false;
+                for (Tab t : tabs) {
+                    if (t.getText().equals(calibrationTabTitle.toString())) {
+                        calibrationTabTitle = new StringBuilder("new").append(tabTitleIndex++);
+                        wasTitleChanged = true;
+                    }
                 }
             }
-        }
 
-        newTab.setText(tabTitle.toString());
-        ((TabPane) rootPane.centerProperty().get()).getTabs().add(newTab);
-        ((TabPane) rootPane.centerProperty().get()).getSelectionModel().select(newTab);
-        removeLastFocus();
+            newCalibrationTab.setText(calibrationTabTitle.toString());
+            ((TabPane) rootPane.centerProperty().get()).getTabs().add(newCalibrationTab);
+            ((TabPane) rootPane.centerProperty().get()).getSelectionModel().select(newCalibrationTab);
+            // TODO: test if the focus removal works
+            removeLastFocus();
+        }
     }
 
     private void removeLastFocus() {
