@@ -6,13 +6,13 @@
             fx:controller="com.app.labtronic.ui.NewCalibrationDialogController" prefHeight="400.0" prefWidth="600.0">
     <content>
         <GridPane vgap="10" hgap="10">
-            <Label text="Edit profile name: " GridPane.rowIndex="0" GridPane.columnIndex="0"
+            <Label text="Registry number (Kubacki): " GridPane.rowIndex="0" GridPane.columnIndex="0"
                    GridPane.halignment="RIGHT"/>
-            <TextField fx:id="profileNameTextField" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
-            <Label text="Balance: " GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.halignment="RIGHT"/>
-            <Label fx:id="balanceLabel" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
-            <Label text="Highest win: " GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.halignment="RIGHT"/>
-            <Label fx:id="highestWinLabel" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+            <TextField fx:id="registryNumberTextField" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+            <Label text="Customer: " GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.halignment="RIGHT"/>
+            <Label fx:id="customerLabel" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+            <Label text="Date: " GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.halignment="RIGHT"/>
+            <Label fx:id="dateLabel" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
         </GridPane>
     </content>
 </DialogPane>

@@ -68,9 +68,9 @@ public class MainWindowController {
                 // to prevent the dialog from closing - forces the user to retry entering data
                 actionEvent.consume();
                 Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Profile edition error");
-                alert.setHeaderText("Invalid profile name!");
-                alert.setContentText("The profile name cannot be set to: \"Empty\" or left void.");
+                alert.setTitle("New calibration initialization error");
+                alert.setHeaderText("Invalid calibration registry number!");
+                alert.setContentText("The registry number for the calibration cannot be left void.");
                 alert.showAndWait();
             }
         });

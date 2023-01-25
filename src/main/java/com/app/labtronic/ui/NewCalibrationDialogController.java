@@ -6,17 +6,17 @@ import javafx.scene.control.TextField;
 
 public class NewCalibrationDialogController {
     @FXML
-    private TextField profileNameTextField;
+    private TextField registryNumberTextField;
     @FXML
-    private Label balanceLabel;
+    private Label customerLabel;
     @FXML
-    private Label highestWinLabel;
+    private Label dateLabel;
 
 
     public String validateNameArgument() {
-        String name = profileNameTextField.getText().trim();
+        String name = registryNumberTextField.getText().trim();
         // TODO: change the conditions
-        if (name.length() != 0 && !name.equalsIgnoreCase("empty")) {
+        if (name.length() != 0) {
             return name;
         }
         return null;
