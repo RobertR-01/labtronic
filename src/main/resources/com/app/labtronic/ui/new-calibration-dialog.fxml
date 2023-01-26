@@ -1,18 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<DialogPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.app.labtronic.ui.NewCalibrationDialogController" prefHeight="400.0" prefWidth="600.0">
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.DialogPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<DialogPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/18"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.app.labtronic.ui.NewCalibrationDialogController">
     <content>
-        <GridPane vgap="10" hgap="10">
-            <Label text="Registry number (Kubacki): " GridPane.rowIndex="0" GridPane.columnIndex="0"
+        <GridPane vgap="10" hgap="2">
+            <columnConstraints>
+                <ColumnConstraints percentWidth="22.5"/>
+                <ColumnConstraints percentWidth="22.5"/>
+                <ColumnConstraints percentWidth="10"/>
+                <ColumnConstraints percentWidth="22.5"/>
+                <ColumnConstraints percentWidth="22.5"/>
+            </columnConstraints>
+
+            <Label text="Registry number (Kubacki): " GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+            <TextField fx:id="kubackiRegistryNumberTextField" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+            <Label text="Registry number (Switez): " GridPane.columnIndex="0" GridPane.rowIndex="1"
                    GridPane.halignment="RIGHT"/>
-            <TextField fx:id="registryNumberTextField" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
-            <Label text="Customer: " GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.halignment="RIGHT"/>
-            <Label fx:id="customerLabel" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
-            <Label text="Date: " GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.halignment="RIGHT"/>
-            <Label fx:id="dateLabel" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+            <TextField fx:id="customerNameTextField" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+            <Label text="Date of order: " GridPane.columnIndex="3" GridPane.rowIndex="0" GridPane.halignment="RIGHT"/>
+            <DatePicker fx:id="datePicker" GridPane.columnIndex="4" GridPane.rowIndex="0"/>
+
+            <Label text="Customer identification" GridPane.columnIndex="0" GridPane.rowIndex="2"
+                   GridPane.columnSpan="2" GridPane.halignment="CENTER"/>
+
+            <Label text="Name: " GridPane.columnIndex="0" GridPane.rowIndex="3" GridPane.halignment="RIGHT"/>
+            <TextField fx:id="switezRegistryNumberTextField" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
         </GridPane>
     </content>
 </DialogPane>

@@ -42,8 +42,8 @@ public class MainWindowController {
         // set up the new dialog:
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.initOwner(rootPane.getScene().getWindow());
-        dialog.setTitle("Editing profile");
-        dialog.setHeaderText("Edit the selected profile:");
+        dialog.setTitle("New calibration");
+        dialog.setHeaderText("Enter basic information:");
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource("new-calibration-dialog.fxml"));
 
@@ -58,6 +58,7 @@ public class MainWindowController {
         dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
         dialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
 
+        /*
         NewCalibrationDialogController controller = fxmlLoader.getController();
         // event filter for input validation:
         final Button buttonOK = (Button) dialog.getDialogPane().lookupButton(ButtonType.OK);
@@ -74,6 +75,7 @@ public class MainWindowController {
                 alert.showAndWait();
             }
         });
+         */
 
         // dialog result processing:
         Optional<ButtonType> result = dialog.showAndWait();
