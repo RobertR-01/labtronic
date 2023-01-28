@@ -77,6 +77,8 @@ public class MainWindowController {
         });
          */
 
+        NewCalibrationDialogController controller = fxmlLoader.getController();
+
         // dialog result processing:
         Optional<ButtonType> result = dialog.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
@@ -84,26 +86,29 @@ public class MainWindowController {
             // controller.processTextInput();
 
             // creating a new calibration tab:
-            // TODO: add alternative title - registry number or something
-            StringBuilder calibrationTabTitle = new StringBuilder("new1");
             Tab newCalibrationTab = new Tab();
-
             if (rootPane.getCenter() == null) {
                 TabPane tabPane = new TabPane();
                 tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.ALL_TABS);
                 rootPane.setCenter(tabPane);
             }
 
-            // new default tab title setup:
-            List<Tab> tabs = ((TabPane) rootPane.centerProperty().get()).getTabs();
-            int tabTitleIndex = 1;
-            boolean wasTitleChanged = true;
-            while (wasTitleChanged) {
-                wasTitleChanged = false;
-                for (Tab t : tabs) {
-                    if (t.getText().equals(calibrationTabTitle.toString())) {
-                        calibrationTabTitle = new StringBuilder("new").append(tabTitleIndex++);
-                        wasTitleChanged = true;
+            StringBuilder calibrationTabTitle;
+            if (!controller.getKubackiRegistryNumber().isEmpty()) {
+                calibrationTabTitle = new StringBuilder(controller.getKubackiRegistryNumber());
+            } else {
+                calibrationTabTitle = new StringBuilder("new1");
+                // new default tab title setup:
+                List<Tab> tabs = ((TabPane) rootPane.centerProperty().get()).getTabs();
+                int tabTitleIndex = 1;
+                boolean wasTitleChanged = true;
+                while (wasTitleChanged) {
+                    wasTitleChanged = false;
+                    for (Tab t : tabs) {
+                        if (t.getText().equals(calibrationTabTitle.toString())) {
+                            calibrationTabTitle = new StringBuilder("new").append(tabTitleIndex++);
+                            wasTitleChanged = true;
+                        }
                     }
                 }
             }
