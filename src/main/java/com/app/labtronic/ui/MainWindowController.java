@@ -1,7 +1,6 @@
 package com.app.labtronic.ui;
 
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -94,8 +93,8 @@ public class MainWindowController {
             }
 
             StringBuilder calibrationTabTitle;
-            if (!controller.getKubackiRegistryNumber().isEmpty()) {
-                calibrationTabTitle = new StringBuilder(controller.getKubackiRegistryNumber());
+            if (!controller.getFullKubackiRegistryNumber().isEmpty()) {
+                calibrationTabTitle = new StringBuilder(controller.getFullKubackiRegistryNumber());
             } else {
                 calibrationTabTitle = new StringBuilder("new1");
                 // new default tab title setup:

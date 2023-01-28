@@ -1,20 +1,15 @@
 package com.app.labtronic.ui;
 
 import javafx.beans.binding.Bindings;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 
+import java.time.LocalDate;
+
 public class NewCalibrationDialogController {
-    @FXML
-    private TextField kubackiRegistryNumberTextField;
     @FXML
     private RadioButton multimeterRadioButton;
     @FXML
@@ -23,7 +18,14 @@ public class NewCalibrationDialogController {
     private ComboBox<String> pricingTierComboBox;
     @FXML
     private Label resolutionChoiceLabel;
-
+    @FXML
+    private TextField kubackiLabSymbolTextField;
+    @FXML
+    private TextField kubackiRegistryNumberTextField;
+    @FXML
+    private TextField kubackiOrdinalNumberTextField;
+    @FXML
+    private TextField kubackiYearTextField;
 
     @FXML
     private void initialize() {
@@ -45,6 +47,8 @@ public class NewCalibrationDialogController {
                 pricingTierComboBox.getItems().remove(pricingTierComboBox.getItems().size() - 1);
             }
         });
+
+        kubackiYearTextField.setText(String.valueOf(LocalDate.now().getYear()));
     }
 
     public String validateNameArgument() {
@@ -61,7 +65,9 @@ public class NewCalibrationDialogController {
 
     }
 
-    public String getKubackiRegistryNumber() {
-        return kubackiRegistryNumberTextField.getText().trim();
+    public String getFullKubackiRegistryNumber() {
+        String number = kubackiLabSymbolTextField.getText() + "." + kubackiRegistryNumberTextField.getText() + "."
+                + kubackiOrdinalNumberTextField.getText() + "." + kubackiYearTextField.getText();
+        return number.trim();
     }
 }
