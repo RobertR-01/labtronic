@@ -21,12 +21,16 @@ public class NewCalibrationDialogController {
     private RadioButton calibratorRadioButton;
     @FXML
     private ComboBox<String> pricingTierComboBox;
+    @FXML
+    private Label resolutionChoiceLabel;
 
 
     @FXML
     private void initialize() {
-        // disables combo box if dmm is not selected:
+        // disables resolution choice combo box and label if dmm radio is not selected:
         pricingTierComboBox.disableProperty().bind(Bindings.createBooleanBinding(() ->
+                calibratorRadioButton.isSelected(), calibratorRadioButton.selectedProperty()));
+        resolutionChoiceLabel.disableProperty().bind(Bindings.createBooleanBinding(() ->
                 calibratorRadioButton.isSelected(), calibratorRadioButton.selectedProperty()));
 
         // combo box value depends on whether it's disabled or not:
