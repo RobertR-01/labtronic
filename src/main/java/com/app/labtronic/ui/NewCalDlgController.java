@@ -2,10 +2,7 @@ package com.app.labtronic.ui;
 
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 
 import java.time.LocalDate;
 
@@ -26,6 +23,16 @@ public class NewCalDlgController {
     private TextField kubackiOrdinalNo;
     @FXML
     private TextField kubackiYear;
+    @FXML
+    private Label endUserNameL;
+    @FXML
+    private Label endUserAddressL;
+    @FXML
+    private TextField endUserNameTF;
+    @FXML
+    private TextField endUserAddressTF;
+    @FXML
+    private CheckBox endUserCB;
 
     @FXML
     private void initialize() {
@@ -35,7 +42,17 @@ public class NewCalDlgController {
         resolutionLabel.disableProperty().bind(Bindings.createBooleanBinding(() ->
                 calRadio.isSelected(), calRadio.selectedProperty()));
 
-        // combo box value depends on whether it's disabled or not:
+        // disables end-user section if the checkbox is not ticked:
+        endUserNameTF.disableProperty().bind(Bindings.createBooleanBinding(() ->
+                !endUserCB.isSelected(), endUserCB.selectedProperty()));
+        endUserNameL.disableProperty().bind(Bindings.createBooleanBinding(() ->
+                !endUserCB.isSelected(), endUserCB.selectedProperty()));
+        endUserAddressTF.disableProperty().bind(Bindings.createBooleanBinding(() ->
+                !endUserCB.isSelected(), endUserCB.selectedProperty()));
+        endUserAddressL.disableProperty().bind(Bindings.createBooleanBinding(() ->
+                !endUserCB.isSelected(), endUserCB.selectedProperty()));
+
+        // combo box value when enabled/disabled:
         final String[] lastCBValue = new String[1];
         resolutionCB.disabledProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue) {
@@ -45,6 +62,20 @@ public class NewCalDlgController {
             } else {
                 resolutionCB.setValue(lastCBValue[0]);
                 resolutionCB.getItems().remove(resolutionCB.getItems().size() - 1);
+            }
+        });
+
+        // end-user text fields value when enabled/disabled:
+        final String[] lastTFValue = new String[2];
+        endUserNameTF.disabledProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue) {
+                lastTFValue[0] = endUserNameTF.getText();
+                lastTFValue[1] = endUserAddressTF.getText();
+                endUserNameTF.setText("n/a");
+                endUserAddressTF.setText("n/a");
+            } else {
+                endUserNameTF.setText(lastTFValue[0]);
+                endUserAddressTF.setText(lastTFValue[1]);
             }
         });
 

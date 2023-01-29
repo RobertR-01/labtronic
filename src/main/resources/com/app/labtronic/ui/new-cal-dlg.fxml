@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import java.lang.String?>
 <?import java.time.LocalDate?>
-<DialogPane prefHeight="500.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/18"
+<DialogPane prefHeight="600.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/18"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.app.labtronic.ui.NewCalDlgController">
     <content>
@@ -27,29 +27,35 @@
             </HBox>
             <Label text="Registry number (Switez): " GridPane.columnIndex="0" GridPane.rowIndex="1"/>
             <TextField fx:id="switezRegNo" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-            <Label text="Customer details" underline="true" GridPane.columnIndex="0" GridPane.rowIndex="2"
-                   GridPane.columnSpan="2" GridPane.halignment="CENTER">
-                <GridPane.margin>
-                    <Insets top="10" bottom="10"/>
-                </GridPane.margin>
-            </Label>
-            <Label text="Name: " GridPane.columnIndex="0" GridPane.rowIndex="3"/>
-            <TextField fx:id="customerName" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
-            <Label text="Address: " GridPane.columnIndex="0" GridPane.rowIndex="4"/>
-            <TextField fx:id="customerAddress" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
-            <Label text="Date of order: " GridPane.columnIndex="0" GridPane.rowIndex="5"/>
-            <DatePicker fx:id="datePicker" GridPane.columnIndex="1" GridPane.rowIndex="5">
+            <Label text="Date of order: " GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+            <DatePicker fx:id="datePicker" GridPane.columnIndex="1" GridPane.rowIndex="2">
                 <value>
                     <LocalDate fx:factory="now"/>
                 </value>
             </DatePicker>
-            <Label text="Instrument details" underline="true" GridPane.columnIndex="0" GridPane.rowIndex="6"
+            <Label text="Customer details" underline="true" GridPane.columnIndex="0" GridPane.rowIndex="3"
                    GridPane.columnSpan="2" GridPane.halignment="CENTER">
                 <GridPane.margin>
                     <Insets top="10" bottom="10"/>
                 </GridPane.margin>
             </Label>
-            <GridPane GridPane.columnIndex="0" GridPane.rowIndex="7" GridPane.columnSpan="2">
+            <Label text="Name: " GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+            <TextField fx:id="customerName" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+            <Label text="Address: " GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+            <TextField fx:id="customerAddress" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+            <Label text="End-user: " GridPane.columnIndex="0" GridPane.rowIndex="6"/>
+            <CheckBox fx:id="endUserCB" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+            <Label fx:id="endUserNameL" text="Name: " GridPane.columnIndex="0" GridPane.rowIndex="7"/>
+            <TextField fx:id="endUserNameTF" text="n/a" GridPane.columnIndex="1" GridPane.rowIndex="7"/>
+            <Label fx:id="endUserAddressL" text="Address: " GridPane.columnIndex="0" GridPane.rowIndex="8"/>
+            <TextField fx:id="endUserAddressTF" text="n/a" GridPane.columnIndex="1" GridPane.rowIndex="8"/>
+            <Label text="Instrument details" underline="true" GridPane.columnIndex="0" GridPane.rowIndex="9"
+                   GridPane.columnSpan="2" GridPane.halignment="CENTER">
+                <GridPane.margin>
+                    <Insets top="10" bottom="10"/>
+                </GridPane.margin>
+            </Label>
+            <GridPane GridPane.columnIndex="0" GridPane.rowIndex="10" GridPane.columnSpan="2">
                 <columnConstraints>
                     <ColumnConstraints percentWidth="50"/>
                     <ColumnConstraints percentWidth="50"/>
@@ -62,15 +68,15 @@
                 <RadioButton fx:id="calRadio" text="Calibrator" GridPane.columnIndex="1"
                              toggleGroup="$toggleGroup" GridPane.halignment="CENTER"/>
             </GridPane>
-            <Label text="Manufacturer: " GridPane.columnIndex="0" GridPane.rowIndex="8"/>
-            <TextField fx:id="manufacturer" GridPane.columnIndex="1" GridPane.rowIndex="8"/>
-            <Label text="Type: " GridPane.columnIndex="0" GridPane.rowIndex="9"/>
-            <TextField fx:id="type" GridPane.columnIndex="1" GridPane.rowIndex="9"/>
-            <Label text="Serial No: " GridPane.columnIndex="0" GridPane.rowIndex="10"/>
-            <TextField fx:id="serialNo" GridPane.columnIndex="1" GridPane.rowIndex="10"/>
+            <Label text="Manufacturer: " GridPane.columnIndex="0" GridPane.rowIndex="11"/>
+            <TextField fx:id="manufacturer" GridPane.columnIndex="1" GridPane.rowIndex="11"/>
+            <Label text="Type: " GridPane.columnIndex="0" GridPane.rowIndex="12"/>
+            <TextField fx:id="type" GridPane.columnIndex="1" GridPane.rowIndex="12"/>
+            <Label text="Serial No: " GridPane.columnIndex="0" GridPane.rowIndex="13"/>
+            <TextField fx:id="serialNo" GridPane.columnIndex="1" GridPane.rowIndex="13"/>
             <Label fx:id="resolutionLabel" text="Resolution (pricing tier): " GridPane.columnIndex="0"
-                   GridPane.rowIndex="11"/>
-            <ComboBox fx:id="resolutionCB" GridPane.columnIndex="1" GridPane.rowIndex="11">
+                   GridPane.rowIndex="14"/>
+            <ComboBox fx:id="resolutionCB" GridPane.columnIndex="1" GridPane.rowIndex="14">
                 <items>
                     <FXCollections fx:factory="observableArrayList">
                         <String fx:value="&#x22DC; 4 8/9 digit"/>
