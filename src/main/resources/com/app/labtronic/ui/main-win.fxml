@@ -4,9 +4,9 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
-<BorderPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+<BorderPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
             prefHeight="400.0" prefWidth="600.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/18"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.labtronic.ui.MainWindowController">
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.labtronic.ui.MainWinController">
     <top>
         <VBox BorderPane.alignment="CENTER">
             <children>
@@ -56,8 +56,9 @@
                 </MenuBar>
                 <ToolBar prefHeight="40.0" prefWidth="200.0">
                     <items>
-                        <Button id="toolbarButton" mnemonicParsing="false" onMouseEntered="#handleToolbarOnMouseEntered"
-                                onMouseExited="#handleToolbarOnMouseExited" onAction="#handleNewButton">
+                        <Button styleClass="toolbarBtn" mnemonicParsing="false"
+                                onMouseEntered="#handleBtnMouseEnter"
+                                onMouseExited="#handleBtnMouseExit" onAction="#handleNewBtn">
                             <tooltip>
                                 <Tooltip showDelay="500ms" text="New"/>
                             </tooltip>
@@ -65,8 +66,9 @@
                                 <FontIcon iconLiteral="bx-file-blank" iconSize="32"/>
                             </graphic>
                         </Button>
-                        <Button id="toolbarButton" mnemonicParsing="false" onMouseEntered="#handleToolbarOnMouseEntered"
-                                onMouseExited="#handleToolbarOnMouseExited">
+                        <Button styleClass="toolbarBtn" mnemonicParsing="false"
+                                onMouseEntered="#handleBtnMouseEnter"
+                                onMouseExited="#handleBtnMouseExit">
                             <tooltip>
                                 <Tooltip showDelay="500ms" text="Open"/>
                             </tooltip>
@@ -74,8 +76,9 @@
                                 <FontIcon iconLiteral="bx-folder-open" iconSize="32"/>
                             </graphic>
                         </Button>
-                        <Button id="toolbarButton" mnemonicParsing="false" onMouseEntered="#handleToolbarOnMouseEntered"
-                                onMouseExited="#handleToolbarOnMouseExited">
+                        <Button styleClass="toolbarBtn" mnemonicParsing="false"
+                                onMouseEntered="#handleBtnMouseEnter"
+                                onMouseExited="#handleBtnMouseExit">
                             <tooltip>
                                 <Tooltip showDelay="500ms" text="Save"/>
                             </tooltip>
@@ -83,8 +86,9 @@
                                 <FontIcon iconLiteral="bx-save" iconSize="32"/>
                             </graphic>
                         </Button>
-                        <Button id="toolbarButton" mnemonicParsing="false" onMouseEntered="#handleToolbarOnMouseEntered"
-                                onMouseExited="#handleToolbarOnMouseExited">
+                        <Button styleClass="toolbarBtn" mnemonicParsing="false"
+                                onMouseEntered="#handleBtnMouseEnter"
+                                onMouseExited="#handleBtnMouseExit">
                             <tooltip>
                                 <Tooltip showDelay="500ms" text="About"/>
                             </tooltip>

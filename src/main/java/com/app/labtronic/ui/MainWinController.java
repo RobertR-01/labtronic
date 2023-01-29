@@ -13,38 +13,39 @@ import java.util.Optional;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-public class MainWindowController {
+public class MainWinController {
     @FXML
-    private BorderPane rootPane;
+    private BorderPane root;
 
-    private SortedMap<Integer, Tab> tabMap;
+    private SortedMap<Integer, Tab> tabs;
 
     @FXML
     private void initialize() {
-        tabMap = new TreeMap<>();
-        removeLastFocus();
+        tabs = new TreeMap<>();
+        removeFocus();
     }
 
     @FXML
-    private void handleToolbarOnMouseEntered(Event e) {
-        ((Button) e.getSource()).setId(null);
+    private void handleBtnMouseEnter(Event e) {
+        ((Button) e.getSource()).getStyleClass().clear();
+        ((Button) e.getSource()).getStyleClass().add("button");
         ((Button) e.getSource()).setStyle(null);
     }
 
     @FXML
-    private void handleToolbarOnMouseExited(Event e) {
-        ((Button) e.getSource()).setId("toolbarButton");
+    private void handleBtnMouseExit(Event e) {
+        ((Button) e.getSource()).getStyleClass().add("toolbarBtn");
     }
 
     @FXML
-    private void handleNewButton() {
+    private void handleNewBtn() {
         // set up the new dialog:
         Dialog<ButtonType> dialog = new Dialog<>();
-        dialog.initOwner(rootPane.getScene().getWindow());
+        dialog.initOwner(root.getScene().getWindow());
         dialog.setTitle("New calibration");
         dialog.setHeaderText("Enter basic information:");
         FXMLLoader fxmlLoader = new FXMLLoader();
-        fxmlLoader.setLocation(getClass().getResource("new-calibration-dialog.fxml"));
+        fxmlLoader.setLocation(getClass().getResource("new-cal-dlg.fxml"));
 
         try {
             dialog.getDialogPane().setContent(fxmlLoader.load());
@@ -58,7 +59,7 @@ public class MainWindowController {
         dialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
 
         /*
-        NewCalibrationDialogController controller = fxmlLoader.getController();
+        NewCalDlgController controller = fxmlLoader.getController();
         // event filter for input validation:
         final Button buttonOK = (Button) dialog.getDialogPane().lookupButton(ButtonType.OK);
         buttonOK.addEventFilter(ActionEvent.ACTION, actionEvent -> {
@@ -76,7 +77,7 @@ public class MainWindowController {
         });
          */
 
-        NewCalibrationDialogController controller = fxmlLoader.getController();
+        NewCalDlgController controller = fxmlLoader.getController();
 
         // dialog result processing:
         Optional<ButtonType> result = dialog.showAndWait();
@@ -85,42 +86,42 @@ public class MainWindowController {
             // controller.processTextInput();
 
             // creating a new calibration tab:
-            Tab newCalibrationTab = new Tab();
-            if (rootPane.getCenter() == null) {
+            Tab newCalTab = new Tab();
+            if (root.getCenter() == null) {
                 TabPane tabPane = new TabPane();
                 tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.ALL_TABS);
-                rootPane.setCenter(tabPane);
+                root.setCenter(tabPane);
             }
 
-            StringBuilder calibrationTabTitle;
-            if (!controller.getFullKubackiRegistryNumber().isEmpty()) {
-                calibrationTabTitle = new StringBuilder(controller.getFullKubackiRegistryNumber());
+            StringBuilder calTabTitle;
+            if (!controller.getKubackiRegNo().isEmpty()) {
+                calTabTitle = new StringBuilder(controller.getKubackiRegNo());
             } else {
-                calibrationTabTitle = new StringBuilder("new1");
+                calTabTitle = new StringBuilder("new1");
                 // new default tab title setup:
-                List<Tab> tabs = ((TabPane) rootPane.centerProperty().get()).getTabs();
+                List<Tab> tabs = ((TabPane) root.centerProperty().get()).getTabs();
                 int tabTitleIndex = 1;
-                boolean wasTitleChanged = true;
-                while (wasTitleChanged) {
-                    wasTitleChanged = false;
+                boolean cont = true;
+                while (cont) {
+                    cont = false;
                     for (Tab t : tabs) {
-                        if (t.getText().equals(calibrationTabTitle.toString())) {
-                            calibrationTabTitle = new StringBuilder("new").append(tabTitleIndex++);
-                            wasTitleChanged = true;
+                        if (t.getText().equals(calTabTitle.toString())) {
+                            calTabTitle = new StringBuilder("new").append(tabTitleIndex++);
+                            cont = true;
                         }
                     }
                 }
             }
 
-            newCalibrationTab.setText(calibrationTabTitle.toString());
-            ((TabPane) rootPane.centerProperty().get()).getTabs().add(newCalibrationTab);
-            ((TabPane) rootPane.centerProperty().get()).getSelectionModel().select(newCalibrationTab);
+            newCalTab.setText(calTabTitle.toString());
+            ((TabPane) root.centerProperty().get()).getTabs().add(newCalTab);
+            ((TabPane) root.centerProperty().get()).getSelectionModel().select(newCalTab);
             // TODO: test if the focus removal works
-            removeLastFocus();
+            removeFocus();
         }
     }
 
-    private void removeLastFocus() {
-        Platform.runLater(() -> rootPane.requestFocus());
+    private void removeFocus() {
+        Platform.runLater(() -> root.requestFocus());
     }
 }
