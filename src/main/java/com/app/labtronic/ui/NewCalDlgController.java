@@ -102,32 +102,27 @@ public class NewCalDlgController {
     }
 
     // TODO: write separate methods for actual validation and export
-    public CalData validateForm() {
-        String fullKubackiRegNo = getFullKubackiRegNo();
-        String switezRegNo = switezRegNoTF.getText().trim();
-        LocalDate date = datePicker.getValue();
-        String customerName = customerNameTF.getText().trim();
-        String customerAddress = customerAddressTF.getText().trim();
-        String endUserName = endUserNameTF.getText().trim();
-        String endUserAddress = endUserAddressTF.getText().trim();
-        CalData.Category category = (dmmRadio.isSelected()) ? CalData.Category.DMM : CalData.Category.CALIBRATOR;
-        String manufacturer = manufacturerTF.getText().trim();
-        String type = typeTF.getText().trim();
-        String serialNo = serialNoTF.getText().trim();
-        String resolution = resolutionCB.getValue();
-
-        CalData calData;
-        if ((fullKubackiRegNo == null) || (switezRegNo.isEmpty()) || (date == null) || (customerName.isEmpty())
-                || (customerAddress.isEmpty()) || (manufacturer.isEmpty()) || (type.isEmpty())
-                || (serialNo.isEmpty()) || ((endUserName.isEmpty() || endUserAddress.isEmpty())
-                && endUserCB.isSelected())) {
-            calData = null;
-        } else {
-            calData = new CalData(fullKubackiRegNo, switezRegNo, date, customerName, customerAddress, endUserName,
-                    endUserAddress, category, manufacturer, type, serialNo, resolution);
+    public boolean validateForm() {
+        boolean result = true;
+        if ((getFullKubackiRegNo() == null) || (switezRegNoTF.getText().trim().isEmpty())
+                || (datePicker.getValue() == null) || (customerNameTF.getText().trim().isEmpty())
+                || (customerAddressTF.getText().trim().isEmpty())
+                || ((endUserNameTF.getText().trim().isEmpty() || endUserAddressTF.getText().trim().isEmpty())
+                && endUserCB.isSelected())
+                || (manufacturerTF.getText().trim().isEmpty()) || (typeTF.getText().trim().isEmpty())
+                || (serialNoTF.getText().trim().isEmpty())) {
+            result = false;
         }
 
-        return calData;
+        return result;
+    }
+
+    public CalData exportFormData() {
+        CalData.Category category = (dmmRadio.isSelected()) ? CalData.Category.DMM : CalData.Category.CALIBRATOR;
+        return new CalData(getFullKubackiRegNo(), switezRegNoTF.getText().trim(), datePicker.getValue(),
+                customerNameTF.getText().trim(), customerAddressTF.getText().trim(), endUserNameTF.getText().trim(),
+                endUserAddressTF.getText().trim(), category, manufacturerTF.getText().trim(),
+                typeTF.getText().trim(), serialNoTF.getText().trim(), resolutionCB.getValue());
     }
 
     public String getFullKubackiRegNo() {

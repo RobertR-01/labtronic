@@ -65,7 +65,7 @@ public class MainWinController {
         final Button buttonOK = (Button) dialog.getDialogPane().lookupButton(ButtonType.OK);
         buttonOK.addEventFilter(ActionEvent.ACTION, actionEvent -> {
             // checking whether conditions are fulfilled:
-            if (controller.validateForm() == null) {
+            if (!controller.validateForm()) {
                 // the text field(s) contents are prohibited -> consume the event to prevent the dialog from
                 // closing - it forces the user to retry entering data:
                 actionEvent.consume();
@@ -81,9 +81,6 @@ public class MainWinController {
         CalData calData;
         Optional<ButtonType> result = dialog.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
-            // TODO: add some real dialog results processing
-            // controller.processTextInput();
-
             // creating a new calibration tab:
             Tab newCalTab = new Tab();
             if (root.getCenter() == null) {
@@ -92,7 +89,7 @@ public class MainWinController {
                 root.setCenter(tabPane);
             }
 
-            // TODO: make it derive the kubacki reg no from the CalData object instead
+            // TODO: redundant at this point
             StringBuilder calTabTitle;
             if (controller.getFullKubackiRegNo() != null) {
                 calTabTitle = new StringBuilder(controller.getFullKubackiRegNo());
@@ -118,7 +115,7 @@ public class MainWinController {
             ((TabPane) root.centerProperty().get()).getSelectionModel().select(newCalTab);
             // TODO: test if the focus removal works
             removeFocus();
-            calData = controller.validateForm();
+            calData = controller.exportFormData();
             System.out.println(calData); // test TODO:delete
         }
     }
