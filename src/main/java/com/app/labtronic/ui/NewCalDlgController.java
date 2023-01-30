@@ -1,5 +1,6 @@
 package com.app.labtronic.ui;
 
+import com.app.labtronic.data.CalData;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -8,31 +9,45 @@ import java.time.LocalDate;
 
 public class NewCalDlgController {
     @FXML
+    private TextField kubackiLabNoTF;
+    @FXML
+    private TextField kubackiRegNoTF;
+    @FXML
+    private TextField kubackiOrdinalNoTF;
+    @FXML
+    private TextField kubackiYearTF;
+    @FXML
+    private TextField switezRegNoTF;
+    @FXML
+    private DatePicker datePicker;
+    @FXML
+    private TextField customerNameTF;
+    @FXML
+    private TextField customerAddressTF;
+    @FXML
+    private CheckBox endUserCB;
+    @FXML
+    private Label endUserNameL;
+    @FXML
+    private TextField endUserNameTF;
+    @FXML
+    private Label endUserAddressL;
+    @FXML
+    private TextField endUserAddressTF;
+    @FXML
     private RadioButton dmmRadio;
     @FXML
     private RadioButton calRadio;
     @FXML
-    private ComboBox<String> resolutionCB;
+    private TextField manufacturerTF;
+    @FXML
+    private TextField typeTF;
+    @FXML
+    private TextField serialNoTF;
     @FXML
     private Label resolutionLabel;
     @FXML
-    private TextField kubackiLabNo;
-    @FXML
-    private TextField kubackiRegNo;
-    @FXML
-    private TextField kubackiOrdinalNo;
-    @FXML
-    private TextField kubackiYear;
-    @FXML
-    private Label endUserNameL;
-    @FXML
-    private Label endUserAddressL;
-    @FXML
-    private TextField endUserNameTF;
-    @FXML
-    private TextField endUserAddressTF;
-    @FXML
-    private CheckBox endUserCB;
+    private ComboBox<String> resolutionCB;
 
     @FXML
     private void initialize() {
@@ -42,6 +57,7 @@ public class NewCalDlgController {
         resolutionLabel.disableProperty().bind(Bindings.createBooleanBinding(() ->
                 calRadio.isSelected(), calRadio.selectedProperty()));
 
+        // TODO: consolidate that section somehow to remove duplicates (possibly with the above); consider a method?
         // disables end-user section if the checkbox is not ticked:
         endUserNameTF.disableProperty().bind(Bindings.createBooleanBinding(() ->
                 !endUserCB.isSelected(), endUserCB.selectedProperty()));
@@ -52,6 +68,7 @@ public class NewCalDlgController {
         endUserAddressL.disableProperty().bind(Bindings.createBooleanBinding(() ->
                 !endUserCB.isSelected(), endUserCB.selectedProperty()));
 
+        // TODO: the following two blocks are practically the same - needs refactoring?
         // combo box value when enabled/disabled:
         final String[] lastCBValue = new String[1];
         resolutionCB.disabledProperty().addListener((observable, oldValue, newValue) -> {
@@ -67,6 +84,8 @@ public class NewCalDlgController {
 
         // end-user text fields value when enabled/disabled:
         final String[] lastTFValue = new String[2];
+        lastTFValue[0] = "";
+        lastTFValue[1] = "";
         endUserNameTF.disabledProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue) {
                 lastTFValue[0] = endUserNameTF.getText();
@@ -79,94 +98,52 @@ public class NewCalDlgController {
             }
         });
 
-        kubackiYear.setText(String.valueOf(LocalDate.now().getYear()));
+        kubackiYearTF.setText(String.valueOf(LocalDate.now().getYear()));
     }
 
-//    public String validateNameArgument() {
-//        String name = kubackiRegistryNumberTextField.getText().trim();
-//        // TODO: change the conditions
-//        if (name.length() != 0) {
-//            return name;
-//        }
-//        return null;
-//    }
+    // TODO: write separate methods for actual validation and export
+    public CalData validateForm() {
+        String fullKubackiRegNo = getFullKubackiRegNo();
+        String switezRegNo = switezRegNoTF.getText().trim();
+        LocalDate date = datePicker.getValue();
+        String customerName = customerNameTF.getText().trim();
+        String customerAddress = customerAddressTF.getText().trim();
+        String endUserName = endUserNameTF.getText().trim();
+        String endUserAddress = endUserAddressTF.getText().trim();
+        CalData.Category category = (dmmRadio.isSelected()) ? CalData.Category.DMM : CalData.Category.CALIBRATOR;
+        String manufacturer = manufacturerTF.getText().trim();
+        String type = typeTF.getText().trim();
+        String serialNo = serialNoTF.getText().trim();
+        String resolution = resolutionCB.getValue();
 
-    public String getKubackiRegNo() {
-        String number = kubackiLabNo.getText() + "." + kubackiRegNo.getText() + "."
-                + kubackiOrdinalNo.getText() + "." + kubackiYear.getText();
-        return number.trim();
+        CalData calData;
+        if ((fullKubackiRegNo == null) || (switezRegNo.isEmpty()) || (date == null) || (customerName.isEmpty())
+                || (customerAddress.isEmpty()) || (manufacturer.isEmpty()) || (type.isEmpty())
+                || (serialNo.isEmpty()) || ((endUserName.isEmpty() || endUserAddress.isEmpty())
+                && endUserCB.isSelected())) {
+            calData = null;
+        } else {
+            calData = new CalData(fullKubackiRegNo, switezRegNo, date, customerName, customerAddress, endUserName,
+                    endUserAddress, category, manufacturer, type, serialNo, resolution);
+        }
+
+        return calData;
     }
 
-    private class CalData {
-        private String kubackiRegNo;
-        private String switezRegNo;
-        private String customerName;
-        private String customerAddress;
-        private LocalDate orderDate;
-        private Category category;
-        private String manufacturer;
-        private String type;
-        private String serialNo;
-        private String resolution;
+    public String getFullKubackiRegNo() {
+        String fullNumber;
+        String kubackiLabNo = kubackiLabNoTF.getText().trim();
+        String kubackiRegNo = kubackiRegNoTF.getText().trim();
+        String kubackiOrdinalNo = kubackiOrdinalNoTF.getText().trim();
+        String kubackiYear = kubackiYearTF.getText().trim();
 
-        public CalData(String kubackiRegNo, String switezRegNo, String customerName, String customerAddress,
-                       LocalDate orderDate, Category category, String manufacturer, String type,
-                       String serialNo, String resolution) {
-            this.kubackiRegNo = kubackiRegNo;
-            this.switezRegNo = switezRegNo;
-            this.customerName = customerName;
-            this.customerAddress = customerAddress;
-            this.orderDate = orderDate;
-            this.category = category;
-            this.manufacturer = manufacturer;
-            this.type = type;
-            this.serialNo = serialNo;
-            this.resolution = resolution;
+        if (kubackiLabNo.isEmpty() || kubackiRegNo.isEmpty() || kubackiOrdinalNo.isEmpty() || kubackiYear.isEmpty()) {
+            fullNumber = null;
+            System.out.println("NewCalDlgController.getFullKubackiRegNo() error: one or more segments empty.");
+        } else {
+            fullNumber = kubackiLabNo + "." + kubackiRegNo + "." + kubackiOrdinalNo + "." + kubackiYear;
         }
 
-        public String getKubackiRegNo() {
-            return kubackiRegNo;
-        }
-
-        public String getSwitezRegNo() {
-            return switezRegNo;
-        }
-
-        public String getCustomerName() {
-            return customerName;
-        }
-
-        public String getCustomerAddress() {
-            return customerAddress;
-        }
-
-        public LocalDate getOrderDate() {
-            return orderDate;
-        }
-
-        public Category getCategory() {
-            return category;
-        }
-
-        public String getManufacturer() {
-            return manufacturer;
-        }
-
-        public String getType() {
-            return type;
-        }
-
-        public String getSerialNo() {
-            return serialNo;
-        }
-
-        public String getResolution() {
-            return resolution;
-        }
-
-        private enum Category {
-            DMM,
-            CALIBRATOR
-        }
+        return fullNumber;
     }
 }

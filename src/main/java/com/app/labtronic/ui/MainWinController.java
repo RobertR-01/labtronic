@@ -1,6 +1,8 @@
 package com.app.labtronic.ui;
 
+import com.app.labtronic.data.CalData;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -58,28 +60,25 @@ public class MainWinController {
         dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
         dialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
 
-        /*
         NewCalDlgController controller = fxmlLoader.getController();
         // event filter for input validation:
         final Button buttonOK = (Button) dialog.getDialogPane().lookupButton(ButtonType.OK);
         buttonOK.addEventFilter(ActionEvent.ACTION, actionEvent -> {
-            // Check whether some conditions are fulfilled
-            if (controller.validateNameArgument() == null) {
-                // the TextField contents are prohibited, so we consume the event
-                // to prevent the dialog from closing - forces the user to retry entering data
+            // checking whether conditions are fulfilled:
+            if (controller.validateForm() == null) {
+                // the text field(s) contents are prohibited -> consume the event to prevent the dialog from
+                // closing - it forces the user to retry entering data:
                 actionEvent.consume();
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("New calibration initialization error");
-                alert.setHeaderText("Invalid calibration registry number!");
-                alert.setContentText("The registry number for the calibration cannot be left void.");
+                alert.setHeaderText("Missing input data!");
+                alert.setContentText("No fields in the form may remain empty.");
                 alert.showAndWait();
             }
         });
-         */
-
-        NewCalDlgController controller = fxmlLoader.getController();
 
         // dialog result processing:
+        CalData calData;
         Optional<ButtonType> result = dialog.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
             // TODO: add some real dialog results processing
@@ -93,9 +92,10 @@ public class MainWinController {
                 root.setCenter(tabPane);
             }
 
+            // TODO: make it derive the kubacki reg no from the CalData object instead
             StringBuilder calTabTitle;
-            if (!controller.getKubackiRegNo().isEmpty()) {
-                calTabTitle = new StringBuilder(controller.getKubackiRegNo());
+            if (controller.getFullKubackiRegNo() != null) {
+                calTabTitle = new StringBuilder(controller.getFullKubackiRegNo());
             } else {
                 calTabTitle = new StringBuilder("new1");
                 // new default tab title setup:
@@ -118,6 +118,8 @@ public class MainWinController {
             ((TabPane) root.centerProperty().get()).getSelectionModel().select(newCalTab);
             // TODO: test if the focus removal works
             removeFocus();
+            calData = controller.validateForm();
+            System.out.println(calData); // test TODO:delete
         }
     }
 
