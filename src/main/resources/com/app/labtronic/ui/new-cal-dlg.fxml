@@ -28,7 +28,7 @@
             <Label text="Registry number (Switez): " GridPane.columnIndex="0" GridPane.rowIndex="1"/>
             <TextField fx:id="switezRegNoTF" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
             <Label text="Date of order: " GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-            <DatePicker fx:id="datePicker" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <DatePicker fx:id="datePicker" GridPane.columnIndex="1" GridPane.rowIndex="2" editable="false">
                 <value>
                     <LocalDate fx:factory="now"/>
                 </value>

@@ -61,6 +61,7 @@ public class MainWinController {
         dialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
 
         NewCalDlgController controller = fxmlLoader.getController();
+        // TODO: make DatePicker editable and write some date format validation to prevent exceptions
         // event filter for input validation:
         final Button buttonOK = (Button) dialog.getDialogPane().lookupButton(ButtonType.OK);
         buttonOK.addEventFilter(ActionEvent.ACTION, actionEvent -> {
@@ -115,8 +116,7 @@ public class MainWinController {
             ((TabPane) root.centerProperty().get()).getSelectionModel().select(newCalTab);
             // TODO: test if the focus removal works
             removeFocus();
-            calData = controller.exportFormData();
-            System.out.println(calData); // test TODO:delete
+//            calData = controller.exportFormData(); // TODO: has no use for now
         }
     }
 

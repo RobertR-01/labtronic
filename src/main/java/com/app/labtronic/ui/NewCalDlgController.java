@@ -3,9 +3,11 @@ package com.app.labtronic.ui;
 import com.app.labtronic.data.CalData;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class NewCalDlgController {
     @FXML
@@ -48,6 +50,8 @@ public class NewCalDlgController {
     private Label resolutionLabel;
     @FXML
     private ComboBox<String> resolutionCB;
+
+    private List<Node> nodeList;
 
     @FXML
     private void initialize() {
@@ -99,19 +103,34 @@ public class NewCalDlgController {
         });
 
         kubackiYearTF.setText(String.valueOf(LocalDate.now().getYear()));
+
+        // TODO: try using pane children list instead:
+        nodeList = List.of(kubackiLabNoTF, kubackiRegNoTF, kubackiOrdinalNoTF, kubackiYearTF, switezRegNoTF,
+                customerNameTF, customerAddressTF, endUserNameTF, endUserAddressTF, manufacturerTF, typeTF, serialNoTF);
+
+        // removes red outline from invalid fields upon typing:
+        // TODO: some duplicate code - possible solution: prevent DatePicker from ever being left blank
+        for (Node node : nodeList) {
+            if (node instanceof TextField) {
+                ((TextField) node).textProperty().addListener((observable, oldValue, newValue) -> {
+                    if (!newValue.isEmpty() && oldValue.isEmpty()
+                            && node.getStyle().equals("-fx-border-color: red;")) {
+                        node.setStyle("");
+                    }
+                });
+            }
+        }
     }
 
-    // TODO: write separate methods for actual validation and export
     public boolean validateForm() {
         boolean result = true;
-        if ((getFullKubackiRegNo() == null) || (switezRegNoTF.getText().trim().isEmpty())
-                || (datePicker.getValue() == null) || (customerNameTF.getText().trim().isEmpty())
-                || (customerAddressTF.getText().trim().isEmpty())
-                || ((endUserNameTF.getText().trim().isEmpty() || endUserAddressTF.getText().trim().isEmpty())
-                && endUserCB.isSelected())
-                || (manufacturerTF.getText().trim().isEmpty()) || (typeTF.getText().trim().isEmpty())
-                || (serialNoTF.getText().trim().isEmpty())) {
-            result = false;
+        for (Node node : nodeList) {
+            if ((!node.isDisabled() && node instanceof TextField && ((TextField) node).getText().trim().isEmpty())) {
+                node.setStyle("-fx-border-color: red;");
+                result = false;
+            } else {
+                node.setStyle("");
+            }
         }
 
         return result;
