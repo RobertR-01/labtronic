@@ -10,20 +10,14 @@ import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Optional;
-import java.util.SortedMap;
-import java.util.TreeMap;
 
 public class MainWinController {
     @FXML
     private BorderPane root;
 
-    private SortedMap<Integer, Tab> tabs;
-
     @FXML
     private void initialize() {
-        tabs = new TreeMap<>();
         removeFocus();
     }
 
@@ -62,13 +56,11 @@ public class MainWinController {
 
         NewCalDlgController controller = fxmlLoader.getController();
         // TODO: make DatePicker editable and write some date format validation to prevent exceptions
-        // event filter for input validation:
+        // event filter for input validation - consumes the OK event to prevent the dialog from closing in case of
+        // an invalid input (forces the user to retry entering missing data):
         final Button buttonOK = (Button) dialog.getDialogPane().lookupButton(ButtonType.OK);
         buttonOK.addEventFilter(ActionEvent.ACTION, actionEvent -> {
-            // checking whether conditions are fulfilled:
             if (!controller.validateForm()) {
-                // the text field(s) contents are prohibited -> consume the event to prevent the dialog from
-                // closing - it forces the user to retry entering data:
                 actionEvent.consume();
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("New calibration initialization error");
@@ -79,7 +71,6 @@ public class MainWinController {
         });
 
         // dialog result processing:
-        CalData calData;
         Optional<ButtonType> result = dialog.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
             // creating a new calibration tab:
@@ -90,33 +81,12 @@ public class MainWinController {
                 root.setCenter(tabPane);
             }
 
-            // TODO: redundant at this point
-            StringBuilder calTabTitle;
-            if (controller.getFullKubackiRegNo() != null) {
-                calTabTitle = new StringBuilder(controller.getFullKubackiRegNo());
-            } else {
-                calTabTitle = new StringBuilder("new1");
-                // new default tab title setup:
-                List<Tab> tabs = ((TabPane) root.centerProperty().get()).getTabs();
-                int tabTitleIndex = 1;
-                boolean cont = true;
-                while (cont) {
-                    cont = false;
-                    for (Tab t : tabs) {
-                        if (t.getText().equals(calTabTitle.toString())) {
-                            calTabTitle = new StringBuilder("new").append(tabTitleIndex++);
-                            cont = true;
-                        }
-                    }
-                }
-            }
-
-            newCalTab.setText(calTabTitle.toString());
+            newCalTab.setText(controller.getFullKubackiRegNo());
             ((TabPane) root.centerProperty().get()).getTabs().add(newCalTab);
             ((TabPane) root.centerProperty().get()).getSelectionModel().select(newCalTab);
             // TODO: test if the focus removal works
             removeFocus();
-//            calData = controller.exportFormData(); // TODO: has no use for now
+            CalData calData = controller.exportFormData(); // TODO: has no use for now
         }
     }
 

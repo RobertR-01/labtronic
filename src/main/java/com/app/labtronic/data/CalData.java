@@ -86,6 +86,7 @@ public class CalData {
         CALIBRATOR
     }
 
+    // for testing only:
     @Override
     public String toString() {
         return "CalData:" + '\n' +
