@@ -10,15 +10,22 @@ import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class MainWinController {
     @FXML
     private BorderPane root;
 
+    private List<Tab> calTabs;
+    private TabPane tabPane;
+
     @FXML
     private void initialize() {
         removeFocus();
+
+        calTabs = new ArrayList<>();
     }
 
     @FXML
@@ -76,7 +83,7 @@ public class MainWinController {
             // creating a new calibration tab:
             Tab newCalTab = new Tab();
             if (root.getCenter() == null) {
-                TabPane tabPane = new TabPane();
+                tabPane = new TabPane();
                 tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.ALL_TABS);
                 root.setCenter(tabPane);
             }
@@ -84,9 +91,22 @@ public class MainWinController {
             newCalTab.setText(controller.getFullKubackiRegNo());
             ((TabPane) root.centerProperty().get()).getTabs().add(newCalTab);
             ((TabPane) root.centerProperty().get()).getSelectionModel().select(newCalTab);
+            calTabs.add(newCalTab);
             // TODO: test if the focus removal works
             removeFocus();
             CalData calData = controller.exportFormData(); // TODO: has no use for now
+
+            // TODO: keep different instances of CalData, tabs data etc. in a singleton or some other separate class?
+            // initializing tab contents:
+            fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(getClass().getResource("cal-tab.fxml"));
+//            fxmlLoader.setLocation(MainApp.class.getResource("cal-tab.fxml"));
+            try {
+                calTabs.get(calTabs.size() - 1).setContent(fxmlLoader.load());
+            } catch (IOException e) {
+                System.out.println("Couldn't load the FXML for the Tab.");
+                e.printStackTrace();
+            }
         }
     }
 

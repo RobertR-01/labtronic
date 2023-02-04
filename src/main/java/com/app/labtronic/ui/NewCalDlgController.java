@@ -23,6 +23,8 @@ public class NewCalDlgController {
     @FXML
     private DatePicker datePicker;
     @FXML
+    private CheckBox accreditationCB;
+    @FXML
     private TextField customerNameTF;
     @FXML
     private TextField customerAddressTF;
@@ -139,9 +141,10 @@ public class NewCalDlgController {
     public CalData exportFormData() {
         CalData.Category category = (dmmRadio.isSelected()) ? CalData.Category.DMM : CalData.Category.CALIBRATOR;
         return new CalData(getFullKubackiRegNo(), switezRegNoTF.getText().trim(), datePicker.getValue(),
-                customerNameTF.getText().trim(), customerAddressTF.getText().trim(), endUserNameTF.getText().trim(),
-                endUserAddressTF.getText().trim(), category, manufacturerTF.getText().trim(),
-                typeTF.getText().trim(), serialNoTF.getText().trim(), resolutionCB.getValue());
+                accreditationCB.isSelected(), customerNameTF.getText().trim(), customerAddressTF.getText().trim(),
+                endUserNameTF.getText().trim(), endUserAddressTF.getText().trim(), category,
+                manufacturerTF.getText().trim(), typeTF.getText().trim(), serialNoTF.getText().trim(),
+                resolutionCB.getValue());
     }
 
     public String getFullKubackiRegNo() {

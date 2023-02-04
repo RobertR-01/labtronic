@@ -19,4 +19,6 @@ module com.app.labtronic {
     opens com.app.labtronic.ui to javafx.fxml;
 
     exports com.app.labtronic.data;
+    exports com.app.labtronic.ui.caltab;
+    opens com.app.labtronic.ui.caltab to javafx.fxml;
 }

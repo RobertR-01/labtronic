@@ -6,6 +6,7 @@ public class CalData {
     private String kubackiRegNo;
     private String switezRegNo;
     private LocalDate orderDate;
+    private boolean accreditation;
     private String customerName;
     private String customerAddress;
     private String endUserName;
@@ -16,12 +17,13 @@ public class CalData {
     private String serialNo;
     private String resolution;
 
-    public CalData(String kubackiRegNo, String switezRegNo, LocalDate orderDate, String customerName,
-                   String customerAddress, String endUserName, String endUserAddress, Category category,
-                   String manufacturer, String type, String serialNo, String resolution) {
+    public CalData(String kubackiRegNo, String switezRegNo, LocalDate orderDate, boolean accreditation,
+                   String customerName, String customerAddress, String endUserName, String endUserAddress,
+                   Category category, String manufacturer, String type, String serialNo, String resolution) {
         this.kubackiRegNo = kubackiRegNo;
         this.switezRegNo = switezRegNo;
         this.orderDate = orderDate;
+        this.accreditation = accreditation;
         this.customerName = customerName;
         this.customerAddress = customerAddress;
         this.endUserName = endUserName;
@@ -43,6 +45,10 @@ public class CalData {
 
     public LocalDate getOrderDate() {
         return orderDate;
+    }
+
+    public boolean isAccreditation() {
+        return accreditation;
     }
 
     public String getCustomerName() {
@@ -93,6 +99,7 @@ public class CalData {
                 "kubackiRegNo = " + kubackiRegNo + '\n' +
                 "switezRegNo = " + switezRegNo + '\n' +
                 "orderDate = " + orderDate.toString() + '\n' +
+                "accreditation = " + accreditation + '\n' +
                 "customerName = " + customerName + '\n' +
                 "customerAddress = " + customerAddress + '\n' +
                 "endUserName = " + endUserName + '\n' +

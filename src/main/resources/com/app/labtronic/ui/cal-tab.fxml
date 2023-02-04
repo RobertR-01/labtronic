@@ -1,10 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.control.Label?>
-<BorderPane fx:id="root" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.app.labtronic.ui.NewCalDlgController">
-    <center>
-        <Label text="test"/>
-    </center>
-</BorderPane>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<TabPane fx:id="root" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+         fx:controller="com.app.labtronic.ui.CalTabController" tabClosingPolicy="UNAVAILABLE">
+    <tabs>
+        <Tab text="General Information">
+            <content>
+                <fx:include fx:id="genInfo" source="caltab/gen-info.fxml"/>
+            </content>
+        </Tab>
+        <Tab text="Service Valuation">
+            <content>
+                <fx:include fx:id="valuation" source="caltab/valuation.fxml"/>
+            </content>
+        </Tab>
+        <Tab text="Uncertainty Budgets">
+            <content>
+                <fx:include fx:id="budgets" source="caltab/budgets.fxml"/>
+            </content>
+        </Tab>
+        <Tab text="Environmental Conditions">
+            <content>
+                <fx:include fx:id="conditions" source="caltab/conditions.fxml"/>
+            </content>
+        </Tab>
+        <Tab text="Results">
+            <content>
+                <fx:include fx:id="results" source="caltab/results.fxml"/>
+            </content>
+        </Tab>
+    </tabs>
+</TabPane>
