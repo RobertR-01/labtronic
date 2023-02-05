@@ -1,7 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
 <BorderPane fx:id="root" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.app.labtronic.ui.caltab.GenInfoController">
+<!--    <center>
+        <Button text="test" onAction="#test"/>
+    </center>-->
+    <left>
+        <ScrollPane>
+            <GridPane>
+                <Label text="Registry number (Kubacki): " GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                <TextField fx:id="kubackiRegNoTF" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
 
+                <Label text="Registry number (Switez): " GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                <TextField fx:id="switezRegNoTF" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+                <Label text="Date of order: " GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                <DatePicker fx:id="datePicker" GridPane.columnIndex="1" GridPane.rowIndex="2" editable="false"/>
+
+                <Label text="Accreditation: " GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+                <CheckBox fx:id="accreditationCB" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+                <Label fx:id="test" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+            </GridPane>
+        </ScrollPane>
+    </left>
+    <right>
+        <GridPane>
+
+        </GridPane>
+    </right>
 </BorderPane>

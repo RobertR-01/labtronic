@@ -17,6 +17,8 @@ public class CalData {
     private String serialNo;
     private String resolution;
 
+    private final long ID;
+
     public CalData(String kubackiRegNo, String switezRegNo, LocalDate orderDate, boolean accreditation,
                    String customerName, String customerAddress, String endUserName, String endUserAddress,
                    Category category, String manufacturer, String type, String serialNo, String resolution) {
@@ -33,6 +35,7 @@ public class CalData {
         this.type = type;
         this.serialNo = serialNo;
         this.resolution = resolution;
+        this.ID = this.hashCode() * 3L + 11;
     }
 
     public String getKubackiRegNo() {
@@ -85,6 +88,10 @@ public class CalData {
 
     public String getResolution() {
         return resolution;
+    }
+
+    public long getID() {
+        return ID;
     }
 
     public enum Category {

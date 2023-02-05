@@ -122,6 +122,15 @@ public class NewCalDlgController {
                 });
             }
         }
+
+        // for testing:
+        kubackiOrdinalNoTF.setText("test");
+        switezRegNoTF.setText("test");
+        customerNameTF.setText("test");
+        customerAddressTF.setText("test");
+        manufacturerTF.setText("test");
+        typeTF.setText("test");
+        serialNoTF.setText("test");
     }
 
     public boolean validateForm() {

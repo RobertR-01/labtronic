@@ -1,5 +1,6 @@
 package com.app.labtronic.ui;
 
+import com.app.labtronic.data.ActiveSession;
 import com.app.labtronic.data.CalData;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -94,7 +95,8 @@ public class MainWinController {
             calTabs.add(newCalTab);
             // TODO: test if the focus removal works
             removeFocus();
-            CalData calData = controller.exportFormData(); // TODO: has no use for now
+            CalData calData = controller.exportFormData();
+            ActiveSession.getActiveSessionInstance().addCalData(calData); // TODO: WIP
 
             // TODO: keep different instances of CalData, tabs data etc. in a singleton or some other separate class?
             // initializing tab contents:
