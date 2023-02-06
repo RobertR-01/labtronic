@@ -17,6 +17,35 @@ public class GenInfoController {
     private DatePicker datePicker;
     @FXML
     private CheckBox accreditationCB;
+    @FXML
+    private TextArea customerNameTA;
+    @FXML
+    private TextArea customerAddressTA;
+    @FXML
+    private CheckBox endUserCB;
+    @FXML
+    private Label endUserNameL;
+    @FXML
+    private TextArea endUserNameTA;
+    @FXML
+    private Label endUserAddressL;
+    @FXML
+    private TextArea endUserAddressTA;
+    @FXML
+    private RadioButton dmmRadio;
+    @FXML
+    private RadioButton calRadio;
+    @FXML
+    private TextField manufacturerTF;
+    @FXML
+    private TextField typeTF;
+    @FXML
+    private TextField serialNoTF;
+    @FXML
+    private Label resolutionLabel;
+    @FXML
+    private ComboBox<String> resolutionCB;
+
 
     @FXML
     private Label test;
@@ -34,65 +63,25 @@ public class GenInfoController {
         datePicker.setValue(calData.getOrderDate());
         accreditationCB.setSelected(calData.isAccreditation());
 
-        test.setText("""
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                 sed do eiusmod tempor incididunt ut labore et dolore magna 
-                 aliqua. Dignissim cras tincidunt lobortis feugiat vivamus. 
-                 Arcu risus quis varius quam quisque id diam. Accumsan sit amet
-                  nulla facilisi. Sagittis vitae et leo duis ut. Egestas
-                   maecenas pharetra convallis posuere morbi leo urna molestie. 
-                   Pellentesque habitant morbi tristique senectus et netus 
-                   et malesuada. Eleifend donec pretium vulputate sapien nec
-                    sagittis aliquam malesuada. Sed sed risus pretium quam vu
-                    lputate dignissim suspendisse in. Elementum curabitur vit
-                    ae nunc sed velit dignissim. Sit amet facilisis magna etia
-                    m tempor orci eu lobortis. A lacus vestibulum sed arcu non
-                     odio euismod lacinia at. Ut diam quam nulla porttitor mas
-                     sa. Eleifend donec pretium vulputate sapien nec sagittis 
-                     aliquam. Amet venenatis urna cursus eget nunc. Facilisis vo
-                     lutpat est velit egestas. Ac placerat vestibulum lectus mau
-                     ris ultrices eros in cursus turpis. Nec nam aliquam sem e
-                     t tortor consequat id porta nibh. Bibendum est ultricies i
-                     nteger quis.
-                       Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                 sed do eiusmod tempor incididunt ut labore et dolore magna 
-                 aliqua. Dignissim cras tincidunt lobortis feugiat vivamus. 
-                 Arcu risus quis varius quam quisque id diam. Accumsan sit amet
-                  nulla facilisi. Sagittis vitae et leo duis ut. Egestas
-                   maecenas pharetra convallis posuere morbi leo urna molestie. 
-                   Pellentesque habitant morbi tristique senectus et netus 
-                   et malesuada. Eleifend donec pretium vulputate sapien nec
-                    sagittis aliquam malesuada. Sed sed risus pretium quam vu
-                    lputate dignissim suspendisse in. Elementum curabitur vit
-                    ae nunc sed velit dignissim. Sit amet facilisis magna etia
-                    m tempor orci eu lobortis. A lacus vestibulum sed arcu non
-                     odio euismod lacinia at. Ut diam quam nulla porttitor mas
-                     sa. Eleifend donec pretium vulputate sapien nec sagittis 
-                     aliquam. Amet venenatis urna cursus eget nunc. Facilisis vo
-                     lutpat est velit egestas. Ac placerat vestibulum lectus mau
-                     ris ultrices eros in cursus turpis. Nec nam aliquam sem e
-                     t tortor consequat id porta nibh. Bibendum est ultricies i
-                     nteger quis.Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                 sed do eiusmod tempor incididunt ut labore et dolore magna 
-                 aliqua. Dignissim cras tincidunt lobortis feugiat vivamus. 
-                 Arcu risus quis varius quam quisque id diam. Accumsan sit amet
-                  nulla facilisi. Sagittis vitae et leo duis ut. Egestas
-                   maecenas pharetra convallis posuere morbi leo urna molestie. 
-                   Pellentesque habitant morbi tristique senectus et netus 
-                   et malesuada. Eleifend donec pretium vulputate sapien nec
-                    sagittis aliquam malesuada. Sed sed risus pretium quam vu
-                    lputate dignissim suspendisse in. Elementum curabitur vit
-                    ae nunc sed velit dignissim. Sit amet facilisis magna etia
-                    m tempor orci eu lobortis. A lacus vestibulum sed arcu non
-                     odio euismod lacinia at. Ut diam quam nulla porttitor mas
-                     sa. Eleifend donec pretium vulputate sapien nec sagittis 
-                     aliquam. Amet venenatis urna cursus eget nunc. Facilisis vo
-                     lutpat est velit egestas. Ac placerat vestibulum lectus mau
-                     ris ultrices eros in cursus turpis. Nec nam aliquam sem e
-                     t tortor consequat id porta nibh. Bibendum est ultricies i
-                     nteger quis.
-                                
-                .pen""");
+        customerNameTA.setText(calData.getCustomerName());
+        customerAddressTA.setText(calData.getCustomerAddress());
+        endUserCB.setSelected(calData.isEndUserPresent());
+        endUserNameTA.setText(calData.getEndUserName());
+        endUserAddressTA.setText(calData.getEndUserAddress());
+
+        if (calData.getCategory().equals(CalData.Category.DMM)) {
+            dmmRadio.selectedProperty().set(true);
+        } else if (calData.getCategory().equals(CalData.Category.CALIBRATOR)) {
+            calRadio.selectedProperty().set(true);
+        }
+        manufacturerTF.setText(calData.getManufacturer());
+        typeTF.setText(calData.getType());
+        serialNoTF.setText(calData.getSerialNo());
+        resolutionCB.setValue(calData.getResolution());
+
+        // TODO: add lsiteners to end-user stuff etc.
+        // TODO: possibly a duplicate code from the NewCalDlgController (the listeners, bindings etc.)
+
     }
 
     @FXML

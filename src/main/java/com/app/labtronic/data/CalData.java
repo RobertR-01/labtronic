@@ -9,6 +9,7 @@ public class CalData {
     private boolean accreditation;
     private String customerName;
     private String customerAddress;
+    private boolean isEndUserPresent;
     private String endUserName;
     private String endUserAddress;
     private Category category;
@@ -20,14 +21,16 @@ public class CalData {
     private final long ID;
 
     public CalData(String kubackiRegNo, String switezRegNo, LocalDate orderDate, boolean accreditation,
-                   String customerName, String customerAddress, String endUserName, String endUserAddress,
-                   Category category, String manufacturer, String type, String serialNo, String resolution) {
+                   String customerName, String customerAddress, boolean isEndUserPresent, String endUserName,
+                   String endUserAddress, Category category, String manufacturer, String type, String serialNo,
+                   String resolution) {
         this.kubackiRegNo = kubackiRegNo;
         this.switezRegNo = switezRegNo;
         this.orderDate = orderDate;
         this.accreditation = accreditation;
         this.customerName = customerName;
         this.customerAddress = customerAddress;
+        this.isEndUserPresent = isEndUserPresent;
         this.endUserName = endUserName;
         this.endUserAddress = endUserAddress;
         this.category = category;
@@ -60,6 +63,10 @@ public class CalData {
 
     public String getCustomerAddress() {
         return customerAddress;
+    }
+
+    public boolean isEndUserPresent() {
+        return isEndUserPresent;
     }
 
     public String getEndUserName() {
@@ -109,6 +116,7 @@ public class CalData {
                 "accreditation = " + accreditation + '\n' +
                 "customerName = " + customerName + '\n' +
                 "customerAddress = " + customerAddress + '\n' +
+                "isEndUserPresent = " + isEndUserPresent + '\n' +
                 "endUserName = " + endUserName + '\n' +
                 "endUserAddress = " + endUserAddress + '\n' +
                 "category = " + category.toString() + '\n' +

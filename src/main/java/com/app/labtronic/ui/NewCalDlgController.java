@@ -151,7 +151,7 @@ public class NewCalDlgController {
         CalData.Category category = (dmmRadio.isSelected()) ? CalData.Category.DMM : CalData.Category.CALIBRATOR;
         return new CalData(getFullKubackiRegNo(), switezRegNoTF.getText().trim(), datePicker.getValue(),
                 accreditationCB.isSelected(), customerNameTF.getText().trim(), customerAddressTF.getText().trim(),
-                endUserNameTF.getText().trim(), endUserAddressTF.getText().trim(), category,
+                endUserCB.isSelected(), endUserNameTF.getText().trim(), endUserAddressTF.getText().trim(), category,
                 manufacturerTF.getText().trim(), typeTF.getText().trim(), serialNoTF.getText().trim(),
                 resolutionCB.getValue());
     }
