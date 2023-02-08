@@ -111,7 +111,6 @@ public class NewCalDlgController {
                 customerNameTF, customerAddressTF, endUserNameTF, endUserAddressTF, manufacturerTF, typeTF, serialNoTF);
 
         // removes red outline from invalid fields upon typing:
-        // TODO: some duplicate code - possible solution: prevent DatePicker from ever being left blank
         for (Node node : nodeList) {
             if (node instanceof TextField) {
                 ((TextField) node).textProperty().addListener((observable, oldValue, newValue) -> {
