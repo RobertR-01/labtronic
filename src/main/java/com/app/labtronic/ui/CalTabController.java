@@ -1,6 +1,5 @@
 package com.app.labtronic.ui;
 
-import com.app.labtronic.data.ActiveSession;
 import com.app.labtronic.data.CalData;
 import javafx.fxml.FXML;
 import javafx.scene.control.TabPane;
