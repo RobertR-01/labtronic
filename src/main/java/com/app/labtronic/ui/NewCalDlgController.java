@@ -58,6 +58,7 @@ public class NewCalDlgController {
     @FXML
     private void initialize() {
         // disables resolution choice combo box and label if dmm radio is not selected:
+        // TODO: simplify those bindings if possible, same for the section below
         resolutionCB.disableProperty().bind(Bindings.createBooleanBinding(() ->
                 calRadio.isSelected(), calRadio.selectedProperty()));
         resolutionLabel.disableProperty().bind(Bindings.createBooleanBinding(() ->

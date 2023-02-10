@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="6b6cea85-07a8-44a9-8e5a-1168ad716cb3" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/markdown.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/app/labtronic/ui/NewCalDlgController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/app/labtronic/ui/NewCalDlgController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/app/labtronic/ui/caltab/ValuationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/app/labtronic/ui/caltab/ValuationController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/app/labtronic/ui/caltab/valuation/ValuationDlgController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/app/labtronic/ui/caltab/valuation/ValuationDlgController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/app/labtronic/ui/caltab/sub-tab-styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/app/labtronic/ui/caltab/sub-tab-styles.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/app/labtronic/ui/caltab/valuation.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/app/labtronic/ui/caltab/valuation.fxml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CodeInsightWorkspaceSettings">
+    <option name="optimizeImportsOnTheFly" value="true" />
+  </component>
+  <component name="GithubDefaultAccount">
+    <option name="defaultAccountId" value="8fa795be-bc15-489f-98be-504950b2b8f5" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHome" value="Use Maven wrapper" />
+        <option name="useMavenConfig" value="true" />
+      </MavenGeneralSettings>
+    </option>
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="workspaceImportEnabled" value="true" />
+      </MavenImportingSettings>
+    </option>
+  </component>
+  <component name="ProjectId" id="2LXoqbjzuYXwsgGYWkidH4llyRB" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "settings.editor.selected.configurable": "editor.preferences.completion"
+  }
+}]]></component>
+  <component name="RunManager">
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.app.labtronic.Main" />
+      <module name="labtronic" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.app.labtronic.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.Main" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="6b6cea85-07a8-44a9-8e5a-1168ad716cb3" name="Changes" comment="" />
+      <created>1676026982564</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1676026982564</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="WRAP_WHEN_TYPING_REACHES_RIGHT_MARGIN" value="true" />
+  </component>
+</project>

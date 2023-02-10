@@ -6,8 +6,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 public class ValuationController {
@@ -15,6 +17,40 @@ public class ValuationController {
     private BorderPane root;
     @FXML
     private Button addBtn;
+
+    @FXML
+    private CheckBox vdcCB;
+    @FXML
+    private CheckBox vacCB;
+    @FXML
+    private CheckBox idcCB;
+    @FXML
+    private CheckBox iacCB;
+    @FXML
+    private CheckBox rdcCB;
+    private List<CheckBox> cbList;
+
+    @FXML
+    private VBox vdcSection;
+    @FXML
+    private VBox vacSection;
+    @FXML
+    private VBox idcSection;
+    @FXML
+    private VBox iacSection;
+    @FXML
+    private VBox rdcSection;
+    private List<VBox> vBoxList;
+
+    @FXML
+    private Label vacFreqL;
+    @FXML
+    private Spinner<String> vacSpinner;
+    @FXML
+    private Label iacFreqL;
+    @FXML
+    private Spinner<String> iacSpinner;
+
 
     @FXML
     private TableView<ValuationData> vdcTableView;
@@ -25,6 +61,22 @@ public class ValuationController {
         System.out.println(vdcTableView.widthProperty().get());
         for (TableColumn<ValuationData, ?> column : vdcTableView.getColumns()) {
             column.prefWidthProperty().bind(vdcTableView.widthProperty().divide(5));
+        }
+
+        // TODO: classic - check those code duplicates for bindings etc. from other controllers
+
+        // top panel combo box bindings:
+        vacFreqL.disableProperty().bind(vacCB.selectedProperty().not());
+        vacSpinner.disableProperty().bind(vacCB.selectedProperty().not());
+        iacFreqL.disableProperty().bind(iacCB.selectedProperty().not());
+        iacSpinner.disableProperty().bind(iacCB.selectedProperty().not());
+
+        cbList = List.of(vdcCB, vacCB, idcCB, iacCB, rdcCB);
+        vBoxList = List.of(vdcSection, vacSection, idcSection, iacSection, rdcSection);
+
+        for (int i = 0; i < cbList.size(); i++) {
+            vBoxList.get(i).visibleProperty().bind(cbList.get(i).selectedProperty());
+            vBoxList.get(i).managedProperty().bind(vBoxList.get(i).visibleProperty());
         }
     }
 
@@ -95,5 +147,11 @@ public class ValuationController {
 //                e.printStackTrace();
 //            }
 //        }
+    }
+
+    // TODO: duplicate code from other controller
+    @FXML
+    private void removeFocus() {
+        root.requestFocus();
     }
 }

@@ -1,60 +1,76 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.control.Tooltip?>
-<?import org.kordamp.ikonli.javafx.FontIcon?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.ComboBox?>
 <?import javafx.collections.FXCollections?>
-<?import java.lang.String?>
-<?import javafx.scene.control.ScrollPane?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import org.kordamp.ikonli.javafx.*?>
+<?import java.lang.*?>
 <BorderPane fx:id="root" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.app.labtronic.ui.caltab.ValuationController" stylesheets="@sub-tab-styles.css">
     <padding>
         <Insets top="10" right="10" bottom="10" left="10"/>
     </padding>
+    <top>
+        <HBox spacing="30" alignment="CENTER">
+            <padding>
+                <Insets bottom="10"/>
+            </padding>
+            <CheckBox text="VDC" fx:id="vdcCB"/>
+            <Separator orientation="VERTICAL"/>
+            <HBox spacing="10" alignment="CENTER">
+                <CheckBox text="VAC" fx:id="vacCB"/>
+                <Label text="VAC frequency levels:" fx:id="vacFreqL"/>
+                <Spinner fx:id="vacSpinner" initialValue="1" min="1" max="10" amountToStepBy="1" prefWidth="65"/>
+            </HBox>
+            <Separator orientation="VERTICAL"/>
+            <CheckBox text="IDC" fx:id="idcCB"/>
+            <Separator orientation="VERTICAL"/>
+            <HBox spacing="10" alignment="CENTER">
+                <CheckBox text="IAC" fx:id="iacCB"/>
+                <Label text="IAC frequency levels:" fx:id="iacFreqL"/>
+                <Spinner fx:id="iacSpinner" initialValue="1" min="1" max="10" amountToStepBy="1"/>
+            </HBox>
+            <Separator orientation="VERTICAL"/>
+            <CheckBox text="RDC" fx:id="rdcCB"/>
+        </HBox>
+    </top>
     <center>
-        <ScrollPane fitToWidth="true">
+        <ScrollPane fx:id="scrollPane" fitToWidth="true" styleClass="scrollPane">
             <padding>
                 <Insets top="10" right="10" bottom="10" left="10"/>
             </padding>
             <VBox spacing="10" alignment="CENTER">
                 <!--VDC-->
-                <HBox spacing="20" alignment="CENTER">
-                    <Label text="VDC" underline="true"/>
-                    <Button fx:id="addVdcBtn">
-                        <tooltip>
-                            <Tooltip showDelay="500ms" text="Add new measurement range / points"/>
-                        </tooltip>
-                        <graphic>
-                            <FontIcon iconLiteral="bx-plus" iconSize="16"/>
-                        </graphic>
-                    </Button>
-                </HBox>
-                <TableView fx:id="vdcTableView" VBox.vgrow="ALWAYS">
-                    <columns>
-                        <TableColumn text="Range" resizable="false"/>
-                        <TableColumn text="Unit" resizable="false"/>
-                        <TableColumn text="Meas. Point" resizable="false"/>
-                        <TableColumn text="Type" resizable="false"/>
-                        <TableColumn text="Cost" resizable="false"/>
-                    </columns>
-                </TableView>
+                <VBox fx:id="vdcSection" spacing="10">
+                    <HBox spacing="20" alignment="CENTER">
+                        <Label text="VDC" underline="true"/>
+                        <Button fx:id="addVdcBtn">
+                            <tooltip>
+                                <Tooltip showDelay="500ms" text="Add new measurement range / points"/>
+                            </tooltip>
+                            <graphic>
+                                <FontIcon iconLiteral="bx-plus" iconSize="16"/>
+                            </graphic>
+                        </Button>
+                    </HBox>
+                    <TableView fx:id="vdcTableView" VBox.vgrow="ALWAYS">
+                        <columns>
+                            <TableColumn text="Range" resizable="false"/>
+                            <TableColumn text="Unit" resizable="false"/>
+                            <TableColumn text="Meas. Point" resizable="false"/>
+                            <TableColumn text="Type" resizable="false"/>
+                            <TableColumn text="Cost" resizable="false"/>
+                        </columns>
+                    </TableView>
+                </VBox>
 
                 <!--VAC-->
-                <HBox spacing="20" alignment="CENTER">
-                    <Label text="VAC" underline="true"/>
-                    <HBox spacing="2">
-                        <TextField text="50" fx:id="freqTF" prefWidth="50"/>
-                        <ComboBox fx:id="freqCB">
+                <VBox fx:id="vacSection" spacing="10">
+                    <HBox spacing="20" alignment="CENTER">
+                        <Label text="VAC" underline="true"/>
+                        <TextField text="50" fx:id="vacFreqTF" prefWidth="50"/>
+                        <ComboBox fx:id="vacFreqCB" prefWidth="70">
                             <items>
                                 <FXCollections fx:factory="observableArrayList">
                                     <String fx:value="Hz"/>
@@ -65,25 +81,109 @@
                                 <String fx:value="Hz"/>
                             </value>
                         </ComboBox>
+                        <Button fx:id="addVacBtn">
+                            <tooltip>
+                                <Tooltip showDelay="500ms" text="Add new measurement range / points"/>
+                            </tooltip>
+                            <graphic>
+                                <FontIcon iconLiteral="bx-plus" iconSize="16"/>
+                            </graphic>
+                        </Button>
                     </HBox>
-                    <Button fx:id="addVacBtn">
-                        <tooltip>
-                            <Tooltip showDelay="500ms" text="Add new measurement range / points"/>
-                        </tooltip>
-                        <graphic>
-                            <FontIcon iconLiteral="bx-plus" iconSize="16"/>
-                        </graphic>
-                    </Button>
-                </HBox>
-                <TableView fx:id="vacTableView" VBox.vgrow="ALWAYS">
-                    <columns>
-                        <TableColumn text="Range" resizable="false"/>
-                        <TableColumn text="Unit" resizable="false"/>
-                        <TableColumn text="Meas. Point" resizable="false"/>
-                        <TableColumn text="Type" resizable="false"/>
-                        <TableColumn text="Cost" resizable="false"/>
-                    </columns>
-                </TableView>
+                    <TableView fx:id="vacTableView" VBox.vgrow="ALWAYS">
+                        <columns>
+                            <TableColumn text="Range" resizable="false"/>
+                            <TableColumn text="Unit" resizable="false"/>
+                            <TableColumn text="Meas. Point" resizable="false"/>
+                            <TableColumn text="Type" resizable="false"/>
+                            <TableColumn text="Cost" resizable="false"/>
+                        </columns>
+                    </TableView>
+                </VBox>
+
+                <!--IDC-->
+                <VBox fx:id="idcSection" spacing="10">
+                    <HBox spacing="20" alignment="CENTER">
+                        <Label text="IDC" underline="true"/>
+                        <Button fx:id="addIdcBtn">
+                            <tooltip>
+                                <Tooltip showDelay="500ms" text="Add new measurement range / points"/>
+                            </tooltip>
+                            <graphic>
+                                <FontIcon iconLiteral="bx-plus" iconSize="16"/>
+                            </graphic>
+                        </Button>
+                    </HBox>
+                    <TableView fx:id="idcTableView" VBox.vgrow="ALWAYS">
+                        <columns>
+                            <TableColumn text="Range" resizable="false"/>
+                            <TableColumn text="Unit" resizable="false"/>
+                            <TableColumn text="Meas. Point" resizable="false"/>
+                            <TableColumn text="Type" resizable="false"/>
+                            <TableColumn text="Cost" resizable="false"/>
+                        </columns>
+                    </TableView>
+                </VBox>
+
+                <!--IAC-->
+                <VBox fx:id="iacSection" spacing="10">
+                    <HBox spacing="20" alignment="CENTER">
+                        <Label text="IAC" underline="true"/>
+                        <TextField text="50" fx:id="iacFreqTF" prefWidth="50"/>
+                        <ComboBox fx:id="iacFreqCB">
+                            <items>
+                                <FXCollections fx:factory="observableArrayList">
+                                    <String fx:value="Hz"/>
+                                    <String fx:value="kHz"/>
+                                </FXCollections>
+                            </items>
+                            <value>
+                                <String fx:value="Hz"/>
+                            </value>
+                        </ComboBox>
+                        <Button fx:id="addIacBtn">
+                            <tooltip>
+                                <Tooltip showDelay="500ms" text="Add new measurement range / points"/>
+                            </tooltip>
+                            <graphic>
+                                <FontIcon iconLiteral="bx-plus" iconSize="16"/>
+                            </graphic>
+                        </Button>
+                    </HBox>
+                    <TableView fx:id="iacTableView" VBox.vgrow="ALWAYS">
+                        <columns>
+                            <TableColumn text="Range" resizable="false"/>
+                            <TableColumn text="Unit" resizable="false"/>
+                            <TableColumn text="Meas. Point" resizable="false"/>
+                            <TableColumn text="Type" resizable="false"/>
+                            <TableColumn text="Cost" resizable="false"/>
+                        </columns>
+                    </TableView>
+                </VBox>
+
+                <!--RDC-->
+                <VBox fx:id="rdcSection" spacing="10">
+                    <HBox spacing="20" alignment="CENTER">
+                        <Label text="RDC" underline="true"/>
+                        <Button fx:id="addRdcBtn">
+                            <tooltip>
+                                <Tooltip showDelay="500ms" text="Add new measurement range / points"/>
+                            </tooltip>
+                            <graphic>
+                                <FontIcon iconLiteral="bx-plus" iconSize="16"/>
+                            </graphic>
+                        </Button>
+                    </HBox>
+                    <TableView fx:id="rdcTableView" VBox.vgrow="ALWAYS">
+                        <columns>
+                            <TableColumn text="Range" resizable="false"/>
+                            <TableColumn text="Unit" resizable="false"/>
+                            <TableColumn text="Meas. Point" resizable="false"/>
+                            <TableColumn text="Type" resizable="false"/>
+                            <TableColumn text="Cost" resizable="false"/>
+                        </columns>
+                    </TableView>
+                </VBox>
             </VBox>
         </ScrollPane>
     </center>
