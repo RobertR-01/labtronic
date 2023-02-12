@@ -29,7 +29,7 @@
             <HBox spacing="10" alignment="CENTER">
                 <CheckBox text="IAC" fx:id="iacCB"/>
                 <Label text="IAC frequency levels:" fx:id="iacFreqL"/>
-                <Spinner fx:id="iacSpinner" initialValue="1" min="1" max="10" amountToStepBy="1"/>
+                <Spinner fx:id="iacSpinner" initialValue="1" min="1" max="10" amountToStepBy="1" prefWidth="65"/>
             </HBox>
             <Separator orientation="VERTICAL"/>
             <CheckBox text="RDC" fx:id="rdcCB"/>
@@ -40,7 +40,7 @@
             <padding>
                 <Insets top="10" right="10" bottom="10" left="10"/>
             </padding>
-            <VBox spacing="10" alignment="CENTER">
+            <VBox spacing="10" alignment="CENTER" fx:id="sectionsVbox">
                 <!--VDC-->
                 <VBox fx:id="vdcSection" spacing="10">
                     <HBox spacing="20" alignment="CENTER">

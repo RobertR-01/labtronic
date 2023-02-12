@@ -5,15 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6b6cea85-07a8-44a9-8e5a-1168ad716cb3" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/markdown.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/app/labtronic/ui/NewCalDlgController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/app/labtronic/ui/NewCalDlgController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/app/labtronic/ui/caltab/ValuationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/app/labtronic/ui/caltab/ValuationController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/app/labtronic/ui/caltab/valuation/ValuationDlgController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/app/labtronic/ui/caltab/valuation/ValuationDlgController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/app/labtronic/ui/caltab/sub-tab-styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/app/labtronic/ui/caltab/sub-tab-styles.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/com/app/labtronic/ui/caltab/valuation.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/app/labtronic/ui/caltab/valuation.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -25,7 +18,7 @@
     <option name="optimizeImportsOnTheFly" value="true" />
   </component>
   <component name="GithubDefaultAccount">
-    <option name="defaultAccountId" value="8fa795be-bc15-489f-98be-504950b2b8f5" />
+    <option name="defaultAccountId" value="b0802186-64ef-4c60-a7af-c11fc2288dac" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -44,6 +37,7 @@
     </option>
   </component>
   <component name="ProjectId" id="2LXoqbjzuYXwsgGYWkidH4llyRB" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -52,7 +46,7 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "settings.editor.selected.configurable": "editor.preferences.completion"
+    "settings.editor.selected.configurable": "settings.sync"
   }
 }]]></component>
   <component name="RunManager">

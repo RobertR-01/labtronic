@@ -2,13 +2,20 @@ package com.app.labtronic.ui.caltab;
 
 import com.app.labtronic.data.valuation.ValuationData;
 import com.app.labtronic.ui.caltab.valuation.ValuationDlgController;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
+import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,22 +52,35 @@ public class ValuationController {
     @FXML
     private Label vacFreqL;
     @FXML
-    private Spinner<String> vacSpinner;
+    private Spinner<Integer> vacSpinner;
     @FXML
     private Label iacFreqL;
     @FXML
-    private Spinner<String> iacSpinner;
+    private Spinner<Integer> iacSpinner;
 
+    private List<acFreqContainer> vacFreqs;
+    private List<acFreqContainer> iacFreqs;
 
     @FXML
     private TableView<ValuationData> vdcTableView;
+    @FXML
+    private TableView<ValuationData> vacTableView;
+    @FXML
+    private TableView<ValuationData> idcTableView;
+    @FXML
+    private TableView<ValuationData> iacTableView;
+    @FXML
+    private TableView<ValuationData> rdcTableView;
 
     @FXML
     private void initialize() {
         // sets equal column width:
-        System.out.println(vdcTableView.widthProperty().get());
-        for (TableColumn<ValuationData, ?> column : vdcTableView.getColumns()) {
-            column.prefWidthProperty().bind(vdcTableView.widthProperty().divide(5));
+        List<TableView<ValuationData>> tableViewList = List.of(vdcTableView, vacTableView, idcTableView, iacTableView,
+                rdcTableView);
+        for (TableView<ValuationData> tableView : tableViewList) {
+            for (TableColumn<ValuationData, ?> column : tableView.getColumns()) {
+                column.prefWidthProperty().bind(tableView.widthProperty().divide(5));
+            }
         }
 
         // TODO: classic - check those code duplicates for bindings etc. from other controllers
@@ -78,6 +98,24 @@ public class ValuationController {
             vBoxList.get(i).visibleProperty().bind(cbList.get(i).selectedProperty());
             vBoxList.get(i).managedProperty().bind(vBoxList.get(i).visibleProperty());
         }
+
+        // vac/iac spinners:
+        vacFreqs = new ArrayList<>();
+        iacFreqs = new ArrayList<>();
+        vacSpinner.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue > oldValue) {
+                addAcFreq(true);
+            } else if (newValue < oldValue) {
+                removeAcFreq(true);
+            }
+        });
+        iacSpinner.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue > oldValue) {
+                addAcFreq(false);
+            } else if (newValue < oldValue) {
+                removeAcFreq(false);
+            }
+        });
     }
 
     // TODO: lots of duplicate code from NewCalDlgController
@@ -153,5 +191,99 @@ public class ValuationController {
     @FXML
     private void removeFocus() {
         root.requestFocus();
+    }
+
+    private void addAcFreq(boolean isVoltage) {
+        acFreqContainer container = new acFreqContainer(isVoltage);
+        if (isVoltage) {
+            vacFreqs.add(container);
+            vacSection.getChildren().add(container.gethBox());
+            vacSection.getChildren().add(container.getTableView());
+        } else {
+            iacFreqs.add(container);
+            iacSection.getChildren().add(container.gethBox());
+            iacSection.getChildren().add(container.getTableView());
+        }
+    }
+
+    private void removeAcFreq(boolean isVoltage) {
+        List<acFreqContainer> acFreqs = (isVoltage) ? vacFreqs : iacFreqs;
+        VBox acSection = (isVoltage) ? vacSection : iacSection;
+        int lastIndex = acFreqs.size() - 1;
+        acFreqContainer container = acFreqs.get(lastIndex);
+        acSection.getChildren().remove(container.gethBox());
+        acSection.getChildren().remove(container.getTableView());
+        acFreqs.remove(container);
+    }
+
+    private static class acFreqContainer {
+        private final HBox hBox;
+        private final TextField textField;
+        private final ComboBox<String> comboBox;
+        private final Button button;
+        private final TableView<ValuationData> tableView;
+        private final boolean isVoltage;
+
+        private acFreqContainer(boolean isVoltage) {
+            this.isVoltage = isVoltage;
+
+            hBox = new HBox();
+            hBox.spacingProperty().set(20);
+            hBox.setAlignment(Pos.CENTER);
+
+            String labelTxt = (isVoltage) ? "VAC" : "IAC";
+            Label vacLabel = new Label(labelTxt);
+            vacLabel.setUnderline(true);
+            hBox.getChildren().add(vacLabel);
+
+            textField = new TextField("50");
+            textField.setPrefWidth(50);
+            hBox.getChildren().add(textField);
+
+            comboBox = new ComboBox<>(FXCollections.observableArrayList("Hz", "kHz"));
+            comboBox.setPrefWidth(70);
+            comboBox.setValue("Hz");
+            hBox.getChildren().add(comboBox);
+
+            button = new Button();
+            Tooltip tooltip = new Tooltip("Add new measurement range / points");
+            tooltip.setShowDelay(new Duration(500));
+            button.setTooltip(tooltip);
+            FontIcon icon = new FontIcon("bx-plus");
+            icon.setIconSize(16);
+            button.setGraphic(icon);
+            hBox.getChildren().add(button);
+
+            tableView = new TableView<>();
+            VBox.setVgrow(tableView, Priority.ALWAYS);
+            TableColumn<ValuationData, String> column;
+            String[] strings = {"Range", "Unit", "Meas. Point", "Type", "Cost"};
+            for (int i = 0; i < 5; i++) {
+                column = new TableColumn<>(strings[i]);
+                column.setResizable(false);
+                column.prefWidthProperty().bind(tableView.widthProperty().divide(5));
+                tableView.getColumns().add(column);
+            }
+        }
+
+        public HBox gethBox() {
+            return hBox;
+        }
+
+        public TextField getTextField() {
+            return textField;
+        }
+
+        public ComboBox<String> getComboBox() {
+            return comboBox;
+        }
+
+        public Button getButton() {
+            return button;
+        }
+
+        public TableView<ValuationData> getTableView() {
+            return tableView;
+        }
     }
 }
