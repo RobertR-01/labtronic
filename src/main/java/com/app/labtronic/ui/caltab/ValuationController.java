@@ -3,14 +3,13 @@ package com.app.labtronic.ui.caltab;
 import com.app.labtronic.data.valuation.ValuationData;
 import com.app.labtronic.ui.caltab.valuation.ValuationDlgController;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.util.Duration;
 import org.kordamp.ikonli.javafx.FontIcon;
 
@@ -58,8 +57,8 @@ public class ValuationController {
     @FXML
     private Spinner<Integer> iacSpinner;
 
-    private List<acFreqContainer> vacFreqs;
-    private List<acFreqContainer> iacFreqs;
+    private List<AcFreqContainer> vacFreqs;
+    private List<AcFreqContainer> iacFreqs;
 
     @FXML
     private TableView<ValuationData> vdcTableView;
@@ -120,12 +119,12 @@ public class ValuationController {
 
     // TODO: lots of duplicate code from NewCalDlgController
     @FXML
-    private void handleAddBtn() {
+    private void addNewMeasRange(ActionEvent event) {
         // set up the new dialog:
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.initOwner(root.getScene().getWindow());
-        dialog.setTitle("Adding new valuation section");
-        dialog.setHeaderText("Enter pricing related information:");
+        dialog.setTitle("Adding new measurement range");
+        dialog.setHeaderText("Enter measurement range / points details:");
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource("valuation/valuation-dlg.fxml"));
 
@@ -137,10 +136,47 @@ public class ValuationController {
             return;
         }
 
+        ValuationDlgController controller = fxmlLoader.getController();
+
+        // getting the proper tableView
+        // TODO: this is a mess
+        Button eventSourceButton = (Button) event.getSource();
+        Node parentHBox = eventSourceButton.getParent();
+        Node sectionNode = parentHBox.getParent();
+
+        // TODO: validation? else statement?
+        for (Node node : ((Pane) parentHBox).getChildren()) {
+            if (node instanceof Label) {
+                controller.setFunctionLTxt(((Label) node).getText());
+            }
+        }
+
+        List<Node> sectionChildren = ((Pane) sectionNode).getChildren();
+        int parentIndex = sectionChildren.indexOf(parentHBox);
+
+        TableView<ValuationData> tableView;
+        for (Node node : sectionChildren) {
+            if (node instanceof TableView<?> && (sectionChildren.indexOf(node) == parentIndex + 1)) {
+                try {
+                    tableView = (TableView<ValuationData>) node;
+                } catch (ClassCastException e) {
+                    e.printStackTrace();
+                    return;
+                }
+            }
+        }
+
+        // TODO: delete if obsolete
+//        // getting the section label text:
+//        int labelIndex = ((Pane) parentHBox).getChildren().indexOf(eventSourceButton) - 1;
+//        String function = ((Label) ((Pane) parentHBox).getChildren().get(labelIndex)).getText();
+//        controller.setFunctionLTxt(function);
+
+
+
         dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
         dialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
 
-        ValuationDlgController controller = fxmlLoader.getController();
         // event filter for input validation - consumes the OK event to prevent the dialog from closing in case of
         // an invalid input (forces the user to retry entering missing data):
 //        final Button buttonOK = (Button) dialog.getDialogPane().lookupButton(ButtonType.OK);
@@ -194,7 +230,7 @@ public class ValuationController {
     }
 
     private void addAcFreq(boolean isVoltage) {
-        acFreqContainer container = new acFreqContainer(isVoltage);
+        AcFreqContainer container = new AcFreqContainer(isVoltage);
         if (isVoltage) {
             vacFreqs.add(container);
             vacSection.getChildren().add(container.gethBox());
@@ -207,16 +243,16 @@ public class ValuationController {
     }
 
     private void removeAcFreq(boolean isVoltage) {
-        List<acFreqContainer> acFreqs = (isVoltage) ? vacFreqs : iacFreqs;
+        List<AcFreqContainer> acFreqs = (isVoltage) ? vacFreqs : iacFreqs;
         VBox acSection = (isVoltage) ? vacSection : iacSection;
         int lastIndex = acFreqs.size() - 1;
-        acFreqContainer container = acFreqs.get(lastIndex);
+        AcFreqContainer container = acFreqs.get(lastIndex);
         acSection.getChildren().remove(container.gethBox());
         acSection.getChildren().remove(container.getTableView());
         acFreqs.remove(container);
     }
 
-    private static class acFreqContainer {
+    private class AcFreqContainer {
         private final HBox hBox;
         private final TextField textField;
         private final ComboBox<String> comboBox;
@@ -224,7 +260,7 @@ public class ValuationController {
         private final TableView<ValuationData> tableView;
         private final boolean isVoltage;
 
-        private acFreqContainer(boolean isVoltage) {
+        private AcFreqContainer(boolean isVoltage) {
             this.isVoltage = isVoltage;
 
             hBox = new HBox();
@@ -252,6 +288,7 @@ public class ValuationController {
             FontIcon icon = new FontIcon("bx-plus");
             icon.setIconSize(16);
             button.setGraphic(icon);
+            button.setOnAction(event -> ValuationController.this.addNewMeasRange(event));
             hBox.getChildren().add(button);
 
             tableView = new TableView<>();

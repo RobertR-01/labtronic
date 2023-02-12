@@ -1,9 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.control.DialogPane?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import java.lang.*?>
 <DialogPane prefHeight="650.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/18"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.app.labtronic.ui.caltab.valuation.ValuationDlgController">
+    <content>
+        <GridPane vgap="10" hgap="5" GridPane.columnIndex="0">
+            <columnConstraints>
+                <ColumnConstraints percentWidth="35"/>
+                <ColumnConstraints percentWidth="65"/>
+            </columnConstraints>
+            <Label fx:id="functionL" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.halignment="CENTER"
+                   GridPane.columnSpan="2" underline="true">
+                <GridPane.margin>
+                    <Insets bottom="10"/>
+                </GridPane.margin>
+            </Label>
 
+            <Label text="Range: " GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+            <TextField fx:id="rangeTF" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+            <Label text="Unit: " GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+            <ComboBox fx:id="unitCB" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                <items>
+                    <FXCollections fx:factory="observableArrayList">
+                        <String fx:value="mV"/>
+                        <String fx:value="V"/>
+                        <String fx:value="kV"/>
+                    </FXCollections>
+                </items>
+                <value>
+                    <String fx:value="mV"/>
+                </value>
+            </ComboBox>
+
+            <Label text="Range type: " GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+            <ComboBox fx:id="rangeTypeCB" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                <items>
+                    <FXCollections fx:factory="observableArrayList">
+                        <String fx:value="First"/>
+                        <String fx:value="Another"/>
+                    </FXCollections>
+                </items>
+                <value>
+                    <String fx:value="First"/>
+                </value>
+            </ComboBox>
+
+            <Label text="Use EURAMET points: " GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+            <CheckBox fx:id="eurametCB" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+
+            <Label text="Points: (separate values with a comma)" GridPane.columnIndex="0" GridPane.rowIndex="5"
+                   wrapText="true" GridPane.valignment="TOP" fx:id="pointsL"/>
+            <TextArea fx:id="pointsTA" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+        </GridPane>
+    </content>
 </DialogPane>

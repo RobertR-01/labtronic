@@ -4,10 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6b6cea85-07a8-44a9-8e5a-1168ad716cb3" name="Changes" comment="">
+    <list default="true" id="6b6cea85-07a8-44a9-8e5a-1168ad716cb3" name="Changes" comment="Update valuation sub-tab&#10;&#10;Implemented the functionality that adds/removes extra AC frequency &#10;levels to the existing VAC and IAC sections. Up to 10 additional &#10;frequencies may be added to each of those functions.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/app/labtronic/ui/caltab/ValuationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/app/labtronic/ui/caltab/ValuationController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/app/labtronic/ui/caltab/valuation/ValuationDlgController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/app/labtronic/ui/caltab/valuation/ValuationDlgController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/app/labtronic/ui/caltab/sub-tab-styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/app/labtronic/ui/caltab/sub-tab-styles.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/com/app/labtronic/ui/caltab/valuation.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/app/labtronic/ui/caltab/valuation.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/app/labtronic/ui/caltab/valuation/valuation-dlg.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/app/labtronic/ui/caltab/valuation/valuation-dlg.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -78,9 +81,30 @@
       <option name="presentableId" value="Default" />
       <updated>1676026982564</updated>
     </task>
+    <task id="LOCAL-00001" summary="Update valuation sub-tab&#10;&#10;Implemented the functionality that adds/removes extra AC frequency &#10;levels to the existing VAC and IAC sections. Up to 10 additional &#10;frequencies may be added to each of those functions.">
+      <created>1676223343539</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1676223343539</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <option name="WRAP_WHEN_TYPING_REACHES_RIGHT_MARGIN" value="true" />
+    <MESSAGE value="Update valuation sub-tab&#10;&#10;Implemented the functionality that adds/removes extra AC frequency &#10;levels to the existing VAC and IAC sections. Up to 10 additional &#10;frequencies may be added to each of those functions." />
+    <option name="LAST_COMMIT_MESSAGE" value="Update valuation sub-tab&#10;&#10;Implemented the functionality that adds/removes extra AC frequency &#10;levels to the existing VAC and IAC sections. Up to 10 additional &#10;frequencies may be added to each of those functions." />
   </component>
 </project>
