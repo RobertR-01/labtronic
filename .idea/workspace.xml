@@ -4,14 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6b6cea85-07a8-44a9-8e5a-1168ad716cb3" name="Changes" comment="Add valuation-dlg stub&#10;&#10;Implemented an initial version of this dialog for adding new measurement&#10;range / points to a desired TableView. Fixed some issues with the data &#10;transfer between the dialog controller and the ValuationController.">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/app/labtronic/data/valuation/MeasRangeData.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/app/labtronic/ui/NewCalDlgController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/app/labtronic/ui/NewCalDlgController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/app/labtronic/ui/caltab/ValuationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/app/labtronic/ui/caltab/ValuationController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/app/labtronic/ui/caltab/valuation/ValuationDlgController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/app/labtronic/ui/caltab/valuation/ValuationDlgController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/app/labtronic/ui/caltab/valuation/valuation-dlg.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/app/labtronic/ui/caltab/valuation/valuation-dlg.fxml" afterDir="false" />
-    </list>
+    <list default="true" id="6b6cea85-07a8-44a9-8e5a-1168ad716cb3" name="Changes" comment="Update valuation-dlg stub&#10;&#10;Implemented validation methods for different input related controls in &#10;the dialog used for a new measurement range adding. A distinction still &#10;needs to be made for handling the invalid text field/area red border.&#10;Some different warning popups are also needed to indicate the control&#10;holding the invalid input." />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -56,7 +49,7 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "settings.editor.selected.configurable": "project.propVCSSupport.CommitDialog"
+    "settings.editor.selected.configurable": "settings.sync"
   }
 }]]></component>
   <component name="RunManager">
@@ -102,7 +95,14 @@
       <option name="project" value="LOCAL" />
       <updated>1676241914890</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Update valuation-dlg stub&#10;&#10;Implemented validation methods for different input related controls in &#10;the dialog used for a new measurement range adding. A distinction still &#10;needs to be made for handling the invalid text field/area red border.&#10;Some different warning popups are also needed to indicate the control&#10;holding the invalid input.">
+      <created>1676327645562</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1676327645562</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -120,6 +120,7 @@
     <option name="WRAP_WHEN_TYPING_REACHES_RIGHT_MARGIN" value="true" />
     <MESSAGE value="Update valuation sub-tab&#10;&#10;Implemented the functionality that adds/removes extra AC frequency &#10;levels to the existing VAC and IAC sections. Up to 10 additional &#10;frequencies may be added to each of those functions." />
     <MESSAGE value="Add valuation-dlg stub&#10;&#10;Implemented an initial version of this dialog for adding new measurement&#10;range / points to a desired TableView. Fixed some issues with the data &#10;transfer between the dialog controller and the ValuationController." />
-    <option name="LAST_COMMIT_MESSAGE" value="Add valuation-dlg stub&#10;&#10;Implemented an initial version of this dialog for adding new measurement&#10;range / points to a desired TableView. Fixed some issues with the data &#10;transfer between the dialog controller and the ValuationController." />
+    <MESSAGE value="Update valuation-dlg stub&#10;&#10;Implemented validation methods for different input related controls in &#10;the dialog used for a new measurement range adding. A distinction still &#10;needs to be made for handling the invalid text field/area red border.&#10;Some different warning popups are also needed to indicate the control&#10;holding the invalid input." />
+    <option name="LAST_COMMIT_MESSAGE" value="Update valuation-dlg stub&#10;&#10;Implemented validation methods for different input related controls in &#10;the dialog used for a new measurement range adding. A distinction still &#10;needs to be made for handling the invalid text field/area red border.&#10;Some different warning popups are also needed to indicate the control&#10;holding the invalid input." />
   </component>
 </project>
