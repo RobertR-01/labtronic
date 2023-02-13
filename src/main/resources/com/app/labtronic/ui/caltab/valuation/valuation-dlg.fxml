@@ -54,8 +54,8 @@
             <Label text="Use EURAMET points: " GridPane.columnIndex="0" GridPane.rowIndex="4"/>
             <CheckBox fx:id="eurametCB" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
 
-            <Label text="Points: (separate values with a comma)" GridPane.columnIndex="0" GridPane.rowIndex="5"
-                   wrapText="true" GridPane.valignment="TOP" fx:id="pointsL"/>
+            <Label GridPane.columnIndex="0" GridPane.rowIndex="5" wrapText="true" GridPane.valignment="TOP"
+                   fx:id="pointsL"/>
             <TextArea fx:id="pointsTA" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
         </GridPane>
     </content>

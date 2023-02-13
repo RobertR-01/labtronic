@@ -138,25 +138,19 @@ public class ValuationController {
 
         ValuationDlgController controller = fxmlLoader.getController();
 
-        // getting the proper tableView
-        // TODO: this is a mess
+        // getting the proper tableView:
+        // (eventSourceButton -> sourceParentPane -> sectionPane)
+        // TODO: this is a mess, fine a better way of retrieving the corresponding TableView
         Button eventSourceButton = (Button) event.getSource();
-        Node parentHBox = eventSourceButton.getParent();
-        Node sectionNode = parentHBox.getParent();
+        Node sourceParentPane = eventSourceButton.getParent();
+        Node sectionPane = sourceParentPane.getParent();
 
-        // TODO: validation? else statement?
-        for (Node node : ((Pane) parentHBox).getChildren()) {
-            if (node instanceof Label) {
-                controller.setFunctionLTxt(((Label) node).getText());
-            }
-        }
-
-        List<Node> sectionChildren = ((Pane) sectionNode).getChildren();
-        int parentIndex = sectionChildren.indexOf(parentHBox);
+        List<Node> sectionControls = ((Pane) sectionPane).getChildren();
+        int parentPaneIndex = sectionControls.indexOf(sourceParentPane);
 
         TableView<ValuationData> tableView;
-        for (Node node : sectionChildren) {
-            if (node instanceof TableView<?> && (sectionChildren.indexOf(node) == parentIndex + 1)) {
+        for (Node node : sectionControls) {
+            if (node instanceof TableView<?> && (sectionControls.indexOf(node) == parentPaneIndex + 1)) {
                 try {
                     tableView = (TableView<ValuationData>) node;
                 } catch (ClassCastException e) {
@@ -166,34 +160,36 @@ public class ValuationController {
             }
         }
 
-        // TODO: delete if obsolete
-//        // getting the section label text:
-//        int labelIndex = ((Pane) parentHBox).getChildren().indexOf(eventSourceButton) - 1;
-//        String function = ((Label) ((Pane) parentHBox).getChildren().get(labelIndex)).getText();
-//        controller.setFunctionLTxt(function);
-
-
+        // text for the topmost label in the dialog:
+        // TODO: validation? else statement?
+        for (Node node : ((Pane) sourceParentPane).getChildren()) {
+            if (node instanceof Label) {
+                controller.setFunctionType(((Label) node).getText());
+            }
+        }
 
         dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
         dialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
 
-        // event filter for input validation - consumes the OK event to prevent the dialog from closing in case of
-        // an invalid input (forces the user to retry entering missing data):
-//        final Button buttonOK = (Button) dialog.getDialogPane().lookupButton(ButtonType.OK);
-//        buttonOK.addEventFilter(ActionEvent.ACTION, actionEvent -> {
-//            if (!controller.validateForm()) {
-//                actionEvent.consume();
-//                Alert alert = new Alert(Alert.AlertType.WARNING);
-//                alert.setTitle("Valuation related error");
-//                alert.setHeaderText("Missing input data!");
-//                alert.setContentText("No fields in the form may remain empty.");
-//                alert.showAndWait();
-//            }
-//        });
+        final Button buttonOK = (Button) dialog.getDialogPane().lookupButton(ButtonType.OK);
+        buttonOK.addEventFilter(ActionEvent.ACTION, actionEvent -> {
+            if (!controller.validateForms()) {
+                actionEvent.consume();
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Measurement range addition related error");
+                alert.setHeaderText("Missing input data!");
+                alert.setContentText("No fields in the form may remain empty.");
+                alert.showAndWait();
+            }
+        });
+
+
+
 
         // dialog result processing:
         Optional<ButtonType> result = dialog.showAndWait();
-//        if (result.isPresent() && result.get() == ButtonType.OK) {
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+
 //            // creating a new calibration tab:
 //            Tab newCalTab = new Tab();
 //            if (root.getCenter() == null) {
@@ -220,7 +216,7 @@ public class ValuationController {
 //                System.out.println("Couldn't load the FXML for the Tab.");
 //                e.printStackTrace();
 //            }
-//        }
+        }
     }
 
     // TODO: duplicate code from other controller

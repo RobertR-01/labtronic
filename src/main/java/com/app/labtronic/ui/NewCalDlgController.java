@@ -113,10 +113,9 @@ public class NewCalDlgController {
 
         // removes red outline from invalid fields upon typing:
         for (Node node : nodeList) {
-            if (node instanceof TextField) {
-                ((TextField) node).textProperty().addListener((observable, oldValue, newValue) -> {
-                    if (!newValue.isEmpty() && oldValue.isEmpty()
-                            && node.getStyle().equals("-fx-border-color: red;")) {
+            if (node instanceof TextField || node instanceof TextArea) {
+                ((TextInputControl) node).textProperty().addListener((observable, oldValue, newValue) -> {
+                    if (!newValue.isEmpty() && oldValue.isEmpty() && node.getStyle().equals("-fx-border-color: red;")) {
                         node.setStyle("");
                     }
                 });
@@ -136,10 +135,12 @@ public class NewCalDlgController {
     public boolean validateForm() {
         boolean result = true;
         for (Node node : nodeList) {
-            if ((!node.isDisabled() && node instanceof TextField && ((TextField) node).getText().trim().isEmpty())) {
+            if ((!node.isDisabled()) && (node instanceof TextField || node instanceof TextArea)
+                    && (((TextInputControl) node).getText().trim().isEmpty())) {
                 node.setStyle("-fx-border-color: red;");
                 result = false;
             } else {
+                // TODO: what's the point of that?
                 node.setStyle("");
             }
         }
