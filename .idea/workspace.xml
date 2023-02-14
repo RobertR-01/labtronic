@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6b6cea85-07a8-44a9-8e5a-1168ad716cb3" name="Changes" comment="Update valuation-dlg stub&#10;&#10;Implemented validation methods for different input related controls in &#10;the dialog used for a new measurement range adding. A distinction still &#10;needs to be made for handling the invalid text field/area red border.&#10;Some different warning popups are also needed to indicate the control&#10;holding the invalid input." />
+    <list default="true" id="6b6cea85-07a8-44a9-8e5a-1168ad716cb3" name="Changes" comment="Useless workspace.xml update&#10;&#10;-">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -45,13 +47,13 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "settings.editor.selected.configurable": "settings.sync"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;settings.sync&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.app.labtronic.Main" />
@@ -102,7 +104,14 @@
       <option name="project" value="LOCAL" />
       <updated>1676327645562</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Useless workspace.xml update&#10;&#10;-">
+      <created>1676327789592</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1676327789592</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -121,6 +130,7 @@
     <MESSAGE value="Update valuation sub-tab&#10;&#10;Implemented the functionality that adds/removes extra AC frequency &#10;levels to the existing VAC and IAC sections. Up to 10 additional &#10;frequencies may be added to each of those functions." />
     <MESSAGE value="Add valuation-dlg stub&#10;&#10;Implemented an initial version of this dialog for adding new measurement&#10;range / points to a desired TableView. Fixed some issues with the data &#10;transfer between the dialog controller and the ValuationController." />
     <MESSAGE value="Update valuation-dlg stub&#10;&#10;Implemented validation methods for different input related controls in &#10;the dialog used for a new measurement range adding. A distinction still &#10;needs to be made for handling the invalid text field/area red border.&#10;Some different warning popups are also needed to indicate the control&#10;holding the invalid input." />
-    <option name="LAST_COMMIT_MESSAGE" value="Update valuation-dlg stub&#10;&#10;Implemented validation methods for different input related controls in &#10;the dialog used for a new measurement range adding. A distinction still &#10;needs to be made for handling the invalid text field/area red border.&#10;Some different warning popups are also needed to indicate the control&#10;holding the invalid input." />
+    <MESSAGE value="Useless workspace.xml update&#10;&#10;-" />
+    <option name="LAST_COMMIT_MESSAGE" value="Useless workspace.xml update&#10;&#10;-" />
   </component>
 </project>
