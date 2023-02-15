@@ -120,24 +120,6 @@ public class ValuationController {
     // TODO: lots of duplicate code from NewCalDlgController
     @FXML
     private void addNewMeasRange(ActionEvent event) {
-        // set up the new dialog:
-        Dialog<ButtonType> dialog = new Dialog<>();
-        dialog.initOwner(root.getScene().getWindow());
-        dialog.setTitle("Adding new measurement range");
-        dialog.setHeaderText("Enter measurement range / points details:");
-        FXMLLoader fxmlLoader = new FXMLLoader();
-        fxmlLoader.setLocation(getClass().getResource("valuation/valuation-dlg.fxml"));
-
-        try {
-            dialog.getDialogPane().setContent(fxmlLoader.load());
-        } catch (IOException e) {
-            System.out.println("Couldn't load the dialog.");
-            e.printStackTrace();
-            return;
-        }
-
-        ValuationDlgController controller = fxmlLoader.getController();
-
         // getting the proper tableView:
         // (eventSourceButton -> sourceParentPane -> sectionPane)
         // TODO: this is a mess, fine a better way of retrieving the corresponding TableView
@@ -160,13 +142,35 @@ public class ValuationController {
             }
         }
 
+        // set up the new dialog:
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.initOwner(root.getScene().getWindow());
+        dialog.setTitle("Adding new measurement range");
+        dialog.setHeaderText("Enter measurement range / points details:");
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource("valuation/valuation-dlg.fxml"));
+
         // text for the topmost label in the dialog:
         // TODO: validation? else statement?
+        String text = "not initialized";
         for (Node node : ((Pane) sourceParentPane).getChildren()) {
             if (node instanceof Label) {
-                controller.setFunctionType(((Label) node).getText());
+                text = ((Label) node).getText();
             }
         }
+
+        fxmlLoader.setController(new ValuationDlgController(text));
+
+        try {
+            dialog.getDialogPane().setContent(fxmlLoader.load());
+        } catch (IOException e) {
+            System.out.println("Couldn't load the dialog.");
+            e.printStackTrace();
+            return;
+        }
+
+        // TODO: obsolete?
+        ValuationDlgController controller = fxmlLoader.getController();
 
         dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
         dialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);

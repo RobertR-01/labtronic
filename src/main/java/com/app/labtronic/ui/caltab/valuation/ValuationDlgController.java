@@ -29,10 +29,24 @@ public class ValuationDlgController {
     private List<Node> nodeList;
     private double range;
 
+    public ValuationDlgController(String function) {
+        // TODO: validation?
+        switch (function.trim().toUpperCase()) {
+            case "VDC" -> functionType = Function.VDC;
+            case "VAC" -> functionType = Function.VAC;
+            case "IDC" -> functionType = Function.IDC;
+            case "IAC" -> functionType = Function.IAC;
+            case "RDC" -> functionType = Function.RDC;
+            default -> functionType = null;
+        }
+    }
+
     @FXML
     private void initialize() {
         pointsList = new ArrayList<>();
         nodeList = new ArrayList<>();
+
+        functionL.setText(functionType.toString() + " range:");
 
         pointsL.setText("Points:\n(separate values with a comma)");
         pointsTA.disableProperty().bind(eurametCB.selectedProperty());
@@ -40,7 +54,20 @@ public class ValuationDlgController {
             pointsL.setText(newValue ? "Points:" : "Points:\n(separate values with a comma)");
         });
 
+        // range combo box:
+        switch (functionType) {
+            case IDC, IAC -> {
+                unitCB.getItems().setAll("µA", "mA", "A");
+                unitCB.setValue("mA");
+            }
+            case RDC -> {
+                unitCB.getItems().setAll("mΩ", "Ω", "kΩ", "MΩ");
+                unitCB.setValue("Ω");
+            }
+        }
+
         // TODO: redundant - too few nodes to check; duplicate code from other dialog controller
+        // TODO: fix it so the outline disappears when writing anything new in the field
         nodeList = List.of(rangeTF, pointsTA);
         // removes red outline from invalid fields upon typing:
         for (Node node : nodeList) {
@@ -51,18 +78,6 @@ public class ValuationDlgController {
                     }
                 });
             }
-        }
-    }
-
-    public void setFunctionType(String string) {
-        functionL.setText(string + " range:");
-        switch (string.trim().toUpperCase()) {
-            case "VDC" -> functionType = Function.VDC;
-            case "VAC" -> functionType = Function.VAC;
-            case "IDC" -> functionType = Function.IDC;
-            case "IAC" -> functionType = Function.IAC;
-            case "RDC" -> functionType = Function.RDC;
-            default -> functionType = null;
         }
     }
 

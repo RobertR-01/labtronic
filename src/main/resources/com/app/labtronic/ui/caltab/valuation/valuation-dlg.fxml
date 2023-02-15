@@ -6,8 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import java.lang.*?>
 <DialogPane prefHeight="650.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/18"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.app.labtronic.ui.caltab.valuation.ValuationDlgController">
+            xmlns:fx="http://javafx.com/fxml/1">
     <content>
         <GridPane vgap="10" hgap="5" GridPane.columnIndex="0">
             <columnConstraints>
