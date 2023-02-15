@@ -98,7 +98,6 @@ public class ValuationDlgController {
         boolean result = false;
         String string = pointsTA.getText().trim();
         String[] stringArray = string.split(",");
-
         for (String point : stringArray) {
             try {
                 if (point != null) {
@@ -107,32 +106,28 @@ public class ValuationDlgController {
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Invalid input.");
-                System.out.println(e.getMessage());
-//                e.printStackTrace();
+                e.printStackTrace();
                 result = false;
                 break;
             }
             result = true;
         }
-
-        System.out.println(result);
-        System.out.println(pointsList);
-
         return result;
     }
 
+    private void parsePoints()
+
     private boolean validateRange() {
-        boolean result = true;
+        boolean result = false;
         String rangeString = rangeTF.getText().trim();
         try {
             if (!rangeString.isEmpty()) {
                 range = Double.parseDouble(rangeString);
+                result = true;
             }
         } catch (NumberFormatException e) {
             System.out.println("Invalid input.");
-            System.out.println(e.getMessage());
-//                e.printStackTrace();
-            result = false;
+            e.printStackTrace();
         }
         return result;
     }
