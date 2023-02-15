@@ -28,6 +28,7 @@ public class ValuationDlgController {
     private String pointsString;
     private List<Node> nodeList;
     private double range;
+    private List<Node> emptyFields;
 
     public ValuationDlgController(String function) {
         // TODO: validation?
@@ -73,7 +74,8 @@ public class ValuationDlgController {
         for (Node node : nodeList) {
             if (node instanceof TextField || node instanceof TextArea) {
                 ((TextInputControl) node).textProperty().addListener((observable, oldValue, newValue) -> {
-                    if (!newValue.isEmpty() && oldValue.isEmpty() && node.getStyle().equals("-fx-border-color: red;")) {
+                    if (((!newValue.isEmpty() && oldValue.isEmpty()) || (!newValue.equalsIgnoreCase(oldValue)))
+                            && node.getStyle().equals("-fx-border-color: red;")) {
                         node.setStyle("");
                     }
                 });
@@ -106,7 +108,8 @@ public class ValuationDlgController {
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Invalid input.");
-                e.printStackTrace();
+                System.out.println(e.getMessage());
+//                e.printStackTrace();
                 result = false;
                 break;
             }
@@ -114,8 +117,6 @@ public class ValuationDlgController {
         }
         return result;
     }
-
-    private void parsePoints()
 
     private boolean validateRange() {
         boolean result = false;
@@ -127,31 +128,54 @@ public class ValuationDlgController {
             }
         } catch (NumberFormatException e) {
             System.out.println("Invalid input.");
-            e.printStackTrace();
+            System.out.println(e.getMessage());
+//            e.printStackTrace();
         }
         return result;
     }
 
-    public boolean validateForms() {
-        boolean result = false;
-
+    private boolean checkForEmptyFields() {
+        boolean result = true;
+        emptyFields = new ArrayList<>();
         for (Node node : nodeList) {
             if (((!node.isDisabled()) && (node instanceof TextField || node instanceof TextArea)
-                    && (((TextInputControl) node).getText().trim().isEmpty()))
-                    || !validateRange()
-                    || !validatePoints()) {
-                node.setStyle("-fx-border-color: red;");
-            } else {
-                result = true;
+                    && (((TextInputControl) node).getText().trim().isEmpty()))) {
+                emptyFields.add(node);
+                result = false;
             }
         }
-
         return result;
+    }
+
+    // order in the returned list is: empty fields, range TF, points TA
+    public List<Boolean> validateForms() {
+        List<Boolean> results = new ArrayList<>();
+        results.add(checkForEmptyFields());
+        results.add(validateRange());
+        results.add(validatePoints());
+
+        return results;
+    }
+
+    public void addRedOutline(Node node) {
+        node.setStyle("-fx-border-color: red;");
     }
 
 //    private MeasRangeData exportData() {
 //
 //    }
+
+    public TextField getRangeTF() {
+        return rangeTF;
+    }
+
+    public TextArea getPointsTA() {
+        return pointsTA;
+    }
+
+    public List<Node> getEmptyFields() {
+        return emptyFields;
+    }
 
     public enum Function {
         VDC,

@@ -177,18 +177,40 @@ public class ValuationController {
 
         final Button buttonOK = (Button) dialog.getDialogPane().lookupButton(ButtonType.OK);
         buttonOK.addEventFilter(ActionEvent.ACTION, actionEvent -> {
-            if (!controller.validateForms()) {
-                actionEvent.consume();
+            List<Boolean> validationResults = controller.validateForms();
+            if (!validationResults.isEmpty()) {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Measurement range addition related error");
-                alert.setHeaderText("Missing input data!");
-                alert.setContentText("No fields in the form may remain empty.");
+                actionEvent.consume();
+                String title = "Measurement range addition related error";
+//                StringBuilder header = new StringBuilder();
+                StringBuilder content = new StringBuilder();
+
+                if (!validationResults.get(0)) {
+                    for (Node node : controller.getEmptyFields()) {
+                        controller.addRedOutline(node);
+                    }
+//                    header.append("Missing input data!");
+                    content.append("Missing input data!\nNo fields in the form may remain empty.\n\n");
+                }
+
+                if (!validationResults.get(1)) {
+                    controller.addRedOutline(controller.getRangeTF());
+//                    header.append("\nInvalid range value!");
+                    content.append("Invalid range value!\nEnter a numeric value for the range field.\n\n");
+                }
+
+                if (!validationResults.get(2)) {
+                    controller.addRedOutline(controller.getPointsTA());
+//                    header.append("\nInvalid measurement points!");
+                    content.append("Invalid measurement points!\nEnter numeric values separated with a comma.\n\n");
+                }
+
+                alert.setTitle(title);
+//                alert.setHeaderText(header.toString());
+                alert.setContentText(content.toString());
                 alert.showAndWait();
             }
         });
-
-
-
 
         // dialog result processing:
         Optional<ButtonType> result = dialog.showAndWait();
