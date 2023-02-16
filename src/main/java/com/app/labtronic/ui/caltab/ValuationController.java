@@ -177,8 +177,16 @@ public class ValuationController {
 
         final Button buttonOK = (Button) dialog.getDialogPane().lookupButton(ButtonType.OK);
         buttonOK.addEventFilter(ActionEvent.ACTION, actionEvent -> {
+            // any false value = form issue
             List<Boolean> validationResults = controller.validateForms();
-            if (!validationResults.isEmpty()) {
+            boolean formProblem = false;
+            for (Boolean check : validationResults) {
+                if (!check) {
+                    formProblem = true;
+                    break;
+                }
+            }
+            if (!validationResults.isEmpty() && formProblem) {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 actionEvent.consume();
                 String title = "Measurement range addition related error";

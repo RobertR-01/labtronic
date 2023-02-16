@@ -109,7 +109,7 @@ public class ValuationDlgController {
             } catch (NumberFormatException e) {
                 System.out.println("Invalid input.");
                 System.out.println(e.getMessage());
-//                e.printStackTrace();
+                e.printStackTrace();
                 result = false;
                 break;
             }
@@ -129,7 +129,7 @@ public class ValuationDlgController {
         } catch (NumberFormatException e) {
             System.out.println("Invalid input.");
             System.out.println(e.getMessage());
-//            e.printStackTrace();
+            e.printStackTrace();
         }
         return result;
     }
