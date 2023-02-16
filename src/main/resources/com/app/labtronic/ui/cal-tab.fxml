@@ -2,7 +2,7 @@
 
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
-<TabPane fx:id="root" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+<TabPane fx:id="rootTabPane" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
          fx:controller="com.app.labtronic.ui.CalTabController" tabClosingPolicy="UNAVAILABLE">
     <tabs>
         <Tab text="General Information">

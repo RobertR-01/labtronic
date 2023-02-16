@@ -1,5 +1,6 @@
 package com.app.labtronic.ui.caltab.valuation;
 
+import com.app.labtronic.data.CalData;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
@@ -30,6 +31,8 @@ public class ValuationDlgController {
     private double range;
     private List<Node> emptyFields;
     private int resCategory;
+
+    private CalData calData;
 
     public ValuationDlgController(String function, String resolution) {
         // TODO: validation?

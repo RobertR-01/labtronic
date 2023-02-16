@@ -44,6 +44,7 @@ public class CalData {
         this.type = type;
         this.serialNo = serialNo;
         this.resolution = resolution;
+        subTabsList = new ArrayList<>();
         this.ID = this.hashCode() * 3L + 11;
     }
 

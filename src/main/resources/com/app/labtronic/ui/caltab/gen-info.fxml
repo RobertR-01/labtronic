@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import java.lang.String?>
 <BorderPane fx:id="root" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.app.labtronic.ui.caltab.GenInfoController" stylesheets="@sub-tab-styles.css">
+            stylesheets="@sub-tab-styles.css" fx:controller="com.app.labtronic.ui.caltab.GenInfoController">
     <padding>
         <Insets top="10" right="10" bottom="10" left="10"/>
     </padding>
