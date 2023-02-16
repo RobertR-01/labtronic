@@ -1,5 +1,7 @@
 package com.app.labtronic.ui.caltab;
 
+import com.app.labtronic.data.ActiveSession;
+import com.app.labtronic.data.CalData;
 import com.app.labtronic.data.valuation.ValuationData;
 import com.app.labtronic.ui.caltab.valuation.ValuationDlgController;
 import javafx.collections.FXCollections;
@@ -71,8 +73,13 @@ public class ValuationController {
     @FXML
     private TableView<ValuationData> rdcTableView;
 
+    private CalData calData;
+
     @FXML
     private void initialize() {
+        // TODO: duplicate code from other controller?
+        calData = ActiveSession.getActiveSessionInstance().getActiveCalTabs().get(ActiveSession.getLastAddedId());
+
         // sets equal column width:
         List<TableView<ValuationData>> tableViewList = List.of(vdcTableView, vacTableView, idcTableView, iacTableView,
                 rdcTableView);
@@ -159,7 +166,10 @@ public class ValuationController {
             }
         }
 
-        fxmlLoader.setController(new ValuationDlgController(text));
+        // TODO: save data from every tab to the active session CalData instance on tab switch and use that CalData
+        //  instead
+        String resolution = calData.getResolution();
+        fxmlLoader.setController(new ValuationDlgController(text, resolution));
 
         try {
             dialog.getDialogPane().setContent(fxmlLoader.load());

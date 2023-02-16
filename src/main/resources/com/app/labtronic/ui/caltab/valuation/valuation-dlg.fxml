@@ -50,8 +50,8 @@
                 </value>
             </ComboBox>
 
-            <Label text="Use EURAMET points: " GridPane.columnIndex="0" GridPane.rowIndex="4"/>
-            <CheckBox fx:id="eurametCB" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+            <Label text="Use default EURAMET points: " wrapText="true" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+            <Button fx:id="eurametButton" text="EURAMET" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
 
             <Label GridPane.columnIndex="0" GridPane.rowIndex="5" wrapText="true" GridPane.valignment="TOP"
                    fx:id="pointsL"/>

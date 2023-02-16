@@ -102,9 +102,12 @@ public class MainWinController {
             // initializing tab contents:
             fxmlLoader = new FXMLLoader();
             fxmlLoader.setLocation(getClass().getResource("cal-tab.fxml"));
+            CalTabController calTabController = fxmlLoader.getController();
 //            fxmlLoader.setLocation(MainApp.class.getResource("cal-tab.fxml"));
             try {
+//                calData.setSubTabsList(newCalTab.getTabPane().getTabs().get(0).getTabPane().getTabs());
                 calTabs.get(calTabs.size() - 1).setContent(fxmlLoader.load());
+                calData.setSubTabsList(calTabController.getSubTabs());
             } catch (IOException e) {
                 System.out.println("Couldn't load the FXML for the Tab.");
                 e.printStackTrace();

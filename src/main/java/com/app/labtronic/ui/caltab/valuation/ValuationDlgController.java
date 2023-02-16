@@ -17,7 +17,7 @@ public class ValuationDlgController {
     @FXML
     private ComboBox<String> rangeTypeCB;
     @FXML
-    private CheckBox eurametCB;
+    private Button eurametButton;
     @FXML
     private Label pointsL;
     @FXML
@@ -29,8 +29,9 @@ public class ValuationDlgController {
     private List<Node> nodeList;
     private double range;
     private List<Node> emptyFields;
+    private int resCategory;
 
-    public ValuationDlgController(String function) {
+    public ValuationDlgController(String function, String resolution) {
         // TODO: validation?
         switch (function.trim().toUpperCase()) {
             case "VDC" -> functionType = Function.VDC;
@@ -40,6 +41,7 @@ public class ValuationDlgController {
             case "RDC" -> functionType = Function.RDC;
             default -> functionType = null;
         }
+        setResCategory(resolution);
     }
 
     @FXML
@@ -50,10 +52,6 @@ public class ValuationDlgController {
         functionL.setText(functionType.toString() + " range:");
 
         pointsL.setText("Points:\n(separate values with a comma)");
-        pointsTA.disableProperty().bind(eurametCB.selectedProperty());
-        eurametCB.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            pointsL.setText(newValue ? "Points:" : "Points:\n(separate values with a comma)");
-        });
 
         // range combo box:
         switch (functionType) {
@@ -81,18 +79,28 @@ public class ValuationDlgController {
                 });
             }
         }
+
+        eurametButton.setOnAction(event -> setEurametPoints());
     }
 
+    @FXML
     private void setEurametPoints() {
-        pointsString = pointsTA.getText().trim();
+        System.out.println(resCategory);
+        if (validateRange()) {
+            List<Double> pointsList = new ArrayList<>();
+            switch (functionType) {
+                case VDC:
+                    if (rangeTypeCB.getValue().equals("First")) {
+                        for (int i = 0; i < 8; i++) {
 
-        switch (functionType) {
-            case VDC -> functionType = Function.VDC;
-            case VAC -> functionType = Function.VAC;
-            case IDC -> functionType = Function.IDC;
-            case IAC -> functionType = Function.IAC;
-            case RDC -> functionType = Function.RDC;
-            default -> functionType = null;
+                        }
+                    } else {
+
+                    }
+            }
+        } else {
+            // TODO: popup warning
+            System.out.println("Invalid range value.");
         }
     }
 
@@ -138,7 +146,7 @@ public class ValuationDlgController {
         boolean result = true;
         emptyFields = new ArrayList<>();
         for (Node node : nodeList) {
-            if (((!node.isDisabled()) && (node instanceof TextField || node instanceof TextArea)
+            if (((node instanceof TextField || node instanceof TextArea)
                     && (((TextInputControl) node).getText().trim().isEmpty()))) {
                 emptyFields.add(node);
                 result = false;
@@ -148,12 +156,12 @@ public class ValuationDlgController {
     }
 
     // order in the returned list is: empty fields, range TF, points TA
+    // false means there's a problem
     public List<Boolean> validateForms() {
         List<Boolean> results = new ArrayList<>();
         results.add(checkForEmptyFields());
         results.add(validateRange());
         results.add(validatePoints());
-
         return results;
     }
 
@@ -164,6 +172,16 @@ public class ValuationDlgController {
 //    private MeasRangeData exportData() {
 //
 //    }
+
+    private void setResCategory(String resolution) {
+        System.out.println(resolution);
+        switch (resolution) {
+            case "⋜ 4 8/9 digit" -> resCategory = 4;
+            case "5 1/2 ÷ 6 1/2 digit" -> resCategory = 5;
+            case "≥ 7 1/2 digit" -> resCategory = 7;
+            default -> resCategory = -1;
+        }
+    }
 
     public TextField getRangeTF() {
         return rangeTF;

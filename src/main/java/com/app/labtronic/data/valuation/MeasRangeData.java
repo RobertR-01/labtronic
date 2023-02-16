@@ -5,12 +5,15 @@ import com.app.labtronic.ui.caltab.valuation.ValuationDlgController;
 public class MeasRangeData {
     private double range;
     private String unit;
+    private String rangeType;
     private ValuationDlgController.Function functionType;
     private double[] points;
 
-    public MeasRangeData(double range, String unit, ValuationDlgController.Function functionType, double[] points) {
+    public MeasRangeData(double range, String rangeType, String unit, ValuationDlgController.Function functionType,
+                         double[] points) {
         // TODO: validation
         this.range = range;
+        this.rangeType = rangeType;
         this.unit = unit;
         this.functionType = functionType;
         this.points = points;
@@ -18,6 +21,10 @@ public class MeasRangeData {
 
     public double getRange() {
         return range;
+    }
+
+    public String getRangeType() {
+        return rangeType;
     }
 
     public String getUnit() {

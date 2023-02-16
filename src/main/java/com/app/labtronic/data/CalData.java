@@ -1,6 +1,11 @@
 package com.app.labtronic.data;
 
+import javafx.scene.control.Tab;
+
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class CalData {
     private String kubackiRegNo;
@@ -17,6 +22,7 @@ public class CalData {
     private String type;
     private String serialNo;
     private String resolution;
+    private List<Tab> subTabsList;
 
     private final long ID;
 
@@ -99,6 +105,24 @@ public class CalData {
 
     public long getID() {
         return ID;
+    }
+
+    public void setResolution(String resolution) {
+        this.resolution = resolution;
+    }
+
+    public List<Tab> getSubTabsList() {
+        return Collections.unmodifiableList(subTabsList);
+    }
+
+    // TODO: boolean return type?
+    public void setSubTabsList(List<Tab> tabsList) {
+        // TODO: check for the number of tabs already present
+        if (tabsList != null && !tabsList.isEmpty()) {
+            this.subTabsList = new ArrayList<>(tabsList);
+            System.out.println("setting subTabsList");
+            System.out.println(subTabsList);
+        }
     }
 
     public enum Category {

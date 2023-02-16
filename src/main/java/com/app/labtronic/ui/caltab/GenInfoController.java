@@ -124,5 +124,15 @@ public class GenInfoController {
                 endUserAddressTA.setText(lastTFValue[1]);
             }
         });
+
+        // saves all data from this tab when it gets switched to some other tab:
+        calData.getSubTabsList().get(0).onSelectionChangedProperty().set(event -> saveData());
+    }
+
+    // TODO: incomplete
+    // TODO: validation?
+    public void saveData() {
+        calData.setResolution(resolutionCB.getValue());
+        System.out.println("hi");
     }
 }
