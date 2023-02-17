@@ -91,7 +91,7 @@ public class ValuationDlgController {
         System.out.println(resCategory); // for DCV and DCI
         if (validateRange()) {
             List<Double> eurametPointsList = new ArrayList<>();
-            List<Integer> defaultValues;
+            List<Integer> defaultValues = new ArrayList<>();
             switch (functionType) {
                 case VDC:
                     // TODO: some refinement probably needed to replace that if-chain
@@ -108,10 +108,52 @@ public class ValuationDlgController {
                             defaultValues = List.of(-90, 10, 90);
                         }
                     }
-                    for (Integer defaultValue : defaultValues) {
-                        eurametPointsList.add(defaultValue.doubleValue() / 100 * range);
+                    break;
+                case VAC:
+                    if (rangeTypeCB.getValue().equals("First")) {
+                        defaultValues = List.of(10, 50, 90);
+                    } else {
+                        defaultValues = List.of(10, 90);
                     }
+                    break;
+                case IDC:
+                    // range check for >= 1A:
+                    double rangeCheck;
+                    switch (unitCB.getValue()) {
+                        case "µA":
+                            rangeCheck = range * 0.000001;
+                            break;
+                        case "mA":
+                            rangeCheck = range * 0.001;
+                            break;
+                        default:
+                            rangeCheck = range;
+                            break;
+                    }
+
+                    if (rangeTypeCB.getValue().equals("First")) {
+                        if (rangeCheck >= 1) {
+                            defaultValues = List.of(-90, 10, 50, 90);
+                        } else {
+                            defaultValues = List.of(-90, 10, 90);
+                        }
+                    } else {
+                        if (rangeCheck >= 1) {
+                            defaultValues = List.of(10, 50, 90);
+                        } else {
+                            defaultValues = List.of(10, 90);
+                        }
+                    }
+                    break;
+                case IAC, RDC:
+                    defaultValues = List.of(10, 90);
+                    break;
             }
+
+            for (Integer defaultValue : defaultValues) {
+                eurametPointsList.add(defaultValue.doubleValue() / 100 * range);
+            }
+
             StringBuilder builder = new StringBuilder();
             for (Double point : eurametPointsList) {
                 builder.append(point);
