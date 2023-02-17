@@ -88,22 +88,45 @@ public class ValuationDlgController {
 
     @FXML
     private void setEurametPoints() {
-        System.out.println(resCategory);
+        System.out.println(resCategory); // for DCV and DCI
         if (validateRange()) {
-            List<Double> pointsList = new ArrayList<>();
+            List<Double> eurametPointsList = new ArrayList<>();
+            List<Integer> defaultValues;
             switch (functionType) {
                 case VDC:
+                    // TODO: some refinement probably needed to replace that if-chain
                     if (rangeTypeCB.getValue().equals("First")) {
-                        for (int i = 0; i < 8; i++) {
-
+                        if (resCategory >= 5) {
+                            defaultValues = List.of(-90, -50, -10, 10, 30, 50, 70, 90);
+                        } else {
+                            defaultValues = List.of(-90, -10, 10, 50, 90);
                         }
                     } else {
-
+                        if (resCategory == 7) {
+                            defaultValues = List.of(-90, 10, 50, 90);
+                        } else {
+                            defaultValues = List.of(-90, 10, 90);
+                        }
+                    }
+                    for (Integer defaultValue : defaultValues) {
+                        eurametPointsList.add(defaultValue.doubleValue() / 100 * range);
                     }
             }
+            StringBuilder builder = new StringBuilder();
+            for (Double point : eurametPointsList) {
+                builder.append(point);
+                if (eurametPointsList.indexOf(point) != eurametPointsList.size() - 1) {
+                    builder.append(", ");
+                }
+            }
+            pointsTA.setText(builder.toString());
         } else {
-            // TODO: popup warning
-            System.out.println("Invalid range value.");
+            // TODO: create a class or interface for this (duplicate code)
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Invalid range error");
+            alert.setHeaderText("Error while setting up default EURAMET points.");
+            alert.setContentText("Enter proper range value.");
+            alert.showAndWait();
         }
     }
 
@@ -177,11 +200,10 @@ public class ValuationDlgController {
 //    }
 
     private void setResCategory(String resolution) {
-        System.out.println(resolution);
         switch (resolution) {
             case "⋜ 4 8/9 digit" -> resCategory = 4;
             case "5 1/2 ÷ 6 1/2 digit" -> resCategory = 5;
-            case "≥ 7 1/2 digit" -> resCategory = 7;
+            case "⋝ 7 1/2 digit" -> resCategory = 7;
             default -> resCategory = -1;
         }
     }
