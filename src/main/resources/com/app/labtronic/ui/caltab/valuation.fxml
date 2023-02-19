@@ -58,7 +58,7 @@
                         <columns>
                             <TableColumn text="Range" resizable="false"/>
                             <TableColumn text="Unit" resizable="false"/>
-                            <TableColumn text="Meas. Point" resizable="false"/>
+                            <TableColumn text="Number of points" resizable="false"/>
                             <TableColumn text="Type" resizable="false"/>
                             <TableColumn text="Cost" resizable="false"/>
                         </columns>
@@ -94,7 +94,7 @@
                         <columns>
                             <TableColumn text="Range" resizable="false"/>
                             <TableColumn text="Unit" resizable="false"/>
-                            <TableColumn text="Meas. Point" resizable="false"/>
+                            <TableColumn text="Number of points" resizable="false"/>
                             <TableColumn text="Type" resizable="false"/>
                             <TableColumn text="Cost" resizable="false"/>
                         </columns>
@@ -118,7 +118,7 @@
                         <columns>
                             <TableColumn text="Range" resizable="false"/>
                             <TableColumn text="Unit" resizable="false"/>
-                            <TableColumn text="Meas. Point" resizable="false"/>
+                            <TableColumn text="Number of points" resizable="false"/>
                             <TableColumn text="Type" resizable="false"/>
                             <TableColumn text="Cost" resizable="false"/>
                         </columns>
@@ -154,7 +154,7 @@
                         <columns>
                             <TableColumn text="Range" resizable="false"/>
                             <TableColumn text="Unit" resizable="false"/>
-                            <TableColumn text="Meas. Point" resizable="false"/>
+                            <TableColumn text="Number of points" resizable="false"/>
                             <TableColumn text="Type" resizable="false"/>
                             <TableColumn text="Cost" resizable="false"/>
                         </columns>
@@ -178,7 +178,7 @@
                         <columns>
                             <TableColumn text="Range" resizable="false"/>
                             <TableColumn text="Unit" resizable="false"/>
-                            <TableColumn text="Meas. Point" resizable="false"/>
+                            <TableColumn text="Number of points" resizable="false"/>
                             <TableColumn text="Type" resizable="false"/>
                             <TableColumn text="Cost" resizable="false"/>
                         </columns>

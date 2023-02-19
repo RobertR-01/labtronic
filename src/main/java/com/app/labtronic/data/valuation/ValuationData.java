@@ -5,14 +5,14 @@ import javafx.beans.property.SimpleStringProperty;
 public class ValuationData {
     private final SimpleStringProperty range;
     private final SimpleStringProperty unit;
-    private final SimpleStringProperty measPoint;
+    private final SimpleStringProperty numberOfPoints;
     private final SimpleStringProperty type;
     private final SimpleStringProperty cost;
 
-    public ValuationData(String range, String unit, String measPoint, String type, String cost) {
+    public ValuationData(String range, String unit, String numberOfPoints, String type, String cost) {
         this.range = new SimpleStringProperty(range);
         this.unit = new SimpleStringProperty(unit);
-        this.measPoint = new SimpleStringProperty(measPoint);
+        this.numberOfPoints = new SimpleStringProperty(numberOfPoints);
         this.type = new SimpleStringProperty(type);
         this.cost = new SimpleStringProperty(cost);
     }
@@ -47,16 +47,16 @@ public class ValuationData {
         this.unit.set(unit);
     }
 
-    public String getMeasPoint() {
-        return measPoint.get();
+    public String getNumberOfPoints() {
+        return numberOfPoints.get();
     }
 
-    public SimpleStringProperty measPointProperty() {
-        return measPoint;
+    public SimpleStringProperty numberOfPointsProperty() {
+        return numberOfPoints;
     }
 
-    public void setMeasPoint(String measPoint) {
-        this.measPoint.set(measPoint);
+    public void setNumberOfPoints(String numberOfPoints) {
+        this.numberOfPoints.set(numberOfPoints);
     }
 
     public String getType() {

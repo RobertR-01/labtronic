@@ -2,15 +2,18 @@ package com.app.labtronic.ui.caltab;
 
 import com.app.labtronic.data.ActiveSession;
 import com.app.labtronic.data.CalData;
+import com.app.labtronic.data.valuation.MeasRangeData;
 import com.app.labtronic.data.valuation.ValuationData;
 import com.app.labtronic.ui.caltab.valuation.ValuationDlgController;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
 import javafx.util.Duration;
 import org.kordamp.ikonli.javafx.FontIcon;
@@ -73,6 +76,8 @@ public class ValuationController {
     @FXML
     private TableView<ValuationData> rdcTableView;
 
+    private ObservableList<ValuationData> vdcObservableArray;
+
     private CalData calData;
 
     @FXML
@@ -122,6 +127,16 @@ public class ValuationController {
                 removeAcFreq(false);
             }
         });
+
+        // TableView tests:
+        vdcObservableArray = FXCollections.observableArrayList();
+        vdcTableView.setItems(vdcObservableArray);
+        String[] valuationDataFields = {"range", "unit", "numberOfPoints", "type", "cost"};
+        int i = 0;
+        for (TableColumn<ValuationData, ?> column : vdcTableView.getColumns()) {
+            column.setCellValueFactory(new PropertyValueFactory<>(valuationDataFields[i]));
+            i++;
+        }
     }
 
     // TODO: lots of duplicate code from NewCalDlgController
@@ -233,6 +248,19 @@ public class ValuationController {
         // dialog result processing:
         Optional<ButtonType> result = dialog.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
+            MeasRangeData newRange = controller.exportData();
+            // TODO: mess
+            vdcObservableArray.add(new ValuationData(String.valueOf(newRange.getRange()),
+                    newRange.getUnit(),
+                    String.valueOf(newRange.getNumberOfPoints()),
+                    newRange.getRangeType(),
+                    String.valueOf(newRange.calculateCost())));
+            System.out.println(newRange.getRange());
+            System.out.println(newRange.getUnit());
+            System.out.println(String.valueOf(newRange.getNumberOfPoints()));
+            System.out.println(newRange.getRangeType());
+            System.out.println(String.valueOf(newRange.calculateCost()));
+
 
 //            // creating a new calibration tab:
 //            Tab newCalTab = new Tab();
@@ -334,7 +362,7 @@ public class ValuationController {
             tableView = new TableView<>();
             VBox.setVgrow(tableView, Priority.ALWAYS);
             TableColumn<ValuationData, String> column;
-            String[] strings = {"Range", "Unit", "Meas. Point", "Type", "Cost"};
+            String[] strings = {"Range", "Unit", "Number of points", "Type", "Cost"};
             for (int i = 0; i < 5; i++) {
                 column = new TableColumn<>(strings[i]);
                 column.setResizable(false);

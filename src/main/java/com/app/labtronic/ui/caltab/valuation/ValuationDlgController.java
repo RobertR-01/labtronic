@@ -1,6 +1,7 @@
 package com.app.labtronic.ui.caltab.valuation;
 
 import com.app.labtronic.data.CalData;
+import com.app.labtronic.data.valuation.MeasRangeData;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
@@ -86,6 +87,7 @@ public class ValuationDlgController {
         eurametButton.setOnAction(event -> setEurametPoints());
     }
 
+    // TODO: move it to the MeasRangeData class
     @FXML
     private void setEurametPoints() {
         System.out.println(resCategory); // for DCV and DCI
@@ -237,9 +239,11 @@ public class ValuationDlgController {
         node.setStyle("-fx-border-color: red;");
     }
 
-//    private MeasRangeData exportData() {
-//
-//    }
+    // TODO: validation?
+    public MeasRangeData exportData() {
+        return new MeasRangeData(range, rangeTypeCB.getValue(), unitCB.getValue(), functionType, pointsList,
+                resCategory);
+    }
 
     private void setResCategory(String resolution) {
         switch (resolution) {
