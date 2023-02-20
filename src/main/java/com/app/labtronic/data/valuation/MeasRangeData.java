@@ -1,6 +1,7 @@
 package com.app.labtronic.data.valuation;
 
 import com.app.labtronic.ui.caltab.valuation.ValuationDlgController;
+import javafx.beans.property.SimpleStringProperty;
 
 import java.util.ArrayList;
 
@@ -14,6 +15,12 @@ public class MeasRangeData {
     private double cost;
     private int resolution;
 
+    private SimpleStringProperty rangeProperty;
+    private SimpleStringProperty unitProperty;
+    private SimpleStringProperty numberOfPointsProperty;
+    private SimpleStringProperty rangeTypeProperty;
+    private SimpleStringProperty costProperty;
+
     public MeasRangeData(double range, String rangeType, String unit, ValuationDlgController.Function functionType,
                          ArrayList<Double> points, int resolution) {
         // TODO: validation
@@ -23,8 +30,8 @@ public class MeasRangeData {
         this.functionType = functionType;
         this.points = points;
         this.numberOfPoints = points.size();
-        this.cost = 0;
         this.resolution = resolution;
+        this.cost = 0;
     }
 
     public double getRange() {
@@ -58,6 +65,48 @@ public class MeasRangeData {
     public int getResolution() {
         return resolution;
     }
+
+    // property getters
+    public String getRangeProperty() {
+        return rangeProperty.get();
+    }
+
+    public SimpleStringProperty rangePropertyProperty() {
+        return rangeProperty;
+    }
+
+    public String getUnitProperty() {
+        return unitProperty.get();
+    }
+
+    public SimpleStringProperty unitPropertyProperty() {
+        return unitProperty;
+    }
+
+    public String getNumberOfPointsProperty() {
+        return numberOfPointsProperty.get();
+    }
+
+    public SimpleStringProperty numberOfPointsPropertyProperty() {
+        return numberOfPointsProperty;
+    }
+
+    public String getRangeTypeProperty() {
+        return rangeTypeProperty.get();
+    }
+
+    public SimpleStringProperty rangeTypePropertyProperty() {
+        return rangeTypeProperty;
+    }
+
+    public String getCostProperty() {
+        return costProperty.get();
+    }
+
+    public SimpleStringProperty costPropertyProperty() {
+        return costProperty;
+    }
+    //
 
     // TODO: validation
     public double calculateCost() {
@@ -102,5 +151,13 @@ public class MeasRangeData {
         }
         cost = baseRangeCost + numberOfExtraPoints * extraPointCost;
         return cost;
+    }
+
+    public void initializeProperties() {
+        rangeProperty = new SimpleStringProperty(String.valueOf(range));
+        unitProperty = new SimpleStringProperty(unit);
+        numberOfPointsProperty = new SimpleStringProperty(String.valueOf(numberOfPoints));
+        rangeTypeProperty = new SimpleStringProperty(rangeType);
+        costProperty = new SimpleStringProperty(String.valueOf(cost));
     }
 }

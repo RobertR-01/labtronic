@@ -3,31 +3,33 @@ package com.app.labtronic.ui.caltab;
 import com.app.labtronic.data.ActiveSession;
 import com.app.labtronic.data.CalData;
 import com.app.labtronic.data.valuation.MeasRangeData;
-import com.app.labtronic.data.valuation.ValuationData;
 import com.app.labtronic.ui.caltab.valuation.ValuationDlgController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
+import javafx.util.Callback;
 import javafx.util.Duration;
 import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
 public class ValuationController {
     @FXML
     private BorderPane root;
-    @FXML
-    private Button addBtn;
 
     @FXML
     private CheckBox vdcCB;
@@ -62,21 +64,22 @@ public class ValuationController {
     @FXML
     private Spinner<Integer> iacSpinner;
 
-    private List<AcFreqContainer> vacFreqs;
-    private List<AcFreqContainer> iacFreqs;
+    private List<AcFreqContainer> vacExtraFreqContainers;
+    private List<AcFreqContainer> iacExtraFreqContainers;
 
     @FXML
-    private TableView<ValuationData> vdcTableView;
+    private TableView<MeasRangeData> vdcTableView;
     @FXML
-    private TableView<ValuationData> vacTableView;
+    private TableView<MeasRangeData> vacTableView;
     @FXML
-    private TableView<ValuationData> idcTableView;
+    private TableView<MeasRangeData> idcTableView;
     @FXML
-    private TableView<ValuationData> iacTableView;
+    private TableView<MeasRangeData> iacTableView;
     @FXML
-    private TableView<ValuationData> rdcTableView;
+    private TableView<MeasRangeData> rdcTableView;
 
-    private ObservableList<ValuationData> vdcObservableArray;
+    private List<TableView<MeasRangeData>> vacExtraTableViews;
+    private List<TableView<MeasRangeData>> iacExtraTableViews;
 
     private CalData calData;
 
@@ -86,10 +89,10 @@ public class ValuationController {
         calData = ActiveSession.getActiveSessionInstance().getActiveCalTabs().get(ActiveSession.getLastAddedId());
 
         // sets equal column width:
-        List<TableView<ValuationData>> tableViewList = List.of(vdcTableView, vacTableView, idcTableView, iacTableView,
+        List<TableView<MeasRangeData>> tableViewList = List.of(vdcTableView, vacTableView, idcTableView, iacTableView,
                 rdcTableView);
-        for (TableView<ValuationData> tableView : tableViewList) {
-            for (TableColumn<ValuationData, ?> column : tableView.getColumns()) {
+        for (TableView<MeasRangeData> tableView : tableViewList) {
+            for (TableColumn<MeasRangeData, ?> column : tableView.getColumns()) {
                 column.prefWidthProperty().bind(tableView.widthProperty().divide(5));
             }
         }
@@ -111,31 +114,112 @@ public class ValuationController {
         }
 
         // vac/iac spinners:
-        vacFreqs = new ArrayList<>();
-        iacFreqs = new ArrayList<>();
+        vacExtraTableViews = new LinkedList<>();
+        iacExtraTableViews = new LinkedList<>();
+
+        vacExtraFreqContainers = new ArrayList<>();
+        iacExtraFreqContainers = new ArrayList<>();
         vacSpinner.valueProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue > oldValue) {
-                addAcFreq(true);
+                calData.getValuationData().addExtraAcFreq("VAC");
+                addAcFreqContainer(true);
             } else if (newValue < oldValue) {
                 removeAcFreq(true);
+                calData.getValuationData().removeExtraAcFreq("VAC");
             }
         });
         iacSpinner.valueProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue > oldValue) {
-                addAcFreq(false);
+                calData.getValuationData().addExtraAcFreq("IAC");
+                addAcFreqContainer(false);
             } else if (newValue < oldValue) {
                 removeAcFreq(false);
+                calData.getValuationData().removeExtraAcFreq("IAC");
             }
         });
 
-        // TableView tests:
-        vdcObservableArray = FXCollections.observableArrayList();
-        vdcTableView.setItems(vdcObservableArray);
-        String[] valuationDataFields = {"range", "unit", "numberOfPoints", "type", "cost"};
-        int i = 0;
-        for (TableColumn<ValuationData, ?> column : vdcTableView.getColumns()) {
-            column.setCellValueFactory(new PropertyValueFactory<>(valuationDataFields[i]));
-            i++;
+        // basic 5 TableViews setup:
+        List<TableView<MeasRangeData>> listOfTables = List.of(vdcTableView, vacTableView, idcTableView, iacTableView,
+                rdcTableView);
+        String[] functions = {"VDC", "VAC", "IDC", "IAC", "RDC"};
+        String[] measRangeDataFields = {"rangeProperty", "unitProperty", "numberOfPointsProperty", "rangeTypeProperty",
+                "costProperty"};
+        int index;
+        for (TableView<MeasRangeData> table : listOfTables) {
+            index = listOfTables.indexOf(table);
+            table.setItems(calData.getValuationData().getObservableArray(functions[index]));
+
+            int i = 0;
+            for (TableColumn<MeasRangeData, ?> column : table.getColumns()) {
+                column.setCellValueFactory(new PropertyValueFactory<>(measRangeDataFields[i]));
+                i++;
+            }
+        }
+
+        // TableView context menu:
+        // context menus on TableView rows (non-empty and empty):
+        ContextMenu nonEmptyRowContextMenu = new ContextMenu();
+        MenuItem editMenuItem = new MenuItem("Edit");
+//        editMenuItem.setOnAction(new EventHandler<ActionEvent>() {
+//            @Override
+//            public void handle(ActionEvent event) {
+//                editContactHandler();
+//            }
+//        });
+        MenuItem deleteMenuItem = new MenuItem("Delete");
+        deleteMenuItem.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                removeMeasRange();
+            }
+        });
+        nonEmptyRowContextMenu.getItems().addAll(editMenuItem, deleteMenuItem);
+
+        ContextMenu emptyRowContextMenu = new ContextMenu();
+        MenuItem addMenuItem = new MenuItem("Add");
+//        addMenuItem.setOnAction(new EventHandler<ActionEvent>() {
+//            @Override
+//            public void handle(ActionEvent event) {
+//                addNewContactHandler();
+//            }
+//        });
+        emptyRowContextMenu.getItems().add(addMenuItem);
+
+        // TODO: move it to the block above (duplicate for loop)
+        for (TableView<MeasRangeData> table : listOfTables) {
+            table.setContextMenu(emptyRowContextMenu);
+
+            table.setRowFactory(new Callback<TableView<MeasRangeData>, TableRow<MeasRangeData>>() {
+                @Override
+                public TableRow<MeasRangeData> call(TableView<MeasRangeData> param) {
+                    TableRow<MeasRangeData> row = new TableRow<>();
+                    // associating the context menu with the non-empty rows:
+                    row.emptyProperty().addListener((obs, wasEmpty, isNowEmpty) -> {
+                        if (isNowEmpty) {
+                            row.setContextMenu(null);
+                        } else {
+                            row.setContextMenu(nonEmptyRowContextMenu);
+                        }
+                    });
+
+                    return row;
+                }
+            });
+
+            table.setOnKeyPressed(new EventHandler<KeyEvent>() {
+                @Override
+                public void handle(KeyEvent event) {
+                    if (event.getCode() == KeyCode.DELETE && table.getSelectionModel().getSelectedIndex() >= 0) {
+                        removeMeasRange();
+                    }
+                }
+            });
+
+            table.getSelectionModel().selectFirst();
+//            menuBarDeleteContactItem.disableProperty().bind(Bindings.isEmpty(contactList));
+//            menuBarEditContactItem.disableProperty().bind(Bindings.isEmpty(contactList));
+//            editMenuItem.disableProperty().bind(Bindings.isEmpty(contactList));
+//            deleteMenuItem.disableProperty().bind(Bindings.isEmpty(contactList));
         }
     }
 
@@ -144,7 +228,7 @@ public class ValuationController {
     private void addNewMeasRange(ActionEvent event) {
         // getting the proper tableView:
         // (eventSourceButton -> sourceParentPane -> sectionPane)
-        // TODO: this is a mess, fine a better way of retrieving the corresponding TableView
+        // TODO: this is a mess, find a better way of retrieving the corresponding TableView
         Button eventSourceButton = (Button) event.getSource();
         Node sourceParentPane = eventSourceButton.getParent();
         Node sectionPane = sourceParentPane.getParent();
@@ -152,11 +236,11 @@ public class ValuationController {
         List<Node> sectionControls = ((Pane) sectionPane).getChildren();
         int parentPaneIndex = sectionControls.indexOf(sourceParentPane);
 
-        TableView<ValuationData> tableView;
+        TableView<MeasRangeData> tableView = null;
         for (Node node : sectionControls) {
             if (node instanceof TableView<?> && (sectionControls.indexOf(node) == parentPaneIndex + 1)) {
                 try {
-                    tableView = (TableView<ValuationData>) node;
+                    tableView = (TableView<MeasRangeData>) node;
                 } catch (ClassCastException e) {
                     e.printStackTrace();
                     return;
@@ -215,80 +299,50 @@ public class ValuationController {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 actionEvent.consume();
                 String title = "Measurement range addition related error";
-//                StringBuilder header = new StringBuilder();
                 StringBuilder content = new StringBuilder();
 
                 if (!validationResults.get(0)) {
                     for (Node node : controller.getEmptyFields()) {
                         controller.addRedOutline(node);
                     }
-//                    header.append("Missing input data!");
                     content.append("Missing input data!\nNo fields in the form may remain empty.\n\n");
                 }
 
                 if (!validationResults.get(1)) {
                     controller.addRedOutline(controller.getRangeTF());
-//                    header.append("\nInvalid range value!");
                     content.append("Invalid range value!\nEnter a numeric value for the range field.\n\n");
                 }
 
                 if (!validationResults.get(2)) {
                     controller.addRedOutline(controller.getPointsTA());
-//                    header.append("\nInvalid measurement points!");
                     content.append("Invalid measurement points!\nEnter numeric values separated with a comma.\n\n");
                 }
 
                 alert.setTitle(title);
-//                alert.setHeaderText(header.toString());
                 alert.setContentText(content.toString());
                 alert.showAndWait();
             }
         });
 
-        // dialog result processing:
+        // dialog results processing:
         Optional<ButtonType> result = dialog.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
             MeasRangeData newRange = controller.exportData();
             // TODO: mess
-            vdcObservableArray.add(new ValuationData(String.valueOf(newRange.getRange()),
-                    newRange.getUnit(),
-                    String.valueOf(newRange.getNumberOfPoints()),
-                    newRange.getRangeType(),
-                    String.valueOf(newRange.calculateCost())));
-            System.out.println(newRange.getRange());
-            System.out.println(newRange.getUnit());
-            System.out.println(String.valueOf(newRange.getNumberOfPoints()));
-            System.out.println(newRange.getRangeType());
-            System.out.println(String.valueOf(newRange.calculateCost()));
-
-
-//            // creating a new calibration tab:
-//            Tab newCalTab = new Tab();
-//            if (root.getCenter() == null) {
-//                tabPane = new TabPane();
-//                tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.ALL_TABS);
-//                root.setCenter(tabPane);
-//            }
-//
-//            newCalTab.setText(controller.getFullKubackiRegNo());
-//            ((TabPane) root.centerProperty().get()).getTabs().add(newCalTab);
-//            ((TabPane) root.centerProperty().get()).getSelectionModel().select(newCalTab);
-//            calTabs.add(newCalTab);
-//            removeFocus();
-//            CalData calData = controller.exportFormData();
-//            ActiveSession.getActiveSessionInstance().addCalData(calData);
-//
-//            // initializing tab contents:
-//            fxmlLoader = new FXMLLoader();
-//            fxmlLoader.setLocation(getClass().getResource("cal-tab.fxml"));
-////            fxmlLoader.setLocation(MainApp.class.getResource("cal-tab.fxml"));
-//            try {
-//                calTabs.get(calTabs.size() - 1).setContent(fxmlLoader.load());
-//            } catch (IOException e) {
-//                System.out.println("Couldn't load the FXML for the Tab.");
-//                e.printStackTrace();
-//            }
+            // TODO: try putting it in the constructor
+            newRange.calculateCost();
+            newRange.initializeProperties();
+            if (tableView != null) {
+                ObservableList<MeasRangeData> rangeObservableArray = tableView.getItems();
+                calData.getValuationData().addRange(rangeObservableArray, newRange);
+            } else {
+                System.out.println("ValuationController.addNewMeasRange() -> TableView is null");
+            }
         }
+    }
+
+    private void removeMeasRange() {
+
     }
 
     // TODO: duplicate code from other controller
@@ -297,25 +351,30 @@ public class ValuationController {
         root.requestFocus();
     }
 
-    private void addAcFreq(boolean isVoltage) {
+    private void addAcFreqContainer(boolean isVoltage) {
         AcFreqContainer container = new AcFreqContainer(isVoltage);
+        String function = null;
         if (isVoltage) {
-            vacFreqs.add(container);
-            vacSection.getChildren().add(container.gethBox());
+            vacExtraFreqContainers.add(container);
+            vacSection.getChildren().add(container.getHBox());
             vacSection.getChildren().add(container.getTableView());
+            function = "VAC";
         } else {
-            iacFreqs.add(container);
-            iacSection.getChildren().add(container.gethBox());
+            iacExtraFreqContainers.add(container);
+            iacSection.getChildren().add(container.getHBox());
             iacSection.getChildren().add(container.getTableView());
+            function = "IAC";
         }
+        // TODO: check for null
+        container.initializeTableView();
     }
 
     private void removeAcFreq(boolean isVoltage) {
-        List<AcFreqContainer> acFreqs = (isVoltage) ? vacFreqs : iacFreqs;
+        List<AcFreqContainer> acFreqs = (isVoltage) ? vacExtraFreqContainers : iacExtraFreqContainers;
         VBox acSection = (isVoltage) ? vacSection : iacSection;
         int lastIndex = acFreqs.size() - 1;
         AcFreqContainer container = acFreqs.get(lastIndex);
-        acSection.getChildren().remove(container.gethBox());
+        acSection.getChildren().remove(container.getHBox());
         acSection.getChildren().remove(container.getTableView());
         acFreqs.remove(container);
     }
@@ -325,7 +384,7 @@ public class ValuationController {
         private final TextField textField;
         private final ComboBox<String> comboBox;
         private final Button button;
-        private final TableView<ValuationData> tableView;
+        private final TableView<MeasRangeData> tableView;
         private final boolean isVoltage;
 
         private AcFreqContainer(boolean isVoltage) {
@@ -361,7 +420,7 @@ public class ValuationController {
 
             tableView = new TableView<>();
             VBox.setVgrow(tableView, Priority.ALWAYS);
-            TableColumn<ValuationData, String> column;
+            TableColumn<MeasRangeData, String> column;
             String[] strings = {"Range", "Unit", "Number of points", "Type", "Cost"};
             for (int i = 0; i < 5; i++) {
                 column = new TableColumn<>(strings[i]);
@@ -371,7 +430,31 @@ public class ValuationController {
             }
         }
 
-        public HBox gethBox() {
+        public void initializeTableView() {
+            String[] measRangeDataFields = {"rangeProperty", "unitProperty", "numberOfPointsProperty",
+                    "rangeTypeProperty", "costProperty"};
+            String functionType = (isVoltage) ? "VAC" : "IAC";
+            System.out.println(functionType);
+            // TODO: validation
+            int lastIndex = calData.getValuationData().getExtraAcFreqs(functionType).size() - 1;
+            System.out.println(lastIndex);
+            ObservableList<MeasRangeData> rangeArray = calData.getValuationData().getExtraAcFreqs(functionType).
+                    get(lastIndex);
+
+            if (rangeArray != null) {
+                tableView.setItems(rangeArray);
+                int i = 0;
+                for (TableColumn<MeasRangeData, ?> column : tableView.getColumns()) {
+                    column.setCellValueFactory(new PropertyValueFactory<>(measRangeDataFields[i]));
+                    i++;
+                }
+            } else {
+                System.out.println("ValuationController.initializeTableView() error - underlying array for the" +
+                        " TableView is null");
+            }
+        }
+
+        public HBox getHBox() {
             return hBox;
         }
 
@@ -387,7 +470,7 @@ public class ValuationController {
             return button;
         }
 
-        public TableView<ValuationData> getTableView() {
+        public TableView<MeasRangeData> getTableView() {
             return tableView;
         }
     }

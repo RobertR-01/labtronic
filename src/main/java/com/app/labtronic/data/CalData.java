@@ -1,5 +1,6 @@
 package com.app.labtronic.data;
 
+import com.app.labtronic.data.valuation.ValuationData;
 import javafx.scene.control.Tab;
 
 import java.time.LocalDate;
@@ -23,6 +24,7 @@ public class CalData {
     private String serialNo;
     private String resolution;
     private List<Tab> subTabsList;
+    private ValuationData valuationData;
 
     private final long ID;
 
@@ -46,6 +48,7 @@ public class CalData {
         this.resolution = resolution;
         subTabsList = new ArrayList<>();
         this.ID = this.hashCode() * 3L + 11;
+        this.valuationData = new ValuationData();
     }
 
     public String getKubackiRegNo() {
@@ -114,6 +117,10 @@ public class CalData {
 
     public List<Tab> getSubTabsList() {
         return Collections.unmodifiableList(subTabsList);
+    }
+
+    public ValuationData getValuationData() {
+        return valuationData;
     }
 
     // TODO: boolean return type?
