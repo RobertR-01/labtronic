@@ -7,6 +7,7 @@ import com.app.labtronic.ui.caltab.valuation.ValuationDlgController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -170,7 +171,7 @@ public class ValuationController {
         deleteMenuItem.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                removeMeasRange();
+                removeMeasRange(event);
             }
         });
         nonEmptyRowContextMenu.getItems().addAll(editMenuItem, deleteMenuItem);
@@ -198,6 +199,9 @@ public class ValuationController {
                         if (isNowEmpty) {
                             row.setContextMenu(null);
                         } else {
+                            // for retrieving menu's parent TableView later:
+                            nonEmptyRowContextMenu.setUserData(row.getTableView());
+
                             row.setContextMenu(nonEmptyRowContextMenu);
                         }
                     });
@@ -210,7 +214,7 @@ public class ValuationController {
                 @Override
                 public void handle(KeyEvent event) {
                     if (event.getCode() == KeyCode.DELETE && table.getSelectionModel().getSelectedIndex() >= 0) {
-                        removeMeasRange();
+                        removeMeasRange(event);
                     }
                 }
             });
@@ -341,8 +345,30 @@ public class ValuationController {
         }
     }
 
-    private void removeMeasRange() {
+    private void removeMeasRange(Event event) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        // TODO: init owners for other alerts used in this project
+        alert.initOwner(root.getScene().getWindow());
+        alert.setTitle("Deleting measurement range");
+        alert.setContentText("Are you sure you want to delete this range?");
 
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            TableView<MeasRangeData> tableView;
+            if (event instanceof KeyEvent) {
+                tableView = (TableView<MeasRangeData>) event.getSource();
+            } else if (event instanceof ActionEvent) {
+                ContextMenu menu = ((MenuItem) event.getSource()).getParentPopup();
+                tableView = (TableView<MeasRangeData>) menu.getUserData();
+            } else {
+                System.out.println("ValuationDlgController.removeMeasRange() -> TableView not found.");
+                return;
+            }
+
+            MeasRangeData range = tableView.getSelectionModel().getSelectedItem();
+            ObservableList<MeasRangeData> rangeList = tableView.getItems();
+            calData.getValuationData().removeRange(rangeList, range);
+        }
     }
 
     // TODO: duplicate code from other controller
@@ -452,6 +478,74 @@ public class ValuationController {
                 System.out.println("ValuationController.initializeTableView() error - underlying array for the" +
                         " TableView is null");
             }
+
+            // TODO: ContextMenu setup for the TableView; loads of duplicate code -> move to a separate method
+            // TableView context menu:
+            // context menus on TableView rows (non-empty and empty):
+            ContextMenu nonEmptyRowContextMenu = new ContextMenu();
+            MenuItem editMenuItem = new MenuItem("Edit");
+//        editMenuItem.setOnAction(new EventHandler<ActionEvent>() {
+//            @Override
+//            public void handle(ActionEvent event) {
+//                editContactHandler();
+//            }
+//        });
+            MenuItem deleteMenuItem = new MenuItem("Delete");
+            deleteMenuItem.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    removeMeasRange(event);
+                }
+            });
+            nonEmptyRowContextMenu.getItems().addAll(editMenuItem, deleteMenuItem);
+
+            ContextMenu emptyRowContextMenu = new ContextMenu();
+            MenuItem addMenuItem = new MenuItem("Add");
+//        addMenuItem.setOnAction(new EventHandler<ActionEvent>() {
+//            @Override
+//            public void handle(ActionEvent event) {
+//                addNewContactHandler();
+//            }
+//        });
+            emptyRowContextMenu.getItems().add(addMenuItem);
+
+            tableView.setContextMenu(emptyRowContextMenu);
+
+            tableView.setRowFactory(new Callback<TableView<MeasRangeData>, TableRow<MeasRangeData>>() {
+                @Override
+                public TableRow<MeasRangeData> call(TableView<MeasRangeData> param) {
+                    TableRow<MeasRangeData> row = new TableRow<>();
+                    // associating the context menu with the non-empty rows:
+                    row.emptyProperty().addListener((obs, wasEmpty, isNowEmpty) -> {
+                        if (isNowEmpty) {
+                            row.setContextMenu(null);
+                        } else {
+                            // for retrieving menu's parent TableView later:
+                            nonEmptyRowContextMenu.setUserData(row.getTableView());
+
+                            row.setContextMenu(nonEmptyRowContextMenu);
+                        }
+                    });
+
+                    return row;
+                }
+            });
+
+            tableView.setOnKeyPressed(new EventHandler<KeyEvent>() {
+                @Override
+                public void handle(KeyEvent event) {
+                    if (event.getCode() == KeyCode.DELETE && tableView.getSelectionModel().getSelectedIndex() >= 0) {
+                        removeMeasRange(event);
+                    }
+                }
+            });
+
+            tableView.getSelectionModel().selectFirst();
+//            menuBarDeleteContactItem.disableProperty().bind(Bindings.isEmpty(contactList));
+//            menuBarEditContactItem.disableProperty().bind(Bindings.isEmpty(contactList));
+//            editMenuItem.disableProperty().bind(Bindings.isEmpty(contactList));
+//            deleteMenuItem.disableProperty().bind(Bindings.isEmpty(contactList));
+
         }
 
         public HBox getHBox() {
