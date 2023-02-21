@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
-<DialogPane prefHeight="620.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/18"
-            xmlns:fx="http://javafx.com/fxml/1"
+<?import javafx.scene.layout.HBox?>
+<DialogPane prefHeight="300.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/18"
+            xmlns:fx="http://javafx.com/fxml/1" stylesheets="@../sub-tab-styles.css"
             fx:controller="com.app.labtronic.ui.caltab.valuation.RangePreviewController" fx:id="root">
     <content>
-        <TableView>
-            <columns>
-                <TableColumn text="Point value" resizable="false"/>
-                <TableColumn text="Unit" resizable="false"/>
-                <TableColumn text="Number of points" resizable="false"/>
-                <TableColumn text="Type" resizable="false"/>
-                <TableColumn text="Cost" resizable="false"/>
-            </columns>
-        </TableView>
+        <HBox alignment="CENTER">
+            <TableView fx:id="tableView" HBox.hgrow="ALWAYS">
+                <columns>
+                    <TableColumn text="Point value" resizable="false"/>
+                    <TableColumn text="Unit" resizable="false"/>
+                </columns>
+            </TableView>
+        </HBox>
     </content>
 </DialogPane>

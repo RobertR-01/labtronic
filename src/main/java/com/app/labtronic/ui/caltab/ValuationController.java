@@ -3,6 +3,7 @@ package com.app.labtronic.ui.caltab;
 import com.app.labtronic.data.ActiveSession;
 import com.app.labtronic.data.CalData;
 import com.app.labtronic.data.valuation.MeasRangeData;
+import com.app.labtronic.ui.caltab.valuation.RangePreviewController;
 import com.app.labtronic.ui.caltab.valuation.ValuationDlgController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -260,7 +261,7 @@ public class ValuationController {
                 // TODO: find a better way of getting that data
                 Pane tableViewParentSection = (Pane) tableView.getParent();
                 Pane hBox = (Pane) tableViewParentSection.getChildren().get(0);
-                TextField frequencyTF = (TextField) tableViewParentSection.getChildren().get(1);
+                TextField frequencyTF = (TextField) hBox.getChildren().get(1);
                 ComboBox<String> frequencyUnitCB = (ComboBox<String>) hBox.getChildren().get(2);
 
                 frequency = frequencyTF.getText();
@@ -290,8 +291,9 @@ public class ValuationController {
             dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
 //            dialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
 
-            // the preview:
-
+            // set up the preview's TableView:
+            RangePreviewController controller = fxmlLoader.getController();
+            controller.loadTableViewData(rangeData);
 
             // dialog results processing:
             Optional<ButtonType> result = dialog.showAndWait();
