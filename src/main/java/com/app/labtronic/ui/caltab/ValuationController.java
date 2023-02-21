@@ -17,6 +17,8 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.util.Callback;
 import javafx.util.Duration;
@@ -227,6 +229,76 @@ public class ValuationController {
 //            menuBarEditContactItem.disableProperty().bind(Bindings.isEmpty(contactList));
 //            editMenuItem.disableProperty().bind(Bindings.isEmpty(contactList));
 //            deleteMenuItem.disableProperty().bind(Bindings.isEmpty(contactList));
+
+            // onDoubleClick (range preview) setup:
+            table.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    if (event.getButton().equals(MouseButton.PRIMARY)) {
+                        if (event.getClickCount() == 2) {
+                            previewRange(table);
+                        }
+                    }
+                }
+            });
+        }
+    }
+
+    private void previewRange(TableView<MeasRangeData> tableView) {
+        if (tableView != null && !tableView.getSelectionModel().isEmpty()) {
+            MeasRangeData rangeData = tableView.getSelectionModel().getSelectedItem();
+
+            String range = String.valueOf(rangeData.getRange());
+            String unit = rangeData.getUnit();
+            String function = rangeData.getFunctionType().toString();
+            String frequency = null;
+            String frequencyUnit = null;
+            StringBuilder headerBuilder = new StringBuilder();
+            headerBuilder.append("Range: ").append(range).append(" ").append(unit);
+            if (function.equalsIgnoreCase("VAC") || function.equalsIgnoreCase("IAC")) {
+                // retrieve the TableView's parent Pane (for getting some control's data later on):
+                // TODO: find a better way of getting that data
+                Pane tableViewParentSection = (Pane) tableView.getParent();
+                Pane hBox = (Pane) tableViewParentSection.getChildren().get(0);
+                TextField frequencyTF = (TextField) tableViewParentSection.getChildren().get(1);
+                ComboBox<String> frequencyUnitCB = (ComboBox<String>) hBox.getChildren().get(2);
+
+                frequency = frequencyTF.getText();
+                frequencyUnit = frequencyUnitCB.getValue();
+
+                headerBuilder.append(" (").append(function).append(")\nf = ").append(frequency).append(" ").
+                        append(frequencyUnit);
+            }
+
+            // TODO: come on man... (duplicate code)
+            // set up the new dialog:
+            Dialog<ButtonType> dialog = new Dialog<>();
+            dialog.initOwner(root.getScene().getWindow());
+            dialog.setTitle("Previewing measurement range");
+            dialog.setHeaderText(headerBuilder.toString());
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(getClass().getResource("valuation/range-preview.fxml"));
+
+            try {
+                dialog.getDialogPane().setContent(fxmlLoader.load());
+            } catch (IOException e) {
+                System.out.println("Couldn't load the dialog.");
+                e.printStackTrace();
+                return;
+            }
+
+            dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
+//            dialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
+
+            // the preview:
+
+
+            // dialog results processing:
+            Optional<ButtonType> result = dialog.showAndWait();
+            // TODO: check if this processing bit is actually needed
+//            if (result.isPresent() && result.get() == ButtonType.OK) {
+//
+//            }
         }
     }
 
@@ -682,6 +754,17 @@ public class ValuationController {
 //            editMenuItem.disableProperty().bind(Bindings.isEmpty(contactList));
 //            deleteMenuItem.disableProperty().bind(Bindings.isEmpty(contactList));
 
+            // onDoubleClick (range preview) setup:
+            tableView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    if (event.getButton().equals(MouseButton.PRIMARY)) {
+                        if (event.getClickCount() == 2) {
+                            previewRange(tableView);
+                        }
+                    }
+                }
+            });
         }
 
         public HBox getHBox() {

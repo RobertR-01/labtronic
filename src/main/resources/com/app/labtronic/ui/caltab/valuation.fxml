@@ -54,7 +54,7 @@
                             </graphic>
                         </Button>
                     </HBox>
-                    <TableView fx:id="vdcTableView" VBox.vgrow="ALWAYS">
+                    <TableView fx:id="vdcTableView" VBox.vgrow="ALWAYS" >
                         <columns>
                             <TableColumn text="Range" resizable="false"/>
                             <TableColumn text="Unit" resizable="false"/>

@@ -1,4 +1,5 @@
 fat TODO list:
+- rename service valuation tab to service scope (?)
 
 - general cleanup: remove duplicate code, turn repeated blocks into methods (e.g. ContextMenu setup); remove test printouts; make some class template for dialog/pupup invoking etc.
 
