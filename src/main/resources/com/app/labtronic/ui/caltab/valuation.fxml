@@ -45,7 +45,7 @@
                 <VBox fx:id="vdcSection" spacing="10">
                     <HBox spacing="20" alignment="CENTER">
                         <Label text="VDC" underline="true"/>
-                        <Button fx:id="addVdcBtn" onAction="#addNewMeasRange">
+                        <Button fx:id="addVdcBtn" onAction="#handleAddNewMeasRange">
                             <tooltip>
                                 <Tooltip showDelay="500ms" text="Add new measurement range / points"/>
                             </tooltip>
@@ -81,7 +81,7 @@
                                 <String fx:value="Hz"/>
                             </value>
                         </ComboBox>
-                        <Button fx:id="addVacBtn" onAction="#addNewMeasRange">
+                        <Button fx:id="addVacBtn" onAction="#handleAddNewMeasRange">
                             <tooltip>
                                 <Tooltip showDelay="500ms" text="Add new measurement range / points"/>
                             </tooltip>
@@ -105,7 +105,7 @@
                 <VBox fx:id="idcSection" spacing="10">
                     <HBox spacing="20" alignment="CENTER">
                         <Label text="IDC" underline="true"/>
-                        <Button fx:id="addIdcBtn" onAction="#addNewMeasRange">
+                        <Button fx:id="addIdcBtn" onAction="#handleAddNewMeasRange">
                             <tooltip>
                                 <Tooltip showDelay="500ms" text="Add new measurement range / points"/>
                             </tooltip>
@@ -141,7 +141,7 @@
                                 <String fx:value="Hz"/>
                             </value>
                         </ComboBox>
-                        <Button fx:id="addIacBtn" onAction="#addNewMeasRange">
+                        <Button fx:id="addIacBtn" onAction="#handleAddNewMeasRange">
                             <tooltip>
                                 <Tooltip showDelay="500ms" text="Add new measurement range / points"/>
                             </tooltip>
@@ -165,7 +165,7 @@
                 <VBox fx:id="rdcSection" spacing="10">
                     <HBox spacing="20" alignment="CENTER">
                         <Label text="RDC" underline="true"/>
-                        <Button fx:id="addRdcBtn" onAction="#addNewMeasRange">
+                        <Button fx:id="addRdcBtn" onAction="#handleAddNewMeasRange">
                             <tooltip>
                                 <Tooltip showDelay="500ms" text="Add new measurement range / points"/>
                             </tooltip>

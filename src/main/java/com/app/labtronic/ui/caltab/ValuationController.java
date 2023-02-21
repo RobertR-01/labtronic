@@ -176,19 +176,22 @@ public class ValuationController {
         });
         nonEmptyRowContextMenu.getItems().addAll(editMenuItem, deleteMenuItem);
 
-        ContextMenu emptyRowContextMenu = new ContextMenu();
-        MenuItem addMenuItem = new MenuItem("Add");
-//        addMenuItem.setOnAction(new EventHandler<ActionEvent>() {
-//            @Override
-//            public void handle(ActionEvent event) {
-//                addNewContactHandler();
-//            }
-//        });
-        emptyRowContextMenu.getItems().add(addMenuItem);
-
         // TODO: move it to the block above (duplicate for loop)
         for (TableView<MeasRangeData> table : listOfTables) {
+            ContextMenu emptyRowContextMenu = new ContextMenu();
+            MenuItem addMenuItem = new MenuItem("Add");
+            addMenuItem.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    addNewMeasRange(event, false);
+                }
+            });
+            emptyRowContextMenu.getItems().add(addMenuItem);
+
             table.setContextMenu(emptyRowContextMenu);
+            // for retrieving menu's parent TableView later:
+            System.out.println("iterating");
+            emptyRowContextMenu.setUserData(table);
 
             table.setRowFactory(new Callback<TableView<MeasRangeData>, TableRow<MeasRangeData>>() {
                 @Override
@@ -337,28 +340,58 @@ public class ValuationController {
         }
     }
 
+    // for onAction in FXML:
+    @FXML
+    private void handleAddNewMeasRange(ActionEvent event) {
+        addNewMeasRange(event, true);
+    }
+
     // TODO: lots of duplicate code from NewCalDlgController
     @FXML
-    private void addNewMeasRange(ActionEvent event) {
+    private void addNewMeasRange(ActionEvent event, boolean isEventSourceButton) {
         // getting the proper tableView:
         // (eventSourceButton -> sourceParentPane -> sectionPane)
         // TODO: this is a mess, find a better way of retrieving the corresponding TableView
-        Button eventSourceButton = (Button) event.getSource();
-        Node sourceParentPane = eventSourceButton.getParent();
-        Node sectionPane = sourceParentPane.getParent();
-
-        List<Node> sectionControls = ((Pane) sectionPane).getChildren();
-        int parentPaneIndex = sectionControls.indexOf(sourceParentPane);
-
         TableView<MeasRangeData> tableView = null;
-        for (Node node : sectionControls) {
-            if (node instanceof TableView<?> && (sectionControls.indexOf(node) == parentPaneIndex + 1)) {
-                try {
-                    tableView = (TableView<MeasRangeData>) node;
-                } catch (ClassCastException e) {
-                    e.printStackTrace();
-                    return;
+
+        Node sourceParentPane = null;
+        Node sectionPane = null;
+        if (isEventSourceButton) {
+            Button eventSourceButton = (Button) event.getSource();
+            sourceParentPane = eventSourceButton.getParent();
+            sectionPane = sourceParentPane.getParent();
+
+            List<Node> sectionControls = ((Pane) sectionPane).getChildren();
+            int parentPaneIndex = sectionControls.indexOf(sourceParentPane);
+
+            for (Node node : sectionControls) {
+                if (node instanceof TableView<?> && (sectionControls.indexOf(node) == parentPaneIndex + 1)) {
+                    try {
+                        tableView = (TableView<MeasRangeData>) node;
+                    } catch (ClassCastException e) {
+                        e.printStackTrace();
+                        return;
+                    }
                 }
+            }
+        } else {
+            // when called from the ContextMenu on the TableView:
+            ContextMenu menu = ((MenuItem) event.getSource()).getParentPopup();
+            System.out.println("testing");
+            System.out.println(event.getSource());
+            System.out.println(menu.getUserData());
+            tableView = (TableView<MeasRangeData>) menu.getUserData();
+            sectionPane = tableView.getParent();
+            sourceParentPane = ((Pane) sectionPane).getChildren().get(0);
+        }
+
+        // text for the topmost label in the dialog:
+        // TODO: validation? else statement?
+        String text = "not initialized";
+        for (Node node : ((Pane) sourceParentPane).getChildren()) {
+            if (node instanceof Label) {
+                text = ((Label) node).getText();
+                System.out.println("text: " + text);
             }
         }
 
@@ -369,15 +402,6 @@ public class ValuationController {
         dialog.setHeaderText("Enter measurement range / points details:");
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource("valuation/valuation-dlg.fxml"));
-
-        // text for the topmost label in the dialog:
-        // TODO: validation? else statement?
-        String text = "not initialized";
-        for (Node node : ((Pane) sourceParentPane).getChildren()) {
-            if (node instanceof Label) {
-                text = ((Label) node).getText();
-            }
-        }
 
         // TODO: save data from every tab to the active session CalData instance on tab switch and use that CalData
         //  instead
@@ -551,7 +575,7 @@ public class ValuationController {
             FontIcon icon = new FontIcon("bx-plus");
             icon.setIconSize(16);
             button.setGraphic(icon);
-            button.setOnAction(event -> ValuationController.this.addNewMeasRange(event));
+            button.setOnAction(event -> ValuationController.this.addNewMeasRange(event, true));
             hBox.getChildren().add(button);
 
             tableView = new TableView<>();
@@ -611,15 +635,17 @@ public class ValuationController {
 
             ContextMenu emptyRowContextMenu = new ContextMenu();
             MenuItem addMenuItem = new MenuItem("Add");
-//        addMenuItem.setOnAction(new EventHandler<ActionEvent>() {
-//            @Override
-//            public void handle(ActionEvent event) {
-//                addNewContactHandler();
-//            }
-//        });
+            addMenuItem.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    addNewMeasRange(event, false);
+                }
+            });
             emptyRowContextMenu.getItems().add(addMenuItem);
 
             tableView.setContextMenu(emptyRowContextMenu);
+            // for retrieving menu's parent TableView later:
+            emptyRowContextMenu.setUserData(tableView);
 
             tableView.setRowFactory(new Callback<TableView<MeasRangeData>, TableRow<MeasRangeData>>() {
                 @Override
