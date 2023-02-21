@@ -245,6 +245,14 @@ public class ValuationDlgController {
                 resCategory);
     }
 
+    // TODO: validation
+    public void loadData(String range, String rangeType, String unit, String pointsList) {
+        rangeTF.setText(range);
+        rangeTypeCB.setValue(rangeType);
+        unitCB.setValue(unit);
+        pointsTA.setText(pointsList);
+    }
+
     private void setResCategory(String resolution) {
         switch (resolution) {
             case "⋜ 4 8/9 digit" -> resCategory = 4;

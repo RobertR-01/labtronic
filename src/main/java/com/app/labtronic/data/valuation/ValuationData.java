@@ -37,6 +37,17 @@ public class ValuationData {
         }
     }
 
+    public boolean editRange(ObservableList<MeasRangeData> observableArray, MeasRangeData oldRange,
+                             MeasRangeData newRange) {
+        if (oldRange != null && newRange != null && observableArray != null && observableArray.contains(oldRange)) {
+            int index = observableArray.indexOf(oldRange);
+            observableArray.set(index, newRange);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public boolean removeRange(ObservableList<MeasRangeData> observableArray, MeasRangeData range) {
         if (range != null && observableArray != null && observableArray.contains(range)) {
             observableArray.remove(range);

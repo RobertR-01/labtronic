@@ -161,12 +161,12 @@ public class ValuationController {
         // context menus on TableView rows (non-empty and empty):
         ContextMenu nonEmptyRowContextMenu = new ContextMenu();
         MenuItem editMenuItem = new MenuItem("Edit");
-//        editMenuItem.setOnAction(new EventHandler<ActionEvent>() {
-//            @Override
-//            public void handle(ActionEvent event) {
-//                editContactHandler();
-//            }
-//        });
+        editMenuItem.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                editMeanRange(event);
+            }
+        });
         MenuItem deleteMenuItem = new MenuItem("Delete");
         deleteMenuItem.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -199,7 +199,7 @@ public class ValuationController {
                         if (isNowEmpty) {
                             row.setContextMenu(null);
                         } else {
-                            // for retrieving menu's parent TableView later:
+                            // for retrieving menu's TableView owner later in the addNewMeasRange():
                             nonEmptyRowContextMenu.setUserData(row.getTableView());
 
                             row.setContextMenu(nonEmptyRowContextMenu);
@@ -224,6 +224,116 @@ public class ValuationController {
 //            menuBarEditContactItem.disableProperty().bind(Bindings.isEmpty(contactList));
 //            editMenuItem.disableProperty().bind(Bindings.isEmpty(contactList));
 //            deleteMenuItem.disableProperty().bind(Bindings.isEmpty(contactList));
+        }
+    }
+
+    @FXML
+    private void editMeanRange(ActionEvent event) {
+        // getting the proper TableView:
+        TableView<MeasRangeData> tableView;
+        if (event instanceof ActionEvent) {
+            ContextMenu menu = ((MenuItem) event.getSource()).getParentPopup();
+            tableView = (TableView<MeasRangeData>) menu.getUserData();
+        } else {
+            System.out.println("ValuationDlgController.editMeasRange() -> TableView not found.");
+            return;
+        }
+
+        MeasRangeData oldRange = tableView.getSelectionModel().getSelectedItem();
+        ObservableList<MeasRangeData> rangeList = tableView.getItems();
+
+        // set up the new dialog:
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.initOwner(root.getScene().getWindow());
+        dialog.setTitle("Editing measurement range");
+        dialog.setHeaderText("Enter measurement range / points details:");
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource("valuation/valuation-dlg.fxml"));
+
+        String resolution = calData.getResolution();
+        String function = oldRange.getFunctionType().toString();
+        ValuationDlgController controller = new ValuationDlgController(function, resolution);
+
+        fxmlLoader.setController(controller);
+
+        try {
+            dialog.getDialogPane().setContent(fxmlLoader.load());
+        } catch (IOException e) {
+            System.out.println("Couldn't load the dialog.");
+            e.printStackTrace();
+            return;
+        }
+
+        // loading data to the dialog's forms:
+        String rangeString = String.valueOf(oldRange.getRange());
+        String rangeTypeString = oldRange.getRangeType();
+        String unitString = oldRange.getUnit();
+        StringBuilder pointsBuilder = new StringBuilder();
+        for (double point : oldRange.getPoints()) {
+            pointsBuilder.append(point);
+            if (oldRange.getPoints().indexOf(point) != oldRange.getPoints().size() - 1) {
+                pointsBuilder.append(", ");
+            }
+        }
+        controller.loadData(rangeString, rangeTypeString, unitString, pointsBuilder.toString());
+
+        dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
+        dialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
+
+        final Button buttonOK = (Button) dialog.getDialogPane().lookupButton(ButtonType.OK);
+        buttonOK.addEventFilter(ActionEvent.ACTION, actionEvent -> {
+            // any false value = form issue
+            List<Boolean> validationResults = controller.validateForms();
+            boolean formProblem = false;
+            for (Boolean check : validationResults) {
+                if (!check) {
+                    formProblem = true;
+                    break;
+                }
+            }
+            if (!validationResults.isEmpty() && formProblem) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                actionEvent.consume();
+                String title = "Measurement range addition related error";
+                StringBuilder content = new StringBuilder();
+
+                if (!validationResults.get(0)) {
+                    for (Node node : controller.getEmptyFields()) {
+                        controller.addRedOutline(node);
+                    }
+                    content.append("Missing input data!\nNo fields in the form may remain empty.\n\n");
+                }
+
+                if (!validationResults.get(1)) {
+                    controller.addRedOutline(controller.getRangeTF());
+                    content.append("Invalid range value!\nEnter a numeric value for the range field.\n\n");
+                }
+
+                if (!validationResults.get(2)) {
+                    controller.addRedOutline(controller.getPointsTA());
+                    content.append("Invalid measurement points!\nEnter numeric values separated with a comma.\n\n");
+                }
+
+                alert.setTitle(title);
+                alert.setContentText(content.toString());
+                alert.showAndWait();
+            }
+        });
+
+        // dialog results processing:
+        Optional<ButtonType> result = dialog.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            MeasRangeData newRange = controller.exportData();
+            // TODO: mess
+            // TODO: try putting it in the constructor
+            newRange.calculateCost();
+            newRange.initializeProperties();
+            if (tableView != null) {
+                ObservableList<MeasRangeData> rangeObservableArray = tableView.getItems();
+                calData.getValuationData().editRange(rangeObservableArray, oldRange, newRange);
+            } else {
+                System.out.println("ValuationController.addNewMeasRange() -> TableView is null");
+            }
         }
     }
 
@@ -484,12 +594,12 @@ public class ValuationController {
             // context menus on TableView rows (non-empty and empty):
             ContextMenu nonEmptyRowContextMenu = new ContextMenu();
             MenuItem editMenuItem = new MenuItem("Edit");
-//        editMenuItem.setOnAction(new EventHandler<ActionEvent>() {
-//            @Override
-//            public void handle(ActionEvent event) {
-//                editContactHandler();
-//            }
-//        });
+            editMenuItem.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    editMeanRange(event);
+                }
+            });
             MenuItem deleteMenuItem = new MenuItem("Delete");
             deleteMenuItem.setOnAction(new EventHandler<ActionEvent>() {
                 @Override

@@ -106,7 +106,39 @@ public class MeasRangeData {
     public SimpleStringProperty costPropertyProperty() {
         return costProperty;
     }
-    //
+
+    // setters
+    public void setRange(double range) {
+        this.range = range;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
+
+    public void setRangeType(String rangeType) {
+        this.rangeType = rangeType;
+    }
+
+    public void setFunctionType(ValuationDlgController.Function functionType) {
+        this.functionType = functionType;
+    }
+
+    public void setPoints(ArrayList<Double> points) {
+        this.points = points;
+    }
+
+    public void setNumberOfPoints(int numberOfPoints) {
+        this.numberOfPoints = numberOfPoints;
+    }
+
+    public void setCost(double cost) {
+        this.cost = cost;
+    }
+
+    public void setResolution(int resolution) {
+        this.resolution = resolution;
+    }
 
     // TODO: validation
     public double calculateCost() {
