@@ -209,6 +209,11 @@ public class ValuationDlgController {
         return result;
     }
 
+    // check if the "first" range already exists:
+//    private boolean validateRangeType() {
+//
+//    }
+
     private boolean checkForEmptyFields() {
         boolean result = true;
         emptyFields = new ArrayList<>();

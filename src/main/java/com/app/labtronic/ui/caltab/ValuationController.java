@@ -387,7 +387,9 @@ public class ValuationController {
             newRange.calculateCost();
             newRange.initializeProperties();
             ObservableList<MeasRangeData> rangeObservableArray = tableView.getItems();
-            calData.getValuationData().editRange(rangeObservableArray, oldRange, newRange);
+            if (!calData.getValuationData().editRange(rangeObservableArray, oldRange, newRange)) {
+                System.out.println("Problem with editing selected range.");
+            }
         }
     }
 
@@ -519,7 +521,9 @@ public class ValuationController {
             newRange.initializeProperties();
             if (tableView != null) {
                 ObservableList<MeasRangeData> rangeObservableArray = tableView.getItems();
-                calData.getValuationData().addRange(rangeObservableArray, newRange);
+                if (!calData.getValuationData().addRange(rangeObservableArray, newRange)) {
+                    System.out.println("Problem with editing selected range.");
+                }
             } else {
                 System.out.println("ValuationController.addNewMeasRange() -> TableView is null");
             }

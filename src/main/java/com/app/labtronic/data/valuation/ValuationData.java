@@ -2,6 +2,7 @@ package com.app.labtronic.data.valuation;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Alert;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -29,23 +30,33 @@ public class ValuationData {
 
     public boolean addRange(ObservableList<MeasRangeData> observableArray, MeasRangeData range) {
         // TODO: some check to make sure you can only add to the class field arrays
-        if (range != null && observableArray != null) {
-            observableArray.add(range);
-            return true;
-        } else {
-            return false;
+        boolean result = false;
+        if (range != null && observableArray != null && !observableArray.contains(range)) {
+            if (checkForDuplicateRange(observableArray, range) != null) {
+                fireDuplicateRangeAlert();
+            } else {
+                observableArray.add(range);
+                result = true;
+            }
         }
+        return result;
     }
 
     public boolean editRange(ObservableList<MeasRangeData> observableArray, MeasRangeData oldRange,
                              MeasRangeData newRange) {
-        if (oldRange != null && newRange != null && observableArray != null && observableArray.contains(oldRange)) {
+        boolean result = false;
+        if (oldRange != null && newRange != null && observableArray != null && observableArray.contains(oldRange)
+                && !observableArray.contains(newRange)) {
             int index = observableArray.indexOf(oldRange);
-            observableArray.set(index, newRange);
-            return true;
-        } else {
-            return false;
+            MeasRangeData duplicateRange = checkForDuplicateRange(observableArray, newRange);
+            if (duplicateRange != null && observableArray.indexOf(duplicateRange) == index) {
+                fireDuplicateRangeAlert();
+            } else {
+                observableArray.set(index, newRange);
+                result = true;
+            }
         }
+        return result;
     }
 
     public boolean removeRange(ObservableList<MeasRangeData> observableArray, MeasRangeData range) {
@@ -55,6 +66,37 @@ public class ValuationData {
         } else {
             return false;
         }
+    }
+
+    private void fireDuplicateRangeAlert() {
+        Alert alert = initializeAlert("Error when adding measurement range",
+                "Range already exists within that function.",
+                "Range not added - try different range value.");
+        alert.showAndWait();
+    }
+
+    private Alert initializeAlert(String title, String header, String content) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(content);
+        return alert;
+    }
+
+    // checks whether the range with the same range value is present in that function's array:
+    // returns a duplicate range found in the range collection or null
+    // TODO: additional check for the combination of numeric value * unit (e.g. 1 kV is the same as 1000 V)
+    public MeasRangeData checkForDuplicateRange(ObservableList<MeasRangeData> observableArray, MeasRangeData range) {
+        MeasRangeData duplicateRange = null;
+        if (range != null && observableArray != null) {
+            double rangeBaseUnitValue = range.getRangeBaseUnitValue();
+            for (MeasRangeData rangeData : observableArray) {
+                if (rangeData.getRangeBaseUnitValue() == rangeBaseUnitValue) {
+                    duplicateRange = rangeData;
+                }
+            }
+        }
+        return duplicateRange;
     }
 
     public boolean addExtraAcFreq(String function) {

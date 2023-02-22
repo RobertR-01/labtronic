@@ -14,6 +14,7 @@ public class MeasRangeData {
     private int numberOfPoints;
     private double cost;
     private int resolution;
+    private double rangeBaseUnitValue;
 
     private SimpleStringProperty rangeProperty;
     private SimpleStringProperty unitProperty;
@@ -32,10 +33,15 @@ public class MeasRangeData {
         this.numberOfPoints = points.size();
         this.resolution = resolution;
         this.cost = 0;
+        this.rangeBaseUnitValue = calculateRangeBaseUnitValue();
     }
 
     public double getRange() {
         return range;
+    }
+
+    public double getRangeBaseUnitValue() {
+        return rangeBaseUnitValue;
     }
 
     public String getRangeType() {
@@ -136,6 +142,18 @@ public class MeasRangeData {
 
     public void setResolution(int resolution) {
         this.resolution = resolution;
+    }
+
+    private double calculateRangeBaseUnitValue() {
+        double multiplier = 0;
+        switch (unit) {
+            case "µV", "µA", "µΩ" -> multiplier = 0.000001;
+            case "mV", "mA", "mΩ" -> multiplier = 0.001;
+            case "V", "A", "Ω" -> multiplier = 1;
+            case "kV", "kA", "kΩ" -> multiplier = 1000;
+            case "MV", "MA", "MΩ" -> multiplier = 1000000;
+        }
+        return range * multiplier;
     }
 
     // TODO: validation
