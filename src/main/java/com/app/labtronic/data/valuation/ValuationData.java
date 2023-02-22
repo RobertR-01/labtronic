@@ -92,7 +92,7 @@ public class ValuationData {
         }
     }
 
-    // for base 5 functions:
+    // for the base 5 functions:
     public ObservableList<MeasRangeData> getObservableArray(String function) {
         ObservableList<MeasRangeData> array = null;
         if (function != null && !function.isBlank()) {
@@ -122,12 +122,8 @@ public class ValuationData {
         List<ObservableList<MeasRangeData>> freqsList = null;
         if (function != null && !function.isBlank()) {
             switch (function.trim()) {
-                case "VAC":
-                    freqsList = vacExtraArrays;
-                    break;
-                case "IAC":
-                    freqsList = iacExtraArrays;
-                    break;
+                case "VAC" -> freqsList = vacExtraArrays;
+                case "IAC" -> freqsList = iacExtraArrays;
             }
         }
         return freqsList;

@@ -1,7 +1,6 @@
 package com.app.labtronic.ui;
 
 import com.app.labtronic.data.CalData;
-import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
@@ -58,22 +57,14 @@ public class NewCalDlgController {
     @FXML
     private void initialize() {
         // disables resolution choice combo box and label if dmm radio is not selected:
-        // TODO: simplify those bindings if possible, same for the section below
-        resolutionCB.disableProperty().bind(Bindings.createBooleanBinding(() ->
-                calRadio.isSelected(), calRadio.selectedProperty()));
-        resolutionLabel.disableProperty().bind(Bindings.createBooleanBinding(() ->
-                calRadio.isSelected(), calRadio.selectedProperty()));
+        resolutionCB.disableProperty().bind(calRadio.selectedProperty());
+        resolutionLabel.disableProperty().bind(calRadio.selectedProperty());
 
-        // TODO: consolidate that section somehow to remove duplicates (possibly with the above); consider a method?
         // disables end-user section if the checkbox is not ticked:
-        endUserNameTF.disableProperty().bind(Bindings.createBooleanBinding(() ->
-                !endUserCB.isSelected(), endUserCB.selectedProperty()));
-        endUserNameL.disableProperty().bind(Bindings.createBooleanBinding(() ->
-                !endUserCB.isSelected(), endUserCB.selectedProperty()));
-        endUserAddressTF.disableProperty().bind(Bindings.createBooleanBinding(() ->
-                !endUserCB.isSelected(), endUserCB.selectedProperty()));
-        endUserAddressL.disableProperty().bind(Bindings.createBooleanBinding(() ->
-                !endUserCB.isSelected(), endUserCB.selectedProperty()));
+        endUserNameTF.disableProperty().bind(endUserCB.selectedProperty().not());
+        endUserNameL.disableProperty().bind(endUserCB.selectedProperty().not());
+        endUserAddressTF.disableProperty().bind(endUserCB.selectedProperty().not());
+        endUserAddressL.disableProperty().bind(endUserCB.selectedProperty().not());
 
         // TODO: the following two blocks are practically the same - needs refactoring?
         // combo box value when enabled/disabled:
@@ -122,7 +113,7 @@ public class NewCalDlgController {
             }
         }
 
-        // for testing:
+        // initialize some input for testing:
         kubackiOrdinalNoTF.setText("test");
         switezRegNoTF.setText("test");
         customerNameTF.setText("test");
@@ -140,15 +131,13 @@ public class NewCalDlgController {
                 node.setStyle("-fx-border-color: red;");
                 result = false;
             } else {
-                // TODO: what's the point of that?
                 node.setStyle("");
             }
         }
-
         return result;
     }
 
-    public CalData exportFormData() {
+    public CalData exportInitialFormData() {
         CalData.Category category = (dmmRadio.isSelected()) ? CalData.Category.DMM : CalData.Category.CALIBRATOR;
         return new CalData(getFullKubackiRegNo(), switezRegNoTF.getText().trim(), datePicker.getValue(),
                 accreditationCB.isSelected(), customerNameTF.getText().trim(), customerAddressTF.getText().trim(),

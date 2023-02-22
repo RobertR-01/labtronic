@@ -17,10 +17,7 @@ public class CalTabController {
 
     @FXML
     private void initialize() {
-        // TODO: check if it's really needed
         calData = ActiveSession.getActiveSessionInstance().getActiveCalTabs().get(ActiveSession.getLastAddedId());
-
-        // TODO: obsolete (probably)
         calData.setSubTabsList(rootTabPane.getTabs());
 
         // saves the current data from the general info sub-tab (WIP)

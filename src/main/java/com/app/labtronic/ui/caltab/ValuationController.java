@@ -34,7 +34,6 @@ import java.util.Optional;
 public class ValuationController {
     @FXML
     private BorderPane root;
-
     @FXML
     private CheckBox vdcCB;
     @FXML
@@ -46,7 +45,6 @@ public class ValuationController {
     @FXML
     private CheckBox rdcCB;
     private List<CheckBox> cbList;
-
     @FXML
     private VBox vdcSection;
     @FXML
@@ -58,7 +56,6 @@ public class ValuationController {
     @FXML
     private VBox rdcSection;
     private List<VBox> vBoxList;
-
     @FXML
     private Label vacFreqL;
     @FXML
@@ -67,10 +64,8 @@ public class ValuationController {
     private Label iacFreqL;
     @FXML
     private Spinner<Integer> iacSpinner;
-
     private List<AcFreqContainer> vacExtraFreqContainers;
     private List<AcFreqContainer> iacExtraFreqContainers;
-
     @FXML
     private TableView<MeasRangeData> vdcTableView;
     @FXML
@@ -81,15 +76,12 @@ public class ValuationController {
     private TableView<MeasRangeData> iacTableView;
     @FXML
     private TableView<MeasRangeData> rdcTableView;
-
     private List<TableView<MeasRangeData>> vacExtraTableViews;
     private List<TableView<MeasRangeData>> iacExtraTableViews;
-
     private CalData calData;
 
     @FXML
     private void initialize() {
-        // TODO: duplicate code from other controller?
         calData = ActiveSession.getActiveSessionInstance().getActiveCalTabs().get(ActiveSession.getLastAddedId());
 
         // sets equal column width:
@@ -100,8 +92,6 @@ public class ValuationController {
                 column.prefWidthProperty().bind(tableView.widthProperty().divide(5));
             }
         }
-
-        // TODO: classic - check those code duplicates for bindings etc. from other controllers
 
         // top panel combo box bindings:
         vacFreqL.disableProperty().bind(vacCB.selectedProperty().not());
@@ -158,29 +148,27 @@ public class ValuationController {
                 column.setCellValueFactory(new PropertyValueFactory<>(measRangeDataFields[i]));
                 i++;
             }
-        }
 
-        // TableView context menu:
-        // context menus on TableView rows (non-empty and empty):
-        ContextMenu nonEmptyRowContextMenu = new ContextMenu();
-        MenuItem editMenuItem = new MenuItem("Edit");
-        editMenuItem.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                editMeanRange(event);
-            }
-        });
-        MenuItem deleteMenuItem = new MenuItem("Delete");
-        deleteMenuItem.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                removeMeasRange(event);
-            }
-        });
-        nonEmptyRowContextMenu.getItems().addAll(editMenuItem, deleteMenuItem);
 
-        // TODO: move it to the block above (duplicate for loop)
-        for (TableView<MeasRangeData> table : listOfTables) {
+            // context menus on TableView rows (non-empty and empty):
+            ContextMenu nonEmptyRowContextMenu = new ContextMenu();
+            MenuItem editMenuItem = new MenuItem("Edit");
+            editMenuItem.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    editMeanRange(event);
+                }
+            });
+            MenuItem deleteMenuItem = new MenuItem("Delete");
+            deleteMenuItem.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    removeMeasRange(event);
+                }
+            });
+            nonEmptyRowContextMenu.getItems().addAll(editMenuItem, deleteMenuItem);
+
+            // TODO: move it to the block above (duplicate for loop)
             ContextMenu emptyRowContextMenu = new ContextMenu();
             MenuItem addMenuItem = new MenuItem("Add");
             addMenuItem.setOnAction(new EventHandler<ActionEvent>() {
@@ -193,7 +181,6 @@ public class ValuationController {
 
             table.setContextMenu(emptyRowContextMenu);
             // for retrieving menu's parent TableView later:
-            System.out.println("iterating");
             emptyRowContextMenu.setUserData(table);
 
             table.setRowFactory(new Callback<TableView<MeasRangeData>, TableRow<MeasRangeData>>() {
@@ -226,6 +213,7 @@ public class ValuationController {
             });
 
             table.getSelectionModel().selectFirst();
+            // TODO: implement those menu bar buttons?
 //            menuBarDeleteContactItem.disableProperty().bind(Bindings.isEmpty(contactList));
 //            menuBarEditContactItem.disableProperty().bind(Bindings.isEmpty(contactList));
 //            editMenuItem.disableProperty().bind(Bindings.isEmpty(contactList));
@@ -252,12 +240,12 @@ public class ValuationController {
             String range = String.valueOf(rangeData.getRange());
             String unit = rangeData.getUnit();
             String function = rangeData.getFunctionType().toString();
-            String frequency = null;
-            String frequencyUnit = null;
+            String frequency;
+            String frequencyUnit;
             StringBuilder headerBuilder = new StringBuilder();
             headerBuilder.append("Range: ").append(range).append(" ").append(unit);
             if (function.equalsIgnoreCase("VAC") || function.equalsIgnoreCase("IAC")) {
-                // retrieve the TableView's parent Pane (for getting some control's data later on):
+                // retrieve the TableView's parent Pane (for getting some controls' data later on):
                 // TODO: find a better way of getting that data
                 Pane tableViewParentSection = (Pane) tableView.getParent();
                 Pane hBox = (Pane) tableViewParentSection.getChildren().get(0);
@@ -271,7 +259,7 @@ public class ValuationController {
                         append(frequencyUnit);
             }
 
-            // TODO: come on man... (duplicate code)
+            // TODO: duplicate code - dialog initialization
             // set up the new dialog:
             Dialog<ButtonType> dialog = new Dialog<>();
             dialog.initOwner(root.getScene().getWindow());
@@ -289,18 +277,11 @@ public class ValuationController {
             }
 
             dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
-//            dialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
 
             // set up the preview's TableView:
             RangePreviewController controller = fxmlLoader.getController();
             controller.loadTableViewData(rangeData);
-
-            // dialog results processing:
             Optional<ButtonType> result = dialog.showAndWait();
-            // TODO: check if this processing bit is actually needed
-//            if (result.isPresent() && result.get() == ButtonType.OK) {
-//
-//            }
         }
     }
 
@@ -308,10 +289,9 @@ public class ValuationController {
     private void editMeanRange(ActionEvent event) {
         // getting the proper TableView:
         TableView<MeasRangeData> tableView;
-        if (event instanceof ActionEvent) {
-            ContextMenu menu = ((MenuItem) event.getSource()).getParentPopup();
-            tableView = (TableView<MeasRangeData>) menu.getUserData();
-        } else {
+        ContextMenu menu = ((MenuItem) event.getSource()).getParentPopup();
+        tableView = (TableView<MeasRangeData>) menu.getUserData();
+        if (tableView == null) {
             System.out.println("ValuationDlgController.editMeasRange() -> TableView not found.");
             return;
         }
@@ -319,6 +299,7 @@ public class ValuationController {
         MeasRangeData oldRange = tableView.getSelectionModel().getSelectedItem();
         ObservableList<MeasRangeData> rangeList = tableView.getItems();
 
+        // TODO: duplicate code - dialog initialization
         // set up the new dialog:
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.initOwner(root.getScene().getWindow());
@@ -359,7 +340,7 @@ public class ValuationController {
 
         final Button buttonOK = (Button) dialog.getDialogPane().lookupButton(ButtonType.OK);
         buttonOK.addEventFilter(ActionEvent.ACTION, actionEvent -> {
-            // any false value = form issue
+            // any false value present in the list == some form issue
             List<Boolean> validationResults = controller.validateForms();
             boolean formProblem = false;
             for (Boolean check : validationResults) {
@@ -405,16 +386,12 @@ public class ValuationController {
             // TODO: try putting it in the constructor
             newRange.calculateCost();
             newRange.initializeProperties();
-            if (tableView != null) {
-                ObservableList<MeasRangeData> rangeObservableArray = tableView.getItems();
-                calData.getValuationData().editRange(rangeObservableArray, oldRange, newRange);
-            } else {
-                System.out.println("ValuationController.addNewMeasRange() -> TableView is null");
-            }
+            ObservableList<MeasRangeData> rangeObservableArray = tableView.getItems();
+            calData.getValuationData().editRange(rangeObservableArray, oldRange, newRange);
         }
     }
 
-    // for onAction in FXML:
+    // wrapper for onAction property in FXML:
     @FXML
     private void handleAddNewMeasRange(ActionEvent event) {
         addNewMeasRange(event, true);
@@ -425,12 +402,13 @@ public class ValuationController {
     private void addNewMeasRange(ActionEvent event, boolean isEventSourceButton) {
         // getting the proper tableView:
         // (eventSourceButton -> sourceParentPane -> sectionPane)
-        // TODO: this is a mess, find a better way of retrieving the corresponding TableView
+        // TODO: find a better way of retrieving the corresponding TableView
         TableView<MeasRangeData> tableView = null;
 
-        Node sourceParentPane = null;
-        Node sectionPane = null;
+        Node sourceParentPane;
+        Node sectionPane;
         if (isEventSourceButton) {
+            // when called by clicking a button:
             Button eventSourceButton = (Button) event.getSource();
             sourceParentPane = eventSourceButton.getParent();
             sectionPane = sourceParentPane.getParent();
@@ -477,8 +455,6 @@ public class ValuationController {
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource("valuation/valuation-dlg.fxml"));
 
-        // TODO: save data from every tab to the active session CalData instance on tab switch and use that CalData
-        //  instead
         String resolution = calData.getResolution();
         fxmlLoader.setController(new ValuationDlgController(text, resolution));
 
@@ -490,9 +466,7 @@ public class ValuationController {
             return;
         }
 
-        // TODO: obsolete?
         ValuationDlgController controller = fxmlLoader.getController();
-
         dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
         dialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
 
@@ -540,8 +514,7 @@ public class ValuationController {
         Optional<ButtonType> result = dialog.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
             MeasRangeData newRange = controller.exportData();
-            // TODO: mess
-            // TODO: try putting it in the constructor
+            // TODO: should probably be put inside the constructor
             newRange.calculateCost();
             newRange.initializeProperties();
             if (tableView != null) {
@@ -555,7 +528,7 @@ public class ValuationController {
 
     private void removeMeasRange(Event event) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        // TODO: init owners for other alerts used in this project
+        // TODO: check if initOwner call is needed for this and other dialogs
         alert.initOwner(root.getScene().getWindow());
         alert.setTitle("Deleting measurement range");
         alert.setContentText("Are you sure you want to delete this range?");
@@ -579,7 +552,7 @@ public class ValuationController {
         }
     }
 
-    // TODO: duplicate code from other controller
+    // TODO: duplicate code from the main window controller
     @FXML
     private void removeFocus() {
         root.requestFocus();
@@ -687,7 +660,7 @@ public class ValuationController {
                         " TableView is null");
             }
 
-            // TODO: ContextMenu setup for the TableView; loads of duplicate code -> move to a separate method
+            // TODO: ContextMenu setup for the TableView - contains loads of duplicate code -> move to a separate method
             // TableView context menu:
             // context menus on TableView rows (non-empty and empty):
             ContextMenu nonEmptyRowContextMenu = new ContextMenu();
@@ -751,6 +724,7 @@ public class ValuationController {
             });
 
             tableView.getSelectionModel().selectFirst();
+            // TODO: implement those menu bar buttons
 //            menuBarDeleteContactItem.disableProperty().bind(Bindings.isEmpty(contactList));
 //            menuBarEditContactItem.disableProperty().bind(Bindings.isEmpty(contactList));
 //            editMenuItem.disableProperty().bind(Bindings.isEmpty(contactList));

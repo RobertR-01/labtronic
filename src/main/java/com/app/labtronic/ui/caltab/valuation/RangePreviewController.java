@@ -33,8 +33,6 @@ public class RangePreviewController {
             column.setCellValueFactory(new PropertyValueFactory<>(measRangeDataFields[i]));
             i++;
         }
-
-        tableView.setSelectionModel(null);
     }
 
     public void loadTableViewData(MeasRangeData rangeData) {

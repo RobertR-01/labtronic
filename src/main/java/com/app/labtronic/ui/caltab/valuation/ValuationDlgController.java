@@ -54,7 +54,6 @@ public class ValuationDlgController {
         nodeList = new ArrayList<>();
 
         functionL.setText(functionType.toString() + " range:");
-
         pointsL.setText("Points:\n(separate values with a comma)");
 
         // range combo box:
@@ -69,8 +68,6 @@ public class ValuationDlgController {
             }
         }
 
-        // TODO: redundant - too few nodes to check; duplicate code from other dialog controller
-        // TODO: fix it so the outline disappears when writing anything new in the field
         nodeList = List.of(rangeTF, pointsTA);
         // removes red outline from invalid fields upon typing:
         for (Node node : nodeList) {
@@ -165,7 +162,7 @@ public class ValuationDlgController {
             }
             pointsTA.setText(builder.toString());
         } else {
-            // TODO: create a class or interface for this (duplicate code)
+            // TODO: duplicate code - alert initialization
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Invalid range error");
             alert.setHeaderText("Error while setting up default EURAMET points.");
@@ -225,8 +222,8 @@ public class ValuationDlgController {
         return result;
     }
 
-    // order in the returned list is: empty fields, range TF, points TA
-    // false means there's a problem
+    // order of values in the returned list is: empty fields check, range TF check, points TA check
+    // false value means there's a problem with a corresponding check
     public List<Boolean> validateForms() {
         List<Boolean> results = new ArrayList<>();
         results.add(checkForEmptyFields());
@@ -239,7 +236,7 @@ public class ValuationDlgController {
         node.setStyle("-fx-border-color: red;");
     }
 
-    // TODO: validation?
+    // TODO: validation
     public MeasRangeData exportData() {
         return new MeasRangeData(range, rangeTypeCB.getValue(), unitCB.getValue(), functionType, pointsList,
                 resCategory);

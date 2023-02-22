@@ -92,12 +92,9 @@ public class MainWinController {
             ((TabPane) root.centerProperty().get()).getTabs().add(newCalTab);
             ((TabPane) root.centerProperty().get()).getSelectionModel().select(newCalTab);
             calTabs.add(newCalTab);
-            // TODO: test if the focus removal works
-            removeFocus();
-            CalData calData = controller.exportFormData();
-            ActiveSession.getActiveSessionInstance().addCalData(calData); // TODO: WIP
+            CalData calData = controller.exportInitialFormData();
+            ActiveSession.getActiveSessionInstance().addCalData(calData);
 
-            // TODO: keep different instances of CalData, tabs data etc. in a singleton or some other separate class?
             // initializing tab contents:
             fxmlLoader = new FXMLLoader();
             fxmlLoader.setLocation(getClass().getResource("cal-tab.fxml"));

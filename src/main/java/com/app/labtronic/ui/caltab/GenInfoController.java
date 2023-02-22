@@ -2,7 +2,6 @@ package com.app.labtronic.ui.caltab;
 
 import com.app.labtronic.data.ActiveSession;
 import com.app.labtronic.data.CalData;
-import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
@@ -82,21 +81,14 @@ public class GenInfoController {
         serialNoTF.setText(calData.getSerialNo());
         resolutionCB.setValue(calData.getResolution());
 
-        // TODO: duplicate code from the NewCalDlgController (the listeners, bindings etc.);
-        //  also TODOs from there apply here
-        resolutionCB.disableProperty().bind(Bindings.createBooleanBinding(() ->
-                calRadio.isSelected(), calRadio.selectedProperty()));
-        resolutionLabel.disableProperty().bind(Bindings.createBooleanBinding(() ->
-                calRadio.isSelected(), calRadio.selectedProperty()));
+        // TODO: duplicate code - the same section is present in the NewCalDlgController
+        resolutionCB.disableProperty().bind(calRadio.selectedProperty());
+        resolutionLabel.disableProperty().bind(calRadio.selectedProperty());
 
-        endUserNameTA.disableProperty().bind(Bindings.createBooleanBinding(() ->
-                !endUserCB.isSelected(), endUserCB.selectedProperty()));
-        endUserNameL.disableProperty().bind(Bindings.createBooleanBinding(() ->
-                !endUserCB.isSelected(), endUserCB.selectedProperty()));
-        endUserAddressTA.disableProperty().bind(Bindings.createBooleanBinding(() ->
-                !endUserCB.isSelected(), endUserCB.selectedProperty()));
-        endUserAddressL.disableProperty().bind(Bindings.createBooleanBinding(() ->
-                !endUserCB.isSelected(), endUserCB.selectedProperty()));
+        endUserNameTA.disableProperty().bind(endUserCB.selectedProperty().not());
+        endUserNameL.disableProperty().bind(endUserCB.selectedProperty().not());
+        endUserAddressTA.disableProperty().bind(endUserCB.selectedProperty().not());
+        endUserAddressL.disableProperty().bind(endUserCB.selectedProperty().not());
 
         final String[] lastCBValue = new String[1];
         resolutionCB.disabledProperty().addListener((observable, oldValue, newValue) -> {
@@ -126,8 +118,7 @@ public class GenInfoController {
         });
     }
 
-    // TODO: incomplete
-    // TODO: validation?
+    // TODO: incomplete + validation?
     public void saveData() {
         calData.setResolution(resolutionCB.getValue());
     }

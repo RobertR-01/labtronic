@@ -123,7 +123,7 @@ public class CalData {
         return valuationData;
     }
 
-    // TODO: boolean return type?
+    // TODO: change the return type to boolean
     public void setSubTabsList(List<Tab> tabsList) {
         // TODO: check for the number of tabs already present
         if (tabsList != null && !tabsList.isEmpty()) {

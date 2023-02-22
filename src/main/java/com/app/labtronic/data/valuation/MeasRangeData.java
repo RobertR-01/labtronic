@@ -66,7 +66,6 @@ public class MeasRangeData {
         return resolution;
     }
 
-    // property getters
     public String getRangeProperty() {
         return rangeProperty.get();
     }
@@ -107,7 +106,6 @@ public class MeasRangeData {
         return costProperty;
     }
 
-    // setters
     public void setRange(double range) {
         this.range = range;
     }
