@@ -32,11 +32,15 @@ public class ValuationData {
         // TODO: some check to make sure you can only add to the class field arrays
         boolean result = false;
         if (range != null && observableArray != null && !observableArray.contains(range)) {
-            if (checkForDuplicateRange(observableArray, range) != null) {
-                fireDuplicateRangeAlert();
+            if (checkForExistingFirstRange(observableArray, range) != null) {
+                fireExistingFirstRangeAlert();
             } else {
-                observableArray.add(range);
-                result = true;
+                if (checkForDuplicateRange(observableArray, range) != null) {
+                    fireDuplicateRangeValueAlert();
+                } else {
+                    observableArray.add(range);
+                    result = true;
+                }
             }
         }
         return result;
@@ -47,13 +51,19 @@ public class ValuationData {
         boolean result = false;
         if (oldRange != null && newRange != null && observableArray != null && observableArray.contains(oldRange)
                 && !observableArray.contains(newRange)) {
-            int index = observableArray.indexOf(oldRange);
-            MeasRangeData duplicateRange = checkForDuplicateRange(observableArray, newRange);
-            if (duplicateRange != null && observableArray.indexOf(duplicateRange) == index) {
-                fireDuplicateRangeAlert();
+            int oldIndex = observableArray.indexOf(oldRange);
+            MeasRangeData duplicateRange = checkForExistingFirstRange(observableArray, newRange);
+            // TODO: duplicate if statement
+            if (duplicateRange != null && observableArray.indexOf(duplicateRange) != oldIndex) {
+                fireExistingFirstRangeAlert();
             } else {
-                observableArray.set(index, newRange);
-                result = true;
+                duplicateRange = checkForDuplicateRange(observableArray, newRange);
+                if (duplicateRange != null && observableArray.indexOf(duplicateRange) != oldIndex) {
+                    fireDuplicateRangeValueAlert();
+                } else {
+                    observableArray.set(oldIndex, newRange);
+                    result = true;
+                }
             }
         }
         return result;
@@ -68,23 +78,29 @@ public class ValuationData {
         }
     }
 
-    private void fireDuplicateRangeAlert() {
-        Alert alert = initializeAlert("Error when adding measurement range",
-                "Range already exists within that function.",
+    private void fireDuplicateRangeValueAlert() {
+        Alert alert = initializeAlert("Range already exists within that function.",
                 "Range not added - try different range value.");
         alert.showAndWait();
     }
 
-    private Alert initializeAlert(String title, String header, String content) {
+    private void fireExistingFirstRangeAlert() {
+        Alert alert = initializeAlert("The \"First\" range is already present for that function.",
+                "Range not added - change the range type to \"Additional\" or delete the existing \"First\" range.");
+        alert.showAndWait();
+    }
+
+    private Alert initializeAlert(String header, String content) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setTitle(title);
+        alert.setTitle("Error when adding measurement range");
         alert.setHeaderText(header);
         alert.setContentText(content);
         return alert;
     }
 
-    // checks whether the range with the same range value is present in that function's array:
-    // returns a duplicate range found in the range collection or null
+    // checks whether the range with the same numeric range value is present in that function's array;
+    // returns a duplicate range found in the range collection or null;
+    // takes the unit into account;
     // TODO: additional check for the combination of numeric value * unit (e.g. 1 kV is the same as 1000 V)
     public MeasRangeData checkForDuplicateRange(ObservableList<MeasRangeData> observableArray, MeasRangeData range) {
         MeasRangeData duplicateRange = null;
@@ -93,6 +109,22 @@ public class ValuationData {
             for (MeasRangeData rangeData : observableArray) {
                 if (rangeData.getRangeBaseUnitValue() == rangeBaseUnitValue) {
                     duplicateRange = rangeData;
+                    break;
+                }
+            }
+        }
+        return duplicateRange;
+    }
+
+    public MeasRangeData checkForExistingFirstRange(ObservableList<MeasRangeData> observableArray,
+                                                    MeasRangeData range) {
+        MeasRangeData duplicateRange = null;
+        if (range != null && observableArray != null) {
+            String rangeType = range.getRangeType();
+            for (MeasRangeData rangeData : observableArray) {
+                if (rangeType.equals("First") && rangeData.getRangeType().equals("First")) {
+                    duplicateRange = rangeData;
+                    break;
                 }
             }
         }

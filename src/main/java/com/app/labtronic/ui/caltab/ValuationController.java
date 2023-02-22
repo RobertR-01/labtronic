@@ -349,6 +349,7 @@ public class ValuationController {
                     break;
                 }
             }
+            // check forms:
             if (!validationResults.isEmpty() && formProblem) {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 actionEvent.consume();
@@ -376,21 +377,31 @@ public class ValuationController {
                 alert.setContentText(content.toString());
                 alert.showAndWait();
             }
-        });
 
-        // dialog results processing:
-        Optional<ButtonType> result = dialog.showAndWait();
-        if (result.isPresent() && result.get() == ButtonType.OK) {
+            // check for duplicate range value / duplicate first range
             MeasRangeData newRange = controller.exportData();
-            // TODO: mess
-            // TODO: try putting it in the constructor
             newRange.calculateCost();
             newRange.initializeProperties();
             ObservableList<MeasRangeData> rangeObservableArray = tableView.getItems();
             if (!calData.getValuationData().editRange(rangeObservableArray, oldRange, newRange)) {
                 System.out.println("Problem with editing selected range.");
+                actionEvent.consume();
             }
-        }
+        });
+
+        // dialog results processing:
+        Optional<ButtonType> result = dialog.showAndWait();
+//        if (result.isPresent() && result.get() == ButtonType.OK) {
+//            MeasRangeData newRange = controller.exportData();
+//            // TODO: mess
+//            // TODO: try putting it in the constructor
+//            newRange.calculateCost();
+//            newRange.initializeProperties();
+//            ObservableList<MeasRangeData> rangeObservableArray = tableView.getItems();
+//            if (!calData.getValuationData().editRange(rangeObservableArray, oldRange, newRange)) {
+//                System.out.println("Problem with editing selected range.");
+//            }
+//        }
     }
 
     // wrapper for onAction property in FXML:
@@ -473,6 +484,7 @@ public class ValuationController {
         dialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
 
         final Button buttonOK = (Button) dialog.getDialogPane().lookupButton(ButtonType.OK);
+        TableView<MeasRangeData> finalTableView = tableView;
         buttonOK.addEventFilter(ActionEvent.ACTION, actionEvent -> {
             // any false value = form issue
             List<Boolean> validationResults = controller.validateForms();
@@ -510,24 +522,39 @@ public class ValuationController {
                 alert.setContentText(content.toString());
                 alert.showAndWait();
             }
-        });
 
-        // dialog results processing:
-        Optional<ButtonType> result = dialog.showAndWait();
-        if (result.isPresent() && result.get() == ButtonType.OK) {
+            // check for duplicate ranges
             MeasRangeData newRange = controller.exportData();
             // TODO: should probably be put inside the constructor
             newRange.calculateCost();
             newRange.initializeProperties();
-            if (tableView != null) {
-                ObservableList<MeasRangeData> rangeObservableArray = tableView.getItems();
+            if (finalTableView != null) {
+                ObservableList<MeasRangeData> rangeObservableArray = finalTableView.getItems();
                 if (!calData.getValuationData().addRange(rangeObservableArray, newRange)) {
                     System.out.println("Problem with editing selected range.");
+                    actionEvent.consume();
                 }
             } else {
                 System.out.println("ValuationController.addNewMeasRange() -> TableView is null");
             }
-        }
+        });
+
+        // dialog results processing:
+        Optional<ButtonType> result = dialog.showAndWait();
+//        if (result.isPresent() && result.get() == ButtonType.OK) {
+//            MeasRangeData newRange = controller.exportData();
+//            // TODO: should probably be put inside the constructor
+//            newRange.calculateCost();
+//            newRange.initializeProperties();
+//            if (tableView != null) {
+//                ObservableList<MeasRangeData> rangeObservableArray = tableView.getItems();
+//                if (!calData.getValuationData().addRange(rangeObservableArray, newRange)) {
+//                    System.out.println("Problem with editing selected range.");
+//                }
+//            } else {
+//                System.out.println("ValuationController.addNewMeasRange() -> TableView is null");
+//            }
+//        }
     }
 
     private void removeMeasRange(Event event) {

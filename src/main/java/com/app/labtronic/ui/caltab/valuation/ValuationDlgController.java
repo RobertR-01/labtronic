@@ -209,11 +209,6 @@ public class ValuationDlgController {
         return result;
     }
 
-    // check if the "first" range already exists:
-//    private boolean validateRangeType() {
-//
-//    }
-
     private boolean checkForEmptyFields() {
         boolean result = true;
         emptyFields = new ArrayList<>();
@@ -241,10 +236,14 @@ public class ValuationDlgController {
         node.setStyle("-fx-border-color: red;");
     }
 
-    // TODO: validation
     public MeasRangeData exportData() {
-        return new MeasRangeData(range, rangeTypeCB.getValue(), unitCB.getValue(), functionType, pointsList,
-                resCategory);
+        if (range != 0 && rangeTypeCB.getValue() != null && unitCB.getValue() != null && functionType != null
+                && pointsList != null && !pointsList.isEmpty() && resCategory != 0) {
+            return new MeasRangeData(range, rangeTypeCB.getValue(), unitCB.getValue(), functionType, pointsList,
+                    resCategory);
+        } else {
+            return null;
+        }
     }
 
     // TODO: validation
