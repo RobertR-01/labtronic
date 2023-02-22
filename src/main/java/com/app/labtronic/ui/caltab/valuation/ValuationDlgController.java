@@ -171,7 +171,10 @@ public class ValuationDlgController {
         }
     }
 
+    // true -> ok
     private boolean validatePoints() {
+        List<Double> pointsCopy = new ArrayList<>(pointsList);
+        pointsList.clear(); // to prevent multiple sets of points being added to the list
         boolean result = false;
         String string = pointsTA.getText().trim();
         String[] stringArray = string.split(",");
@@ -184,8 +187,9 @@ public class ValuationDlgController {
             } catch (NumberFormatException e) {
                 System.out.println("Invalid input.");
                 System.out.println(e.getMessage());
-                e.printStackTrace();
+                //e.printStackTrace();
                 result = false;
+                pointsList = new ArrayList<>(pointsCopy);
                 break;
             }
             result = true;
@@ -193,6 +197,7 @@ public class ValuationDlgController {
         return result;
     }
 
+    // true -> ok
     private boolean validateRange() {
         boolean result = false;
         String rangeString = rangeTF.getText().trim();
@@ -204,11 +209,12 @@ public class ValuationDlgController {
         } catch (NumberFormatException e) {
             System.out.println("Invalid input.");
             System.out.println(e.getMessage());
-            e.printStackTrace();
+            //e.printStackTrace();
         }
         return result;
     }
 
+    // false -> there are empty fields
     private boolean checkForEmptyFields() {
         boolean result = true;
         emptyFields = new ArrayList<>();
@@ -222,13 +228,20 @@ public class ValuationDlgController {
         return result;
     }
 
-    // order of values in the returned list is: empty fields check, range TF check, points TA check
+    // false -> zero range present (invalid)
+    // must be called after validateRange()
+    private boolean checkForZeroRange() {
+        return !((range == 0) && !rangeTF.getText().isBlank());
+    }
+
+    // order of values in the returned list is: empty fields check, range TF check, points TA check, zero range check
     // false value means there's a problem with a corresponding check
     public List<Boolean> validateForms() {
         List<Boolean> results = new ArrayList<>();
         results.add(checkForEmptyFields());
         results.add(validateRange());
         results.add(validatePoints());
+        results.add(checkForZeroRange());
         return results;
     }
 

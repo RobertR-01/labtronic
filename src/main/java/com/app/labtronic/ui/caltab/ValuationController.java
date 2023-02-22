@@ -373,35 +373,80 @@ public class ValuationController {
                     content.append("Invalid measurement points!\nEnter numeric values separated with a comma.\n\n");
                 }
 
+                if (!validationResults.get(3)) {
+                    controller.addRedOutline(controller.getRangeTF());
+                    content.append("Invalid range value!\nEnter a non-zero value for the range field.\n\n");
+                }
+
                 alert.setTitle(title);
                 alert.setContentText(content.toString());
                 alert.showAndWait();
-            }
-
-            // check for duplicate range value / duplicate first range
-            MeasRangeData newRange = controller.exportData();
-            newRange.calculateCost();
-            newRange.initializeProperties();
-            ObservableList<MeasRangeData> rangeObservableArray = tableView.getItems();
-            if (!calData.getValuationData().editRange(rangeObservableArray, oldRange, newRange)) {
-                System.out.println("Problem with editing selected range.");
-                actionEvent.consume();
+            } else {
+                // check for duplicate range value / duplicate first range
+                MeasRangeData newRange = controller.exportData();
+                if (newRange != null) {
+                    newRange.calculateCost();
+                    newRange.initializeProperties();
+                    ObservableList<MeasRangeData> rangeObservableArray = tableView.getItems();
+                    boolean[] results = calData.getValuationData().editRange(rangeObservableArray, oldRange, newRange);
+                    if (!results[0]) {
+                        System.out.println("Problem with editing selected range - first range already exists.");
+                        fireExistingFirstRangeAlert();
+                        actionEvent.consume();
+                    }
+                    if (!results[1]) {
+                        System.out.println("Problem with editing selected range - duplicate range.");
+                        fireDuplicateRangeValueAlert();
+                        actionEvent.consume();
+                    }
+                } else {
+                    System.out.println("ValuationController.editMeasRange() -> newRange is null");
+                }
             }
         });
 
-        // dialog results processing:
         Optional<ButtonType> result = dialog.showAndWait();
+
+        // TODO: test if moving this block to the addEventFilter() is going to cause any problems
+        // old dialog results processing:
 //        if (result.isPresent() && result.get() == ButtonType.OK) {
+//            // check for duplicate range value / duplicate first range
 //            MeasRangeData newRange = controller.exportData();
-//            // TODO: mess
-//            // TODO: try putting it in the constructor
 //            newRange.calculateCost();
 //            newRange.initializeProperties();
 //            ObservableList<MeasRangeData> rangeObservableArray = tableView.getItems();
-//            if (!calData.getValuationData().editRange(rangeObservableArray, oldRange, newRange)) {
-//                System.out.println("Problem with editing selected range.");
+//            boolean[] results = calData.getValuationData().editRange(rangeObservableArray, oldRange, newRange);
+//            if (!results[0]) {
+//                System.out.println("Problem with editing selected range - first range already exists.");
+//                fireExistingFirstRangeAlert();
+//                dialogActionEvent[0].consume();
+//            }
+//            if (!results[1]) {
+//                System.out.println("Problem with editing selected range - duplicate range.");
+//                fireDuplicateRangeValueAlert();
+//                dialogActionEvent[0].consume();
 //            }
 //        }
+    }
+
+    private void fireDuplicateRangeValueAlert() {
+        Alert alert = initializeAlert("Range already exists for that function.",
+                "Range not added - try different range value.");
+        alert.showAndWait();
+    }
+
+    private void fireExistingFirstRangeAlert() {
+        Alert alert = initializeAlert("The \"First\" range is already present for that function.",
+                "Range not added - change the range type to \"Additional\" or delete the existing \"First\" range.");
+        alert.showAndWait();
+    }
+
+    private Alert initializeAlert(String header, String content) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Error when adding measurement range");
+        alert.setHeaderText(header);
+        alert.setContentText(content);
+        return alert;
     }
 
     // wrapper for onAction property in FXML:
@@ -518,38 +563,63 @@ public class ValuationController {
                     content.append("Invalid measurement points!\nEnter numeric values separated with a comma.\n\n");
                 }
 
+                if (!validationResults.get(3)) {
+                    controller.addRedOutline(controller.getRangeTF());
+                    content.append("Invalid range value!\nEnter a non-zero value for the range field.\n\n");
+                }
+
                 alert.setTitle(title);
                 alert.setContentText(content.toString());
                 alert.showAndWait();
-            }
-
-            // check for duplicate ranges
-            MeasRangeData newRange = controller.exportData();
-            // TODO: should probably be put inside the constructor
-            newRange.calculateCost();
-            newRange.initializeProperties();
-            if (finalTableView != null) {
-                ObservableList<MeasRangeData> rangeObservableArray = finalTableView.getItems();
-                if (!calData.getValuationData().addRange(rangeObservableArray, newRange)) {
-                    System.out.println("Problem with editing selected range.");
-                    actionEvent.consume();
-                }
             } else {
-                System.out.println("ValuationController.addNewMeasRange() -> TableView is null");
+                // check for duplicate range value / duplicate first range and process the results
+                MeasRangeData newRange = controller.exportData();
+                if (newRange != null) {
+                    newRange.calculateCost();
+                    newRange.initializeProperties();
+                    if (finalTableView != null) {
+                        ObservableList<MeasRangeData> rangeObservableArray = finalTableView.getItems();
+                        boolean[] results = calData.getValuationData().addRange(rangeObservableArray, newRange);
+                        if (!results[0]) {
+                            System.out.println("Problem with adding selected range - first range already exists.");
+                            fireExistingFirstRangeAlert();
+                            actionEvent.consume();
+                        }
+                        if (!results[1]) {
+                            System.out.println("Problem with adding selected range - duplicate range.");
+                            fireDuplicateRangeValueAlert();
+                            actionEvent.consume();
+                        }
+                    } else {
+                        System.out.println("ValuationController.addNewMeasRange() -> TableView is null");
+                    }
+                } else {
+                    System.out.println("ValuationController.editMeasRange() -> newRange is null");
+                }
             }
         });
 
-        // dialog results processing:
         Optional<ButtonType> result = dialog.showAndWait();
+
+        // TODO: test if moving this block to the addEventFilter() is going to cause any problems
+        // old dialog results processing:
 //        if (result.isPresent() && result.get() == ButtonType.OK) {
+//            // check for duplicate range value / duplicate first range
 //            MeasRangeData newRange = controller.exportData();
-//            // TODO: should probably be put inside the constructor
 //            newRange.calculateCost();
 //            newRange.initializeProperties();
 //            if (tableView != null) {
 //                ObservableList<MeasRangeData> rangeObservableArray = tableView.getItems();
-//                if (!calData.getValuationData().addRange(rangeObservableArray, newRange)) {
-//                    System.out.println("Problem with editing selected range.");
+//                boolean[] results = calData.getValuationData().addRange(rangeObservableArray, newRange);
+//                if (!results[0]) {
+//                    System.out.println("Problem with adding selected range - first range already exists.");
+//                    fireExistingFirstRangeAlert();
+//                    dialogActionEvent[0].consume();
+//                }
+//                if (!results[1]) {
+//                    System.out.println("Problem with adding selected range - duplicate range.");
+//                    fireDuplicateRangeValueAlert();
+//                    dialogActionEvent[0].consume();
 //                }
 //            } else {
 //                System.out.println("ValuationController.addNewMeasRange() -> TableView is null");

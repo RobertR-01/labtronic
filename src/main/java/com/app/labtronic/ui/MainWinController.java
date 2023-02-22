@@ -5,10 +5,15 @@ import com.app.labtronic.data.CalData;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Screen;
+import javafx.stage.Window;
+import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -74,6 +79,18 @@ public class MainWinController {
                 alert.setHeaderText("Missing input data!");
                 alert.setContentText("No fields in the form may remain empty.");
                 alert.showAndWait();
+            }
+        });
+
+        // centering the dialog on the screen:
+        final Window window = dialog.getDialogPane().getScene().getWindow();
+        window.addEventHandler(WindowEvent.WINDOW_SHOWN, new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent event) {
+                Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+                window.setX((screenBounds.getWidth() - window.getWidth()) / 2);
+                window.setY((screenBounds.getHeight() - window.getHeight()) / 2);
+
             }
         });
 
