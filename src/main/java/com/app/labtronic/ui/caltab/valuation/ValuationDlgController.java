@@ -68,13 +68,19 @@ public class ValuationDlgController {
             }
         }
 
-        nodeList = List.of(rangeTF, pointsTA);
+        nodeList = List.of(rangeTF, pointsTA, rangeTypeCB);
         // removes red outline from invalid fields upon typing:
         for (Node node : nodeList) {
             if (node instanceof TextField || node instanceof TextArea) {
                 ((TextInputControl) node).textProperty().addListener((observable, oldValue, newValue) -> {
                     if (((!newValue.isEmpty() && oldValue.isEmpty()) || (!newValue.equalsIgnoreCase(oldValue)))
                             && node.getStyle().equals("-fx-border-color: red;")) {
+                        node.setStyle("");
+                    }
+                });
+            } else if (node instanceof ComboBox<?>) {
+                ((ComboBox<String>) node).valueProperty().addListener((observable, oldValue, newValue) -> {
+                    if ((!newValue.equalsIgnoreCase(oldValue)) && node.getStyle().equals("-fx-border-color: red;")) {
                         node.setStyle("");
                     }
                 });
@@ -282,6 +288,10 @@ public class ValuationDlgController {
 
     public TextArea getPointsTA() {
         return pointsTA;
+    }
+
+    public ComboBox<String> getRangeTypeCB() {
+        return rangeTypeCB;
     }
 
     public List<Node> getEmptyFields() {

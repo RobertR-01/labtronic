@@ -582,11 +582,14 @@ public class ValuationController {
                         boolean[] results = calData.getValuationData().addRange(rangeObservableArray, newRange);
                         if (!results[0]) {
                             System.out.println("Problem with adding selected range - first range already exists.");
+                            controller.addRedOutline(controller.getRangeTF());
+                            controller.addRedOutline(controller.getRangeTypeCB());
                             fireExistingFirstRangeAlert();
                             actionEvent.consume();
                         }
                         if (!results[1]) {
                             System.out.println("Problem with adding selected range - duplicate range.");
+                            controller.addRedOutline(controller.getRangeTF());
                             fireDuplicateRangeValueAlert();
                             actionEvent.consume();
                         }
