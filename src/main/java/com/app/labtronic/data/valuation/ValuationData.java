@@ -20,6 +20,14 @@ public class ValuationData {
 
     private double vdcCost;
     private SimpleDoubleProperty observableVdcCost;
+    private double vacCost;
+    private SimpleDoubleProperty observableVacCost;
+    private double idcCost;
+    private SimpleDoubleProperty observableIdcCost;
+    private double iacCost;
+    private SimpleDoubleProperty observableIacCost;
+    private double rdcCost;
+    private SimpleDoubleProperty observableRdcCost;
 
     private double totalServiceCost;
     private SimpleDoubleProperty observableTotalCost;
@@ -35,28 +43,38 @@ public class ValuationData {
         this.iacExtraArrays = new LinkedList<>();
 
         this.observableVdcCost = new SimpleDoubleProperty();
+        this.observableVacCost = new SimpleDoubleProperty();
+        this.observableIdcCost = new SimpleDoubleProperty();
+        this.observableIacCost = new SimpleDoubleProperty();
+        this.observableRdcCost = new SimpleDoubleProperty();
         this.observableTotalCost = new SimpleDoubleProperty();
 
-        initializeVdcCost();
+        // base 5 sections:
+        initializeBaseSectionsCostProperties();
     }
 
-    public void initializeCostBinding(SimpleDoubleProperty property) {
-        if (property != null) {
-
+    private void initializeBaseSectionsCostProperties() {
+        List<SimpleDoubleProperty> properties = List.of(observableVdcCost, observableVacCost, observableIdcCost,
+                observableIacCost, observableRdcCost);
+        List<ObservableList<MeasRangeData>> observableLists = List.of(vdcObservableArray, vacObservableArray,
+                idcObservableArray, iacObservableArray, rdcObservableArray);
+        for (int i = 0; i < properties.size(); i++) {
+            initializeFunctionCost(observableLists.get(i), properties.get(i));
         }
     }
 
-    public void initializeVdcCost() {
-        if (observableVdcCost != null && vdcObservableArray != null) {
-            vdcObservableArray.addListener((ListChangeListener<? super MeasRangeData>) c ->
-                    observableVdcCost.set(calculateVdcSectionCost()));
+    public void initializeFunctionCost(ObservableList<MeasRangeData> observableList,
+                                       SimpleDoubleProperty observableCost) {
+        if (observableCost != null && observableList != null) {
+            observableList.addListener((ListChangeListener<? super MeasRangeData>) c ->
+                    observableCost.set(calculateFunctionCost(observableList)));
         }
     }
 
-    private double calculateVdcSectionCost() {
+    private double calculateFunctionCost(ObservableList<MeasRangeData> observableList) {
         double cost = 0;
-        if (vdcObservableArray != null && !vdcObservableArray.isEmpty()) {
-            for (MeasRangeData range : vdcObservableArray) {
+        if (observableList != null && !observableList.isEmpty()) {
+            for (MeasRangeData range : observableList) {
                 cost += range.getCost();
             }
         }
@@ -73,6 +91,54 @@ public class ValuationData {
 
     public void setObservableVdcCost(double observableVdcCost) {
         this.observableVdcCost.set(observableVdcCost);
+    }
+
+    public double getObservableVacCost() {
+        return observableVacCost.get();
+    }
+
+    public SimpleDoubleProperty observableVacCostProperty() {
+        return observableVacCost;
+    }
+
+    public void setObservableVacCost(double observableVacCost) {
+        this.observableVacCost.set(observableVacCost);
+    }
+
+    public double getObservableIdcCost() {
+        return observableIdcCost.get();
+    }
+
+    public SimpleDoubleProperty observableIdcCostProperty() {
+        return observableIdcCost;
+    }
+
+    public void setObservableIdcCost(double observableIdcCost) {
+        this.observableIdcCost.set(observableIdcCost);
+    }
+
+    public double getObservableIacCost() {
+        return observableIacCost.get();
+    }
+
+    public SimpleDoubleProperty observableIacCostProperty() {
+        return observableIacCost;
+    }
+
+    public void setObservableIacCost(double observableIacCost) {
+        this.observableIacCost.set(observableIacCost);
+    }
+
+    public double getObservableRdcCost() {
+        return observableRdcCost.get();
+    }
+
+    public SimpleDoubleProperty observableRdcCostProperty() {
+        return observableRdcCost;
+    }
+
+    public void setObservableRdcCost(double observableRdcCost) {
+        this.observableRdcCost.set(observableRdcCost);
     }
 
     public double getObservableTotalCost() {
