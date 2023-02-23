@@ -81,6 +81,11 @@ public class ValuationController {
     private CalData calData;
 
     @FXML
+    private Label vdcCost;
+    @FXML
+    private Label totalCostL;
+
+    @FXML
     private void initialize() {
         calData = ActiveSession.getActiveSessionInstance().getActiveCalTabs().get(ActiveSession.getLastAddedId());
 
@@ -231,6 +236,10 @@ public class ValuationController {
                 }
             });
         }
+
+        // total cost label setup:
+//        totalCostL.textProperty().bind(calData.getValuationData().observableTotalCostProperty().asString());
+        vdcCost.textProperty().bind(calData.getValuationData().observableVdcCostProperty().asString());
     }
 
     private void previewRange(TableView<MeasRangeData> tableView) {
@@ -487,9 +496,6 @@ public class ValuationController {
         } else {
             // when called from the ContextMenu on the TableView:
             ContextMenu menu = ((MenuItem) event.getSource()).getParentPopup();
-            System.out.println("testing");
-            System.out.println(event.getSource());
-            System.out.println(menu.getUserData());
             tableView = (TableView<MeasRangeData>) menu.getUserData();
             sectionPane = tableView.getParent();
             sourceParentPane = ((Pane) sectionPane).getChildren().get(0);
@@ -501,7 +507,7 @@ public class ValuationController {
         for (Node node : ((Pane) sourceParentPane).getChildren()) {
             if (node instanceof Label) {
                 text = ((Label) node).getText();
-                System.out.println("text: " + text);
+                break;
             }
         }
 

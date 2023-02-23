@@ -1,6 +1,8 @@
 package com.app.labtronic.data.valuation;
 
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 
 import java.util.LinkedList;
@@ -16,6 +18,12 @@ public class ValuationData {
     private final List<ObservableList<MeasRangeData>> vacExtraArrays;
     private final List<ObservableList<MeasRangeData>> iacExtraArrays;
 
+    private double vdcCost;
+    private SimpleDoubleProperty observableVdcCost;
+
+    private double totalServiceCost;
+    private SimpleDoubleProperty observableTotalCost;
+
     public ValuationData() {
         this.vdcObservableArray = FXCollections.observableArrayList();
         this.vacObservableArray = FXCollections.observableArrayList();
@@ -25,6 +33,58 @@ public class ValuationData {
 
         this.vacExtraArrays = new LinkedList<>();
         this.iacExtraArrays = new LinkedList<>();
+
+        this.observableVdcCost = new SimpleDoubleProperty();
+        this.observableTotalCost = new SimpleDoubleProperty();
+
+        initializeVdcCost();
+    }
+
+    public void initializeCostBinding(SimpleDoubleProperty property) {
+        if (property != null) {
+
+        }
+    }
+
+    public void initializeVdcCost() {
+        if (observableVdcCost != null && vdcObservableArray != null) {
+            vdcObservableArray.addListener((ListChangeListener<? super MeasRangeData>) c ->
+                    observableVdcCost.set(calculateVdcSectionCost()));
+        }
+    }
+
+    private double calculateVdcSectionCost() {
+        double cost = 0;
+        if (vdcObservableArray != null && !vdcObservableArray.isEmpty()) {
+            for (MeasRangeData range : vdcObservableArray) {
+                cost += range.getCost();
+            }
+        }
+        return cost;
+    }
+
+    public double getObservableVdcCost() {
+        return observableVdcCost.get();
+    }
+
+    public SimpleDoubleProperty observableVdcCostProperty() {
+        return observableVdcCost;
+    }
+
+    public void setObservableVdcCost(double observableVdcCost) {
+        this.observableVdcCost.set(observableVdcCost);
+    }
+
+    public double getObservableTotalCost() {
+        return observableTotalCost.get();
+    }
+
+    public SimpleDoubleProperty observableTotalCostProperty() {
+        return observableTotalCost;
+    }
+
+    public void setObservableTotalCost(double observableTotalCost) {
+        this.observableTotalCost.set(observableTotalCost);
     }
 
     // results -> {first range exists check, duplicate range check}
@@ -50,7 +110,7 @@ public class ValuationData {
     // results -> {first range exists check, duplicate range check}
     // both true -> edition successful
     public boolean[] editRange(ObservableList<MeasRangeData> observableArray, MeasRangeData oldRange,
-                             MeasRangeData newRange) {
+                               MeasRangeData newRange) {
         boolean[] results = {true, true};
         if (oldRange != null && newRange != null && observableArray != null && observableArray.contains(oldRange)
                 && !observableArray.contains(newRange)) {

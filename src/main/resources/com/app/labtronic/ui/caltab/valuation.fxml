@@ -33,6 +33,11 @@
             </HBox>
             <Separator orientation="VERTICAL"/>
             <CheckBox text="RDC" fx:id="rdcCB"/>
+            <Separator orientation="VERTICAL"/>
+            <HBox spacing="10" alignment="CENTER">
+                <Label text="Total cost: " alignment="CENTER"/>
+                <Label fx:id="totalCostL" alignment="CENTER"/>
+            </HBox>
         </HBox>
     </top>
     <center>
@@ -53,6 +58,10 @@
                                 <FontIcon iconLiteral="bx-plus" iconSize="16"/>
                             </graphic>
                         </Button>
+                        <HBox spacing="10" alignment="CENTER">
+                            <Label text="Section cost: " alignment="CENTER"/>
+                            <Label fx:id="vdcCost" alignment="CENTER"/>
+                        </HBox>
                     </HBox>
                     <TableView fx:id="vdcTableView" VBox.vgrow="ALWAYS" >
                         <columns>
