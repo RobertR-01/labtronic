@@ -253,6 +253,8 @@ public class ValuationController {
         idcCostL.textProperty().bind(calData.getValuationData().observableIdcCostProperty().asString());
         iacCostL.textProperty().bind(calData.getValuationData().observableIacCostProperty().asString());
         rdcCostL.textProperty().bind(calData.getValuationData().observableRdcCostProperty().asString());
+
+        totalCostL.textProperty().bind(calData.getValuationData().observableTotalCostProperty().asString());
     }
 
     private void previewRange(TableView<MeasRangeData> tableView) {

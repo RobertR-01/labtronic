@@ -32,6 +32,7 @@ public class ValuationData {
     private double rdcCost;
     private SimpleDoubleProperty observableRdcCost;
 
+    private ObservableList<ObservableList<MeasRangeData>> observableLists;
     private double totalServiceCost;
     private SimpleDoubleProperty observableTotalCost;
 
@@ -55,6 +56,8 @@ public class ValuationData {
         this.vacExtraProperties = new LinkedList<>();
         this.iacExtraProperties = new LinkedList<>();
 
+        this.observableLists = FXCollections.observableArrayList();
+
         // base 5 sections:
         initializeBaseSectionsCostProperties();
     }
@@ -73,7 +76,18 @@ public class ValuationData {
                                        SimpleDoubleProperty observableCost) {
         if (observableCost != null && observableList != null) {
             observableList.addListener((ListChangeListener<? super MeasRangeData>) c ->
-                    observableCost.set(calculateFunctionCost(observableList)));
+            {
+                double oldValue = observableCost.getValue();
+                double newValue = calculateFunctionCost(observableList);
+                observableCost.set(newValue);
+                System.out.println("calc");
+                if (newValue >= oldValue) {
+                    observableTotalCost.add(newValue);
+                } else {
+                    observableTotalCost.subtract(newValue);
+                }
+                System.out.println(observableTotalCost.get());
+            });
         }
     }
 
