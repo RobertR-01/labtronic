@@ -5,6 +5,7 @@ import com.app.labtronic.data.CalData;
 import com.app.labtronic.data.valuation.MeasRangeData;
 import com.app.labtronic.ui.caltab.valuation.RangePreviewController;
 import com.app.labtronic.ui.caltab.valuation.ValuationDlgController;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -81,7 +82,15 @@ public class ValuationController {
     private CalData calData;
 
     @FXML
-    private Label vdcCost;
+    private Label vdcCostL;
+    @FXML
+    private Label vacCostL;
+    @FXML
+    private Label idcCostL;
+    @FXML
+    private Label iacCostL;
+    @FXML
+    private Label rdcCostL;
     @FXML
     private Label totalCostL;
 
@@ -239,7 +248,11 @@ public class ValuationController {
 
         // total cost label setup:
 //        totalCostL.textProperty().bind(calData.getValuationData().observableTotalCostProperty().asString());
-        vdcCost.textProperty().bind(calData.getValuationData().observableVdcCostProperty().asString());
+        vdcCostL.textProperty().bind(calData.getValuationData().observableVdcCostProperty().asString());
+        vacCostL.textProperty().bind(calData.getValuationData().observableVacCostProperty().asString());
+        idcCostL.textProperty().bind(calData.getValuationData().observableIdcCostProperty().asString());
+        iacCostL.textProperty().bind(calData.getValuationData().observableIacCostProperty().asString());
+        rdcCostL.textProperty().bind(calData.getValuationData().observableRdcCostProperty().asString());
     }
 
     private void previewRange(TableView<MeasRangeData> tableView) {
@@ -684,6 +697,7 @@ public class ValuationController {
         }
         // TODO: check for null
         container.initializeTableView();
+        container.initializeCostDisplay();
     }
 
     private void removeAcFreq(boolean isVoltage) {
@@ -703,6 +717,7 @@ public class ValuationController {
         private final Button button;
         private final TableView<MeasRangeData> tableView;
         private final boolean isVoltage;
+        private final Label costL;
 
         private AcFreqContainer(boolean isVoltage) {
             this.isVoltage = isVoltage;
@@ -735,6 +750,17 @@ public class ValuationController {
             button.setOnAction(event -> ValuationController.this.addNewMeasRange(event, true));
             hBox.getChildren().add(button);
 
+            HBox costHBox = new HBox();
+            costHBox.setSpacing(10);
+            costHBox.setAlignment(Pos.CENTER);
+            Label sectionCostL = new Label("Section cost: ");
+            sectionCostL.setAlignment(Pos.CENTER);
+            costL = new Label();
+            costL.setAlignment(Pos.CENTER);
+            costHBox.getChildren().add(sectionCostL);
+            costHBox.getChildren().add(costL);
+            hBox.getChildren().add(costHBox);
+
             tableView = new TableView<>();
             VBox.setVgrow(tableView, Priority.ALWAYS);
             TableColumn<MeasRangeData, String> column;
@@ -751,10 +777,8 @@ public class ValuationController {
             String[] measRangeDataFields = {"rangeProperty", "unitProperty", "numberOfPointsProperty",
                     "rangeTypeProperty", "costProperty"};
             String functionType = (isVoltage) ? "VAC" : "IAC";
-            System.out.println(functionType);
             // TODO: validation
             int lastIndex = calData.getValuationData().getExtraAcFreqs(functionType).size() - 1;
-            System.out.println(lastIndex);
             ObservableList<MeasRangeData> rangeArray = calData.getValuationData().getExtraAcFreqs(functionType).
                     get(lastIndex);
 
@@ -851,6 +875,18 @@ public class ValuationController {
                     }
                 }
             });
+        }
+
+        public void initializeCostDisplay() {
+            // TODO: similar method to the initializeTableView() - merge those methods or call them from the constructor
+            String functionType = (isVoltage) ? "VAC" : "IAC";
+            int lastIndex = calData.getValuationData().getExtraAcFreqs(functionType).size() - 1;
+            ObservableList<MeasRangeData> rangeList = calData.getValuationData().getExtraAcFreqs(functionType).
+                    get(lastIndex);
+            SimpleDoubleProperty property = calData.getValuationData().getExtraAcProperties(functionType).
+                    get(lastIndex);
+            calData.getValuationData().initializeFunctionCost(rangeList, property);
+            costL.textProperty().bind(property.asString());
         }
 
         public HBox getHBox() {

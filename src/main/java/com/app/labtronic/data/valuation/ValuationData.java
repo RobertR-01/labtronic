@@ -18,6 +18,9 @@ public class ValuationData {
     private final List<ObservableList<MeasRangeData>> vacExtraArrays;
     private final List<ObservableList<MeasRangeData>> iacExtraArrays;
 
+    private final List<SimpleDoubleProperty> vacExtraProperties;
+    private final List<SimpleDoubleProperty> iacExtraProperties;
+
     private double vdcCost;
     private SimpleDoubleProperty observableVdcCost;
     private double vacCost;
@@ -48,6 +51,9 @@ public class ValuationData {
         this.observableIacCost = new SimpleDoubleProperty();
         this.observableRdcCost = new SimpleDoubleProperty();
         this.observableTotalCost = new SimpleDoubleProperty();
+
+        this.vacExtraProperties = new LinkedList<>();
+        this.iacExtraProperties = new LinkedList<>();
 
         // base 5 sections:
         initializeBaseSectionsCostProperties();
@@ -243,8 +249,14 @@ public class ValuationData {
         // TODO: check for valid Strings (frequencies); pattern or something
         if (function != null && !function.isBlank()) {
             switch (function.trim().toUpperCase()) {
-                case "VAC" -> vacExtraArrays.add(FXCollections.observableArrayList());
-                case "IAC" -> iacExtraArrays.add(FXCollections.observableArrayList());
+                case "VAC" -> {
+                    vacExtraArrays.add(FXCollections.observableArrayList());
+                    vacExtraProperties.add(new SimpleDoubleProperty());
+                }
+                case "IAC" -> {
+                    iacExtraArrays.add(FXCollections.observableArrayList());
+                    iacExtraProperties.add(new SimpleDoubleProperty());
+                }
             }
             return true;
         }
@@ -252,19 +264,24 @@ public class ValuationData {
     }
 
     // TODO: do something about those multiple exit points
+    // TODO: performing the same operations on two separate lists - code duplication
     public boolean removeExtraAcFreq(String function) {
         if (function != null && !function.isBlank()) {
             List<ObservableList<MeasRangeData>> freqsList = null;
+            List<SimpleDoubleProperty> propertiesList = null;
             switch (function.trim().toUpperCase()) {
                 case "VAC":
                     freqsList = vacExtraArrays;
+                    propertiesList = vacExtraProperties;
                     break;
                 case "IAC":
                     freqsList = iacExtraArrays;
+                    propertiesList = iacExtraProperties;
                     break;
             }
-            if (freqsList != null && freqsList.size() != 0) {
+            if (freqsList != null && freqsList.size() != 0 && propertiesList != null && propertiesList.size() != 0) {
                 freqsList.remove(freqsList.get(freqsList.size() - 1));
+                propertiesList.remove(propertiesList.get(propertiesList.size() - 1));
                 return true;
             } else {
                 return false;
@@ -309,5 +326,18 @@ public class ValuationData {
             }
         }
         return freqsList;
+    }
+
+    // for additional frequency levels:
+    // TODO: duplicate code from getExtraAcFreqs()
+    public List<SimpleDoubleProperty> getExtraAcProperties(String function) {
+        List<SimpleDoubleProperty> properties = null;
+        if (function != null && !function.isBlank()) {
+            switch (function.trim()) {
+                case "VAC" -> properties = vacExtraProperties;
+                case "IAC" -> properties = iacExtraProperties;
+            }
+        }
+        return properties;
     }
 }

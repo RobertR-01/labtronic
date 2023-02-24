@@ -60,7 +60,7 @@
                         </Button>
                         <HBox spacing="10" alignment="CENTER">
                             <Label text="Section cost: " alignment="CENTER"/>
-                            <Label fx:id="vdcCost" alignment="CENTER"/>
+                            <Label fx:id="vdcCostL" alignment="CENTER"/>
                         </HBox>
                     </HBox>
                     <TableView fx:id="vdcTableView" VBox.vgrow="ALWAYS" >
@@ -98,6 +98,10 @@
                                 <FontIcon iconLiteral="bx-plus" iconSize="16"/>
                             </graphic>
                         </Button>
+                        <HBox spacing="10" alignment="CENTER">
+                            <Label text="Section cost: " alignment="CENTER"/>
+                            <Label fx:id="vacCostL" alignment="CENTER"/>
+                        </HBox>
                     </HBox>
                     <TableView fx:id="vacTableView" VBox.vgrow="ALWAYS">
                         <columns>
@@ -122,6 +126,10 @@
                                 <FontIcon iconLiteral="bx-plus" iconSize="16"/>
                             </graphic>
                         </Button>
+                        <HBox spacing="10" alignment="CENTER">
+                            <Label text="Section cost: " alignment="CENTER"/>
+                            <Label fx:id="idcCostL" alignment="CENTER"/>
+                        </HBox>
                     </HBox>
                     <TableView fx:id="idcTableView" VBox.vgrow="ALWAYS">
                         <columns>
@@ -158,6 +166,10 @@
                                 <FontIcon iconLiteral="bx-plus" iconSize="16"/>
                             </graphic>
                         </Button>
+                        <HBox spacing="10" alignment="CENTER">
+                            <Label text="Section cost: " alignment="CENTER"/>
+                            <Label fx:id="iacCostL" alignment="CENTER"/>
+                        </HBox>
                     </HBox>
                     <TableView fx:id="iacTableView" VBox.vgrow="ALWAYS">
                         <columns>
@@ -182,6 +194,10 @@
                                 <FontIcon iconLiteral="bx-plus" iconSize="16"/>
                             </graphic>
                         </Button>
+                        <HBox spacing="10" alignment="CENTER">
+                            <Label text="Section cost: " alignment="CENTER"/>
+                            <Label fx:id="rdcCostL" alignment="CENTER"/>
+                        </HBox>
                     </HBox>
                     <TableView fx:id="rdcTableView" VBox.vgrow="ALWAYS">
                         <columns>
