@@ -15,6 +15,14 @@ public class ValuationData {
     private final ObservableList<MeasRangeData> iacObservableArray;
     private final ObservableList<MeasRangeData> rdcObservableArray;
 
+    // backup for cost recalculation when a section is hidden:
+    private ObservableList<MeasRangeData> vdcBackup;
+    private ObservableList<MeasRangeData> vacBackup;
+    private ObservableList<MeasRangeData> idcBackup;
+    private ObservableList<MeasRangeData> iacBackup;
+    private ObservableList<MeasRangeData> rdcBackup;
+    private List<ObservableList<MeasRangeData>> backupList;
+
     private final List<ObservableList<MeasRangeData>> vacExtraArrays;
     private final List<ObservableList<MeasRangeData>> iacExtraArrays;
 
@@ -31,6 +39,8 @@ public class ValuationData {
     private SimpleDoubleProperty observableIacCost;
     private double rdcCost;
     private SimpleDoubleProperty observableRdcCost;
+
+    private List<SimpleDoubleProperty> baseProperties;
 
     private ObservableList<ObservableList<MeasRangeData>> observableLists;
     private double totalServiceCost;
@@ -53,40 +63,41 @@ public class ValuationData {
         this.observableRdcCost = new SimpleDoubleProperty();
         this.observableTotalCost = new SimpleDoubleProperty();
 
+        this.baseProperties = List.of(observableVdcCost, observableVacCost, observableIdcCost, observableIacCost,
+                observableRdcCost);
         this.vacExtraProperties = new LinkedList<>();
         this.iacExtraProperties = new LinkedList<>();
 
         this.observableLists = FXCollections.observableArrayList();
 
+        this.vdcBackup = FXCollections.observableArrayList();
+        this.vacBackup = FXCollections.observableArrayList();
+        this.idcBackup = FXCollections.observableArrayList();
+        this.iacBackup = FXCollections.observableArrayList();
+        this.rdcBackup = FXCollections.observableArrayList();
+        this.backupList = List.of(vdcBackup, vacBackup, idcBackup, iacBackup, rdcBackup);
+
+
         // base 5 sections:
-        initializeBaseSectionsCostProperties();
+        initBaseSectionsCostProperties();
     }
 
-    private void initializeBaseSectionsCostProperties() {
+    private void initBaseSectionsCostProperties() {
         List<SimpleDoubleProperty> properties = List.of(observableVdcCost, observableVacCost, observableIdcCost,
                 observableIacCost, observableRdcCost);
         List<ObservableList<MeasRangeData>> observableLists = List.of(vdcObservableArray, vacObservableArray,
                 idcObservableArray, iacObservableArray, rdcObservableArray);
         for (int i = 0; i < properties.size(); i++) {
-            initializeFunctionCost(observableLists.get(i), properties.get(i));
+            initFunctionObservableCost(observableLists.get(i), properties.get(i));
         }
     }
 
-    public void initializeFunctionCost(ObservableList<MeasRangeData> observableList,
-                                       SimpleDoubleProperty observableCost) {
+    public void initFunctionObservableCost(ObservableList<MeasRangeData> observableList,
+                                           SimpleDoubleProperty observableCost) {
         if (observableCost != null && observableList != null) {
-            observableList.addListener((ListChangeListener<? super MeasRangeData>) c ->
-            {
-                double oldValue = observableCost.getValue();
-                double newValue = calculateFunctionCost(observableList);
-                observableCost.set(newValue);
-                System.out.println("calc");
-                if (newValue >= oldValue) {
-                    observableTotalCost.add(newValue);
-                } else {
-                    observableTotalCost.subtract(newValue);
-                }
-                System.out.println(observableTotalCost.get());
+            observableList.addListener((ListChangeListener<? super MeasRangeData>) c -> {
+                observableCost.set(calculateFunctionCost(observableList));
+                resetTotalCostObservable();
             });
         }
     }
@@ -99,6 +110,44 @@ public class ValuationData {
             }
         }
         return cost;
+    }
+
+    public void resetTotalCostObservable() {
+        observableTotalCost.set(calculateTotalCost());
+    }
+
+    public void backupList(ObservableList<MeasRangeData> list, ObservableList<MeasRangeData> backup) {
+        if (list != null) {
+            backup.clear();
+            backup.addAll(list);
+        }
+    }
+
+    public List<ObservableList<MeasRangeData>> getBackupList() {
+        return backupList;
+    }
+
+    // TODO: inefficient (probably)
+    private double calculateTotalCost() {
+        double totalCost = 0;
+        if (baseProperties != null && !baseProperties.isEmpty()) {
+            for (SimpleDoubleProperty property : baseProperties) {
+                totalCost += property.get();
+            }
+        }
+        if (vacExtraProperties != null && !vacExtraProperties.isEmpty()) {
+            for (SimpleDoubleProperty property : vacExtraProperties) {
+                totalCost += property.get();
+            }
+        }
+        if (iacExtraProperties != null && !iacExtraProperties.isEmpty()) {
+            for (SimpleDoubleProperty property : iacExtraProperties) {
+                totalCost += property.get();
+            }
+        }
+
+
+        return totalCost;
     }
 
     public double getObservableVdcCost() {
@@ -173,11 +222,23 @@ public class ValuationData {
         this.observableTotalCost.set(observableTotalCost);
     }
 
+    public List<SimpleDoubleProperty> getVacExtraProperties() {
+        return vacExtraProperties;
+    }
+
+    public List<SimpleDoubleProperty> getIacExtraProperties() {
+        return iacExtraProperties;
+    }
+
+    public List<SimpleDoubleProperty> getBaseProperties() {
+        return baseProperties;
+    }
+
     // results -> {first range exists check, duplicate range check}
     // both true -> edition successful
     public boolean[] addRange(ObservableList<MeasRangeData> observableArray, MeasRangeData range) {
         // TODO: some check to make sure you can only add to the class field arrays
-        boolean results[] = {true, true};
+        boolean[] results = {true, true};
         if (range != null && observableArray != null && !observableArray.contains(range)) {
             if (checkForExistingFirstRange(observableArray, range) != null) {
                 results[0] = false;

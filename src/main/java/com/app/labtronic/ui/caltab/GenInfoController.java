@@ -116,6 +116,17 @@ public class GenInfoController {
                 endUserAddressTA.setText(lastTFValue[1]);
             }
         });
+
+        // TODO: implement cost recalculation when resolution changes
+//        resolutionCB.valueProperty().addListener((observable, oldValue, newValue) -> {
+//            if (!newValue.equalsIgnoreCase(oldValue)) {
+//                calData.getValuationData().resetTotalCostObservable();
+//                for (SimpleDoubleProperty property : calData.getValuationData().getBaseProperties()) {
+//                    calData.getValuationData().initFunctionObservableCost();
+//                }
+//                calData.getValuationData().getBaseProperties()
+//            }
+//        });
     }
 
     // TODO: incomplete + validation?

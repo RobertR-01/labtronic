@@ -98,29 +98,6 @@ public class ValuationController {
     private void initialize() {
         calData = ActiveSession.getActiveSessionInstance().getActiveCalTabs().get(ActiveSession.getLastAddedId());
 
-        // sets equal column width:
-        List<TableView<MeasRangeData>> tableViewList = List.of(vdcTableView, vacTableView, idcTableView, iacTableView,
-                rdcTableView);
-        for (TableView<MeasRangeData> tableView : tableViewList) {
-            for (TableColumn<MeasRangeData, ?> column : tableView.getColumns()) {
-                column.prefWidthProperty().bind(tableView.widthProperty().divide(5));
-            }
-        }
-
-        // top panel combo box bindings:
-        vacFreqL.disableProperty().bind(vacCB.selectedProperty().not());
-        vacSpinner.disableProperty().bind(vacCB.selectedProperty().not());
-        iacFreqL.disableProperty().bind(iacCB.selectedProperty().not());
-        iacSpinner.disableProperty().bind(iacCB.selectedProperty().not());
-
-        cbList = List.of(vdcCB, vacCB, idcCB, iacCB, rdcCB);
-        vBoxList = List.of(vdcSection, vacSection, idcSection, iacSection, rdcSection);
-
-        for (int i = 0; i < cbList.size(); i++) {
-            vBoxList.get(i).visibleProperty().bind(cbList.get(i).selectedProperty());
-            vBoxList.get(i).managedProperty().bind(vBoxList.get(i).visibleProperty());
-        }
-
         // vac/iac spinners:
         vacExtraTableViews = new LinkedList<>();
         iacExtraTableViews = new LinkedList<>();
@@ -134,6 +111,7 @@ public class ValuationController {
             } else if (newValue < oldValue) {
                 removeAcFreq(true);
                 calData.getValuationData().removeExtraAcFreq("VAC");
+                calData.getValuationData().resetTotalCostObservable();
             }
         });
         iacSpinner.valueProperty().addListener((observable, oldValue, newValue) -> {
@@ -143,15 +121,27 @@ public class ValuationController {
             } else if (newValue < oldValue) {
                 removeAcFreq(false);
                 calData.getValuationData().removeExtraAcFreq("IAC");
+                calData.getValuationData().resetTotalCostObservable();
             }
         });
 
-        // basic 5 TableViews setup:
+        // basic 5 TableViews setup + top panel combo boxes:
+
+        // top panel combo box bindings:
+        vacFreqL.disableProperty().bind(vacCB.selectedProperty().not());
+        vacSpinner.disableProperty().bind(vacCB.selectedProperty().not());
+        iacFreqL.disableProperty().bind(iacCB.selectedProperty().not());
+        iacSpinner.disableProperty().bind(iacCB.selectedProperty().not());
+
+        cbList = List.of(vdcCB, vacCB, idcCB, iacCB, rdcCB);
+        vBoxList = List.of(vdcSection, vacSection, idcSection, iacSection, rdcSection);
+
         List<TableView<MeasRangeData>> listOfTables = List.of(vdcTableView, vacTableView, idcTableView, iacTableView,
                 rdcTableView);
         String[] functions = {"VDC", "VAC", "IDC", "IAC", "RDC"};
         String[] measRangeDataFields = {"rangeProperty", "unitProperty", "numberOfPointsProperty", "rangeTypeProperty",
                 "costProperty"};
+
         int index;
         for (TableView<MeasRangeData> table : listOfTables) {
             index = listOfTables.indexOf(table);
@@ -159,6 +149,7 @@ public class ValuationController {
 
             int i = 0;
             for (TableColumn<MeasRangeData, ?> column : table.getColumns()) {
+                column.prefWidthProperty().bind(table.widthProperty().divide(5));
                 column.setCellValueFactory(new PropertyValueFactory<>(measRangeDataFields[i]));
                 i++;
             }
@@ -246,8 +237,25 @@ public class ValuationController {
             });
         }
 
+        for (int i = 0; i < cbList.size(); i++) {
+            vBoxList.get(i).visibleProperty().bind(cbList.get(i).selectedProperty());
+            vBoxList.get(i).managedProperty().bind(vBoxList.get(i).visibleProperty());
+
+            int finalI = i;
+            cbList.get(i).selectedProperty().addListener((observable, oldValue, newValue) -> {
+                if (newValue && !oldValue) {
+                    // TODO: this is going to be a problem when external data loading gets implemented at some point
+                    listOfTables.get(finalI).getItems().addAll(calData.getValuationData().getBackupList().get(finalI));
+                    calData.getValuationData().getBackupList().get(finalI).clear();
+                } else {
+                    calData.getValuationData().backupList(listOfTables.get(finalI).getItems(),
+                            calData.getValuationData().getBackupList().get(finalI));
+                    listOfTables.get(finalI).getItems().clear();
+                }
+            });
+        }
+
         // total cost label setup:
-//        totalCostL.textProperty().bind(calData.getValuationData().observableTotalCostProperty().asString());
         vdcCostL.textProperty().bind(calData.getValuationData().observableVdcCostProperty().asString());
         vacCostL.textProperty().bind(calData.getValuationData().observableVacCostProperty().asString());
         idcCostL.textProperty().bind(calData.getValuationData().observableIdcCostProperty().asString());
@@ -887,7 +895,7 @@ public class ValuationController {
                     get(lastIndex);
             SimpleDoubleProperty property = calData.getValuationData().getExtraAcProperties(functionType).
                     get(lastIndex);
-            calData.getValuationData().initializeFunctionCost(rangeList, property);
+            calData.getValuationData().initFunctionObservableCost(rangeList, property);
             costL.textProperty().bind(property.asString());
         }
 
