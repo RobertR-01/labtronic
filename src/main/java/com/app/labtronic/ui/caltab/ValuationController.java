@@ -3,6 +3,7 @@ package com.app.labtronic.ui.caltab;
 import com.app.labtronic.data.ActiveSession;
 import com.app.labtronic.data.CalData;
 import com.app.labtronic.data.valuation.MeasRangeData;
+import com.app.labtronic.ui.caltab.valuation.ExtraFreqController;
 import com.app.labtronic.ui.caltab.valuation.RangePreviewController;
 import com.app.labtronic.ui.caltab.valuation.ValuationDlgController;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -154,7 +155,6 @@ public class ValuationController {
                 i++;
             }
 
-
             // context menus on TableView rows (non-empty and empty):
             ContextMenu nonEmptyRowContextMenu = new ContextMenu();
             MenuItem editMenuItem = new MenuItem("Edit");
@@ -218,11 +218,6 @@ public class ValuationController {
             });
 
             table.getSelectionModel().selectFirst();
-            // TODO: implement those menu bar buttons?
-//            menuBarDeleteContactItem.disableProperty().bind(Bindings.isEmpty(contactList));
-//            menuBarEditContactItem.disableProperty().bind(Bindings.isEmpty(contactList));
-//            editMenuItem.disableProperty().bind(Bindings.isEmpty(contactList));
-//            deleteMenuItem.disableProperty().bind(Bindings.isEmpty(contactList));
 
             // onDoubleClick (range preview) setup:
             table.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -438,27 +433,6 @@ public class ValuationController {
         });
 
         Optional<ButtonType> result = dialog.showAndWait();
-
-        // TODO: test if moving this block to the addEventFilter() is going to cause any problems
-        // old dialog results processing:
-//        if (result.isPresent() && result.get() == ButtonType.OK) {
-//            // check for duplicate range value / duplicate first range
-//            MeasRangeData newRange = controller.exportData();
-//            newRange.calculateCost();
-//            newRange.initializeProperties();
-//            ObservableList<MeasRangeData> rangeObservableArray = tableView.getItems();
-//            boolean[] results = calData.getValuationData().editRange(rangeObservableArray, oldRange, newRange);
-//            if (!results[0]) {
-//                System.out.println("Problem with editing selected range - first range already exists.");
-//                fireExistingFirstRangeAlert();
-//                dialogActionEvent[0].consume();
-//            }
-//            if (!results[1]) {
-//                System.out.println("Problem with editing selected range - duplicate range.");
-//                fireDuplicateRangeValueAlert();
-//                dialogActionEvent[0].consume();
-//            }
-//        }
     }
 
     private void fireDuplicateRangeValueAlert() {
@@ -632,31 +606,6 @@ public class ValuationController {
         });
 
         Optional<ButtonType> result = dialog.showAndWait();
-
-        // TODO: test if moving this block to the addEventFilter() is going to cause any problems
-        // old dialog results processing:
-//        if (result.isPresent() && result.get() == ButtonType.OK) {
-//            // check for duplicate range value / duplicate first range
-//            MeasRangeData newRange = controller.exportData();
-//            newRange.calculateCost();
-//            newRange.initializeProperties();
-//            if (tableView != null) {
-//                ObservableList<MeasRangeData> rangeObservableArray = tableView.getItems();
-//                boolean[] results = calData.getValuationData().addRange(rangeObservableArray, newRange);
-//                if (!results[0]) {
-//                    System.out.println("Problem with adding selected range - first range already exists.");
-//                    fireExistingFirstRangeAlert();
-//                    dialogActionEvent[0].consume();
-//                }
-//                if (!results[1]) {
-//                    System.out.println("Problem with adding selected range - duplicate range.");
-//                    fireDuplicateRangeValueAlert();
-//                    dialogActionEvent[0].consume();
-//                }
-//            } else {
-//                System.out.println("ValuationController.addNewMeasRange() -> TableView is null");
-//            }
-//        }
     }
 
     private void removeMeasRange(Event event) {
@@ -728,9 +677,23 @@ public class ValuationController {
         private final TableView<MeasRangeData> tableView;
         private final boolean isVoltage;
         private final Label costL;
+        private ExtraFreqController controller;
+        private VBox section;
 
         private AcFreqContainer(boolean isVoltage) {
             this.isVoltage = isVoltage;
+            this.section = isVoltage ? vacSection : iacSection;
+
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(ValuationController.class.getResource("extra-freq.fxml"));
+
+            try {
+                dialog.getDialogPane().setContent(fxmlLoader.load());
+            } catch (IOException e) {
+                System.out.println("Couldn't load the dialog.");
+                e.printStackTrace();
+                return;
+            }
 
             hBox = new HBox();
             hBox.spacingProperty().set(20);
@@ -868,11 +831,6 @@ public class ValuationController {
             });
 
             tableView.getSelectionModel().selectFirst();
-            // TODO: implement those menu bar buttons
-//            menuBarDeleteContactItem.disableProperty().bind(Bindings.isEmpty(contactList));
-//            menuBarEditContactItem.disableProperty().bind(Bindings.isEmpty(contactList));
-//            editMenuItem.disableProperty().bind(Bindings.isEmpty(contactList));
-//            deleteMenuItem.disableProperty().bind(Bindings.isEmpty(contactList));
 
             // onDoubleClick (range preview) setup:
             tableView.setOnMouseClicked(new EventHandler<MouseEvent>() {
