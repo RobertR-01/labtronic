@@ -28,6 +28,7 @@ public class CalData {
 
     private final long ID;
 
+    // data from the new calibration dialog
     public CalData(String kubackiRegNo, String switezRegNo, LocalDate orderDate, boolean accreditation,
                    String customerName, String customerAddress, boolean isEndUserPresent, String endUserName,
                    String endUserAddress, Category category, String manufacturer, String type, String serialNo,
@@ -128,8 +129,6 @@ public class CalData {
         // TODO: check for the number of tabs already present
         if (tabsList != null && !tabsList.isEmpty()) {
             this.subTabsList = new ArrayList<>(tabsList);
-            System.out.println("setting subTabsList");
-            System.out.println(subTabsList);
         }
     }
 

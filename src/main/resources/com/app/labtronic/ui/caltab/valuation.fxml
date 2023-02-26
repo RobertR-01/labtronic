@@ -63,7 +63,7 @@
                             <Label fx:id="vdcCostL" alignment="CENTER"/>
                         </HBox>
                     </HBox>
-                    <TableView fx:id="vdcTableView" VBox.vgrow="ALWAYS" >
+                    <TableView fx:id="vdcTableView" VBox.vgrow="ALWAYS">
                         <columns>
                             <TableColumn text="Range" resizable="false"/>
                             <TableColumn text="Unit" resizable="false"/>
@@ -76,42 +76,44 @@
 
                 <!--VAC-->
                 <VBox fx:id="vacSection" spacing="10">
-                    <HBox spacing="20" alignment="CENTER">
-                        <Label text="VAC" underline="true"/>
-                        <TextField text="50" fx:id="vacFreqTF" prefWidth="50"/>
-                        <ComboBox fx:id="vacFreqCB" prefWidth="70">
-                            <items>
-                                <FXCollections fx:factory="observableArrayList">
+                    <VBox fx:id="vacBase" spacing="10">
+                        <HBox spacing="20" alignment="CENTER">
+                            <Label text="VAC" underline="true"/>
+                            <TextField text="50" fx:id="vacFreqTF" prefWidth="50"/>
+                            <ComboBox fx:id="vacFreqCB" prefWidth="70">
+                                <items>
+                                    <FXCollections fx:factory="observableArrayList">
+                                        <String fx:value="Hz"/>
+                                        <String fx:value="kHz"/>
+                                    </FXCollections>
+                                </items>
+                                <value>
                                     <String fx:value="Hz"/>
-                                    <String fx:value="kHz"/>
-                                </FXCollections>
-                            </items>
-                            <value>
-                                <String fx:value="Hz"/>
-                            </value>
-                        </ComboBox>
-                        <Button fx:id="addVacBtn" onAction="#handleAddNewMeasRange">
-                            <tooltip>
-                                <Tooltip showDelay="500ms" text="Add new measurement range / points"/>
-                            </tooltip>
-                            <graphic>
-                                <FontIcon iconLiteral="bx-plus" iconSize="16"/>
-                            </graphic>
-                        </Button>
-                        <HBox spacing="10" alignment="CENTER">
-                            <Label text="Section cost: " alignment="CENTER"/>
-                            <Label fx:id="vacCostL" alignment="CENTER"/>
+                                </value>
+                            </ComboBox>
+                            <Button fx:id="addVacBtn" onAction="#handleAddNewMeasRange">
+                                <tooltip>
+                                    <Tooltip showDelay="500ms" text="Add new measurement range / points"/>
+                                </tooltip>
+                                <graphic>
+                                    <FontIcon iconLiteral="bx-plus" iconSize="16"/>
+                                </graphic>
+                            </Button>
+                            <HBox spacing="10" alignment="CENTER">
+                                <Label text="Section cost: " alignment="CENTER"/>
+                                <Label fx:id="vacCostL" alignment="CENTER"/>
+                            </HBox>
                         </HBox>
-                    </HBox>
-                    <TableView fx:id="vacTableView" VBox.vgrow="ALWAYS">
-                        <columns>
-                            <TableColumn text="Range" resizable="false"/>
-                            <TableColumn text="Unit" resizable="false"/>
-                            <TableColumn text="Number of points" resizable="false"/>
-                            <TableColumn text="Type" resizable="false"/>
-                            <TableColumn text="Cost" resizable="false"/>
-                        </columns>
-                    </TableView>
+                        <TableView fx:id="vacTableView" VBox.vgrow="ALWAYS">
+                            <columns>
+                                <TableColumn text="Range" resizable="false"/>
+                                <TableColumn text="Unit" resizable="false"/>
+                                <TableColumn text="Number of points" resizable="false"/>
+                                <TableColumn text="Type" resizable="false"/>
+                                <TableColumn text="Cost" resizable="false"/>
+                            </columns>
+                        </TableView>
+                    </VBox>
                 </VBox>
 
                 <!--IDC-->
@@ -144,42 +146,44 @@
 
                 <!--IAC-->
                 <VBox fx:id="iacSection" spacing="10">
-                    <HBox spacing="20" alignment="CENTER">
-                        <Label text="IAC" underline="true"/>
-                        <TextField text="50" fx:id="iacFreqTF" prefWidth="50"/>
-                        <ComboBox fx:id="iacFreqCB">
-                            <items>
-                                <FXCollections fx:factory="observableArrayList">
+                    <VBox fx:id="iacBase" spacing="10">
+                        <HBox spacing="20" alignment="CENTER">
+                            <Label text="IAC" underline="true"/>
+                            <TextField text="50" fx:id="iacFreqTF" prefWidth="50"/>
+                            <ComboBox fx:id="iacFreqCB">
+                                <items>
+                                    <FXCollections fx:factory="observableArrayList">
+                                        <String fx:value="Hz"/>
+                                        <String fx:value="kHz"/>
+                                    </FXCollections>
+                                </items>
+                                <value>
                                     <String fx:value="Hz"/>
-                                    <String fx:value="kHz"/>
-                                </FXCollections>
-                            </items>
-                            <value>
-                                <String fx:value="Hz"/>
-                            </value>
-                        </ComboBox>
-                        <Button fx:id="addIacBtn" onAction="#handleAddNewMeasRange">
-                            <tooltip>
-                                <Tooltip showDelay="500ms" text="Add new measurement range / points"/>
-                            </tooltip>
-                            <graphic>
-                                <FontIcon iconLiteral="bx-plus" iconSize="16"/>
-                            </graphic>
-                        </Button>
-                        <HBox spacing="10" alignment="CENTER">
-                            <Label text="Section cost: " alignment="CENTER"/>
-                            <Label fx:id="iacCostL" alignment="CENTER"/>
+                                </value>
+                            </ComboBox>
+                            <Button fx:id="addIacBtn" onAction="#handleAddNewMeasRange">
+                                <tooltip>
+                                    <Tooltip showDelay="500ms" text="Add new measurement range / points"/>
+                                </tooltip>
+                                <graphic>
+                                    <FontIcon iconLiteral="bx-plus" iconSize="16"/>
+                                </graphic>
+                            </Button>
+                            <HBox spacing="10" alignment="CENTER">
+                                <Label text="Section cost: " alignment="CENTER"/>
+                                <Label fx:id="iacCostL" alignment="CENTER"/>
+                            </HBox>
                         </HBox>
-                    </HBox>
-                    <TableView fx:id="iacTableView" VBox.vgrow="ALWAYS">
-                        <columns>
-                            <TableColumn text="Range" resizable="false"/>
-                            <TableColumn text="Unit" resizable="false"/>
-                            <TableColumn text="Number of points" resizable="false"/>
-                            <TableColumn text="Type" resizable="false"/>
-                            <TableColumn text="Cost" resizable="false"/>
-                        </columns>
-                    </TableView>
+                        <TableView fx:id="iacTableView" VBox.vgrow="ALWAYS">
+                            <columns>
+                                <TableColumn text="Range" resizable="false"/>
+                                <TableColumn text="Unit" resizable="false"/>
+                                <TableColumn text="Number of points" resizable="false"/>
+                                <TableColumn text="Type" resizable="false"/>
+                                <TableColumn text="Cost" resizable="false"/>
+                            </columns>
+                        </TableView>
+                    </VBox>
                 </VBox>
 
                 <!--RDC-->

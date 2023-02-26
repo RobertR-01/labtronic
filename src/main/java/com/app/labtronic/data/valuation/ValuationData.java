@@ -5,56 +5,40 @@ import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ValuationData {
-    private final ObservableList<MeasRangeData> vdcObservableArray;
-    private final ObservableList<MeasRangeData> vacObservableArray;
-    private final ObservableList<MeasRangeData> idcObservableArray;
-    private final ObservableList<MeasRangeData> iacObservableArray;
-    private final ObservableList<MeasRangeData> rdcObservableArray;
+    private final ObservableList<MeasRangeData> vdcRangeList;
+    private final ObservableList<MeasRangeData> vacRangeList;
+    private final ObservableList<MeasRangeData> idcRangeList;
+    private final ObservableList<MeasRangeData> iacRangeList;
+    private final ObservableList<MeasRangeData> rdcRangeList;
 
-    // backup for cost recalculation when a section is hidden:
-    private ObservableList<MeasRangeData> vdcBackup;
-    private ObservableList<MeasRangeData> vacBackup;
-    private ObservableList<MeasRangeData> idcBackup;
-    private ObservableList<MeasRangeData> iacBackup;
-    private ObservableList<MeasRangeData> rdcBackup;
-    private List<ObservableList<MeasRangeData>> backupList;
+    private final List<ObservableList<MeasRangeData>> vacExtraRangeLists;
+    private final List<ObservableList<MeasRangeData>> iacExtraRangeLists;
 
-    private final List<ObservableList<MeasRangeData>> vacExtraArrays;
-    private final List<ObservableList<MeasRangeData>> iacExtraArrays;
-
-    private final List<SimpleDoubleProperty> vacExtraProperties;
-    private final List<SimpleDoubleProperty> iacExtraProperties;
-
-    private double vdcCost;
     private SimpleDoubleProperty observableVdcCost;
-    private double vacCost;
     private SimpleDoubleProperty observableVacCost;
-    private double idcCost;
     private SimpleDoubleProperty observableIdcCost;
-    private double iacCost;
     private SimpleDoubleProperty observableIacCost;
-    private double rdcCost;
     private SimpleDoubleProperty observableRdcCost;
 
     private List<SimpleDoubleProperty> baseProperties;
+    private final List<SimpleDoubleProperty> vacExtraProperties;
+    private final List<SimpleDoubleProperty> iacExtraProperties;
 
-    private ObservableList<ObservableList<MeasRangeData>> observableLists;
-    private double totalServiceCost;
     private SimpleDoubleProperty observableTotalCost;
 
     public ValuationData() {
-        this.vdcObservableArray = FXCollections.observableArrayList();
-        this.vacObservableArray = FXCollections.observableArrayList();
-        this.idcObservableArray = FXCollections.observableArrayList();
-        this.iacObservableArray = FXCollections.observableArrayList();
-        this.rdcObservableArray = FXCollections.observableArrayList();
+        this.vdcRangeList = FXCollections.observableArrayList();
+        this.vacRangeList = FXCollections.observableArrayList();
+        this.idcRangeList = FXCollections.observableArrayList();
+        this.iacRangeList = FXCollections.observableArrayList();
+        this.rdcRangeList = FXCollections.observableArrayList();
 
-        this.vacExtraArrays = new LinkedList<>();
-        this.iacExtraArrays = new LinkedList<>();
+        this.vacExtraRangeLists = new ArrayList<>();
+        this.iacExtraRangeLists = new ArrayList<>();
 
         this.observableVdcCost = new SimpleDoubleProperty();
         this.observableVacCost = new SimpleDoubleProperty();
@@ -65,69 +49,53 @@ public class ValuationData {
 
         this.baseProperties = List.of(observableVdcCost, observableVacCost, observableIdcCost, observableIacCost,
                 observableRdcCost);
-        this.vacExtraProperties = new LinkedList<>();
-        this.iacExtraProperties = new LinkedList<>();
-
-        this.observableLists = FXCollections.observableArrayList();
-
-        this.vdcBackup = FXCollections.observableArrayList();
-        this.vacBackup = FXCollections.observableArrayList();
-        this.idcBackup = FXCollections.observableArrayList();
-        this.iacBackup = FXCollections.observableArrayList();
-        this.rdcBackup = FXCollections.observableArrayList();
-        this.backupList = List.of(vdcBackup, vacBackup, idcBackup, iacBackup, rdcBackup);
-
+        this.vacExtraProperties = new ArrayList<>();
+        this.iacExtraProperties = new ArrayList<>();
 
         // base 5 sections:
         initBaseSectionsCostProperties();
     }
 
+    // sets up listeners for all 5 base measurement functions (their range lists)
     private void initBaseSectionsCostProperties() {
         List<SimpleDoubleProperty> properties = List.of(observableVdcCost, observableVacCost, observableIdcCost,
                 observableIacCost, observableRdcCost);
-        List<ObservableList<MeasRangeData>> observableLists = List.of(vdcObservableArray, vacObservableArray,
-                idcObservableArray, iacObservableArray, rdcObservableArray);
+        List<ObservableList<MeasRangeData>> observableLists = List.of(vdcRangeList, vacRangeList,
+                idcRangeList, iacRangeList, rdcRangeList);
         for (int i = 0; i < properties.size(); i++) {
-            initFunctionObservableCost(observableLists.get(i), properties.get(i));
+            initFunctionCostProperty(observableLists.get(i), properties.get(i));
         }
     }
 
-    public void initFunctionObservableCost(ObservableList<MeasRangeData> observableList,
-                                           SimpleDoubleProperty observableCost) {
-        if (observableCost != null && observableList != null) {
-            observableList.addListener((ListChangeListener<? super MeasRangeData>) c -> {
-                observableCost.set(calculateFunctionCost(observableList));
-                resetTotalCostObservable();
+    // adds a listener to the range list that recalculates the cost of that measurement function whenever a range is
+    // added/removed to/from it
+    // also recalculates the total cost
+    public void initFunctionCostProperty(ObservableList<MeasRangeData> rangeList,
+                                         SimpleDoubleProperty functionCost) {
+        if (functionCost != null && rangeList != null) {
+            rangeList.addListener((ListChangeListener<? super MeasRangeData>) c -> {
+                functionCost.set(calculateFunctionCost(rangeList));
+                resetTotalCostProperty();
             });
         }
     }
 
-    private double calculateFunctionCost(ObservableList<MeasRangeData> observableList) {
+    // calculates the cost of all measurement ranges within that measurement function
+    private double calculateFunctionCost(ObservableList<MeasRangeData> rangeList) {
         double cost = 0;
-        if (observableList != null && !observableList.isEmpty()) {
-            for (MeasRangeData range : observableList) {
+        if (rangeList != null && !rangeList.isEmpty()) {
+            for (MeasRangeData range : rangeList) {
                 cost += range.getCost();
             }
         }
         return cost;
     }
 
-    public void resetTotalCostObservable() {
+    public void resetTotalCostProperty() {
         observableTotalCost.set(calculateTotalCost());
     }
 
-    public void backupList(ObservableList<MeasRangeData> list, ObservableList<MeasRangeData> backup) {
-        if (list != null) {
-            backup.clear();
-            backup.addAll(list);
-        }
-    }
-
-    public List<ObservableList<MeasRangeData>> getBackupList() {
-        return backupList;
-    }
-
-    // TODO: inefficient (probably)
+    // TODO: inefficient (probably); find a better way of calculating the total cost
     private double calculateTotalCost() {
         double totalCost = 0;
         if (baseProperties != null && !baseProperties.isEmpty()) {
@@ -145,7 +113,6 @@ public class ValuationData {
                 totalCost += property.get();
             }
         }
-
 
         return totalCost;
     }
@@ -235,19 +202,18 @@ public class ValuationData {
     }
 
     // results -> {first range exists check, duplicate range check}
-    // both true -> edition successful
-    public boolean[] addRange(ObservableList<MeasRangeData> observableArray, MeasRangeData range) {
+    // both true -> addition successful
+    public boolean[] addRange(ObservableList<MeasRangeData> rangeList, MeasRangeData range) {
         // TODO: some check to make sure you can only add to the class field arrays
         boolean[] results = {true, true};
-        if (range != null && observableArray != null && !observableArray.contains(range)) {
-            if (checkForExistingFirstRange(observableArray, range) != null) {
+        if (range != null && rangeList != null && !rangeList.contains(range)) {
+            if (checkForExistingFirstRange(rangeList, range) != null) {
                 results[0] = false;
             } else {
-                if (checkForDuplicateRange(observableArray, range) != null) {
+                if (checkForDuplicateRange(rangeList, range) != null) {
                     results[1] = false;
                 } else {
-                    System.out.println("Adding range.");
-                    observableArray.add(range);
+                    rangeList.add(range);
                 }
             }
         }
@@ -256,46 +222,45 @@ public class ValuationData {
 
     // results -> {first range exists check, duplicate range check}
     // both true -> edition successful
-    public boolean[] editRange(ObservableList<MeasRangeData> observableArray, MeasRangeData oldRange,
+    public boolean[] editRange(ObservableList<MeasRangeData> rangeList, MeasRangeData oldRange,
                                MeasRangeData newRange) {
         boolean[] results = {true, true};
-        if (oldRange != null && newRange != null && observableArray != null && observableArray.contains(oldRange)
-                && !observableArray.contains(newRange)) {
-            int oldIndex = observableArray.indexOf(oldRange);
-            MeasRangeData duplicateRange = checkForExistingFirstRange(observableArray, newRange);
+        if (oldRange != null && newRange != null && rangeList != null && rangeList.contains(oldRange)
+                && !rangeList.contains(newRange)) {
+            int oldIndex = rangeList.indexOf(oldRange);
+            MeasRangeData duplicateRange = checkForExistingFirstRange(rangeList, newRange);
             // TODO: duplicated if statement
-            if (duplicateRange != null && observableArray.indexOf(duplicateRange) != oldIndex) {
+            if (duplicateRange != null && rangeList.indexOf(duplicateRange) != oldIndex) {
                 results[0] = false;
             } else {
-                duplicateRange = checkForDuplicateRange(observableArray, newRange);
-                if (duplicateRange != null && observableArray.indexOf(duplicateRange) != oldIndex) {
+                duplicateRange = checkForDuplicateRange(rangeList, newRange);
+                if (duplicateRange != null && rangeList.indexOf(duplicateRange) != oldIndex) {
                     results[1] = false;
                 } else {
-                    System.out.println("Editing range.");
-                    observableArray.set(oldIndex, newRange);
+                    rangeList.set(oldIndex, newRange);
                 }
             }
         }
         return results;
     }
 
-    public boolean removeRange(ObservableList<MeasRangeData> observableArray, MeasRangeData range) {
-        if (range != null && observableArray != null && observableArray.contains(range)) {
-            observableArray.remove(range);
+    public boolean removeRange(ObservableList<MeasRangeData> rangeList, MeasRangeData range) {
+        if (range != null && rangeList != null && rangeList.contains(range)) {
+            rangeList.remove(range);
             return true;
         } else {
             return false;
         }
     }
 
-    // checks whether the range with the same numeric range value is present in that function's array;
-    // returns a duplicate range found in the range collection or null;
-    // takes the unit into account;
-    public MeasRangeData checkForDuplicateRange(ObservableList<MeasRangeData> observableArray, MeasRangeData range) {
+    // checks whether the range with the same numeric range value is present in that function's range list;
+    // returns a duplicate range found in the range collection or null if there's no duplicates;
+    // takes the unit into account (1 kV == 1000 V etc.);
+    public MeasRangeData checkForDuplicateRange(ObservableList<MeasRangeData> rangeList, MeasRangeData range) {
         MeasRangeData duplicateRange = null;
-        if (range != null && observableArray != null) {
+        if (range != null && rangeList != null) {
             double rangeBaseUnitValue = range.getRangeBaseUnitValue();
-            for (MeasRangeData rangeData : observableArray) {
+            for (MeasRangeData rangeData : rangeList) {
                 if (rangeData.getRangeBaseUnitValue() == rangeBaseUnitValue) {
                     duplicateRange = rangeData;
                     break;
@@ -305,12 +270,14 @@ public class ValuationData {
         return duplicateRange;
     }
 
-    public MeasRangeData checkForExistingFirstRange(ObservableList<MeasRangeData> observableArray,
+    // checks whether the "first" range already exists in that function's range list;
+    // returns a duplicate first range found in the range list or null if there's no first range present yet;
+    public MeasRangeData checkForExistingFirstRange(ObservableList<MeasRangeData> rangeList,
                                                     MeasRangeData range) {
         MeasRangeData duplicateRange = null;
-        if (range != null && observableArray != null) {
+        if (range != null && rangeList != null) {
             String rangeType = range.getRangeType();
-            for (MeasRangeData rangeData : observableArray) {
+            for (MeasRangeData rangeData : rangeList) {
                 if (rangeType.equals("First") && rangeData.getRangeType().equals("First")) {
                     duplicateRange = rangeData;
                     break;
@@ -325,11 +292,11 @@ public class ValuationData {
         if (function != null && !function.isBlank()) {
             switch (function.trim().toUpperCase()) {
                 case "VAC" -> {
-                    vacExtraArrays.add(FXCollections.observableArrayList());
+                    vacExtraRangeLists.add(FXCollections.observableArrayList());
                     vacExtraProperties.add(new SimpleDoubleProperty());
                 }
                 case "IAC" -> {
-                    iacExtraArrays.add(FXCollections.observableArrayList());
+                    iacExtraRangeLists.add(FXCollections.observableArrayList());
                     iacExtraProperties.add(new SimpleDoubleProperty());
                 }
             }
@@ -346,11 +313,11 @@ public class ValuationData {
             List<SimpleDoubleProperty> propertiesList = null;
             switch (function.trim().toUpperCase()) {
                 case "VAC":
-                    freqsList = vacExtraArrays;
+                    freqsList = vacExtraRangeLists;
                     propertiesList = vacExtraProperties;
                     break;
                 case "IAC":
-                    freqsList = iacExtraArrays;
+                    freqsList = iacExtraRangeLists;
                     propertiesList = iacExtraProperties;
                     break;
             }
@@ -366,45 +333,44 @@ public class ValuationData {
         }
     }
 
-    // for the base 5 functions:
-    public ObservableList<MeasRangeData> getObservableArray(String function) {
-        ObservableList<MeasRangeData> array = null;
+    // for the base 5 measurement functions:
+    public ObservableList<MeasRangeData> getRangeList(String function) {
+        ObservableList<MeasRangeData> list = null;
         if (function != null && !function.isBlank()) {
             switch (function.trim().toUpperCase()) {
                 case "VDC":
-                    array = vdcObservableArray;
+                    list = vdcRangeList;
                     break;
                 case "VAC":
-                    array = vacObservableArray;
+                    list = vacRangeList;
                     break;
                 case "IDC":
-                    array = idcObservableArray;
+                    list = idcRangeList;
                     break;
                 case "IAC":
-                    array = iacObservableArray;
+                    list = iacRangeList;
                     break;
                 case "RDC":
-                    array = rdcObservableArray;
+                    list = rdcRangeList;
                     break;
             }
         }
-        return array;
+        return list;
     }
 
     // for additional frequency levels:
-    public List<ObservableList<MeasRangeData>> getExtraAcFreqs(String function) {
+    public List<ObservableList<MeasRangeData>> getExtraAcRangeLists(String function) {
         List<ObservableList<MeasRangeData>> freqsList = null;
         if (function != null && !function.isBlank()) {
             switch (function.trim()) {
-                case "VAC" -> freqsList = vacExtraArrays;
-                case "IAC" -> freqsList = iacExtraArrays;
+                case "VAC" -> freqsList = vacExtraRangeLists;
+                case "IAC" -> freqsList = iacExtraRangeLists;
             }
         }
         return freqsList;
     }
 
     // for additional frequency levels:
-    // TODO: duplicate code from getExtraAcFreqs()
     public List<SimpleDoubleProperty> getExtraAcProperties(String function) {
         List<SimpleDoubleProperty> properties = null;
         if (function != null && !function.isBlank()) {

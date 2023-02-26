@@ -9,96 +9,80 @@
             xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.labtronic.ui.MainWinController">
     <top>
         <VBox BorderPane.alignment="CENTER">
-            <children>
-                <MenuBar>
-                    <menus>
-                        <Menu text="_File">
-                            <items>
-                                <MenuItem mnemonicParsing="false" text="New calibration..."/>
-                                <MenuItem mnemonicParsing="false" text="Close"/>
-                                <MenuItem mnemonicParsing="false" text="Open..."/>
-                                <MenuItem mnemonicParsing="false" text="Save..."/>
-                                <MenuItem mnemonicParsing="false" text="Save as..."/>
-                                <SeparatorMenuItem mnemonicParsing="false"/>
-                                <MenuItem mnemonicParsing="false" text="Exit"/>
-                            </items>
-                        </Menu>
-                        <Menu text="_Edit">
-                            <items>
-                                <MenuItem mnemonicParsing="false" text="Delete"/>
-                                <MenuItem mnemonicParsing="false" text="Copy"/>
-                                <MenuItem mnemonicParsing="false" text="Paste"/>
-                            </items>
-                        </Menu>
-                        <Menu text="_View">
-                            <items>
-                                <CheckMenuItem mnemonicParsing="false" text="Toolbar"/>
-                                <SeparatorMenuItem mnemonicParsing="false"/>
-                                <Menu mnemonicParsing="false" text="UI language">
-                                    <items>
-                                        <MenuItem mnemonicParsing="false" text="English"/>
-                                        <MenuItem mnemonicParsing="false" text="Polish"/>
-                                    </items>
-                                </Menu>
-                            </items>
-                        </Menu>
-                        <Menu text="_Settings">
-                            <items>
-                                <MenuItem mnemonicParsing="false" text="Action 1"/>
-                            </items>
-                        </Menu>
-                        <Menu text="_Help">
-                            <items>
-                                <MenuItem mnemonicParsing="false" text="About LabTronic..."/>
-                            </items>
-                        </Menu>
-                    </menus>
-                </MenuBar>
-                <ToolBar prefHeight="40.0" prefWidth="200.0">
-                    <items>
-                        <Button styleClass="toolbarBtn" mnemonicParsing="false"
-                                onMouseEntered="#handleBtnMouseEnter"
-                                onMouseExited="#handleBtnMouseExit" onAction="#handleNewBtn">
-                            <tooltip>
-                                <Tooltip showDelay="500ms" text="New"/>
-                            </tooltip>
-                            <graphic>
-                                <FontIcon iconLiteral="bx-file-blank" iconSize="32"/>
-                            </graphic>
-                        </Button>
-                        <Button styleClass="toolbarBtn" mnemonicParsing="false"
-                                onMouseEntered="#handleBtnMouseEnter"
-                                onMouseExited="#handleBtnMouseExit">
-                            <tooltip>
-                                <Tooltip showDelay="500ms" text="Open"/>
-                            </tooltip>
-                            <graphic>
-                                <FontIcon iconLiteral="bx-folder-open" iconSize="32"/>
-                            </graphic>
-                        </Button>
-                        <Button styleClass="toolbarBtn" mnemonicParsing="false"
-                                onMouseEntered="#handleBtnMouseEnter"
-                                onMouseExited="#handleBtnMouseExit">
-                            <tooltip>
-                                <Tooltip showDelay="500ms" text="Save"/>
-                            </tooltip>
-                            <graphic>
-                                <FontIcon iconLiteral="bx-save" iconSize="32"/>
-                            </graphic>
-                        </Button>
-                        <Button styleClass="toolbarBtn" mnemonicParsing="false"
-                                onMouseEntered="#handleBtnMouseEnter"
-                                onMouseExited="#handleBtnMouseExit">
-                            <tooltip>
-                                <Tooltip showDelay="500ms" text="About"/>
-                            </tooltip>
-                            <graphic>
-                                <FontIcon iconLiteral="bx-info-circle" iconSize="32"/>
-                            </graphic>
-                        </Button>
-                    </items>
-                </ToolBar>
-            </children>
+            <MenuBar>
+                <Menu text="_File">
+                    <MenuItem mnemonicParsing="false" text="New calibration..."/>
+                    <MenuItem mnemonicParsing="false" text="Close"/>
+                    <MenuItem mnemonicParsing="false" text="Open..."/>
+                    <MenuItem mnemonicParsing="false" text="Save..."/>
+                    <MenuItem mnemonicParsing="false" text="Save as..."/>
+                    <SeparatorMenuItem mnemonicParsing="false"/>
+                    <MenuItem mnemonicParsing="false" text="Exit"/>
+                </Menu>
+                <Menu text="_Edit">
+                    <MenuItem mnemonicParsing="false" text="Delete"/>
+                    <MenuItem mnemonicParsing="false" text="Copy"/>
+                    <MenuItem mnemonicParsing="false" text="Paste"/>
+                </Menu>
+                <Menu text="_View">
+                    <CheckMenuItem mnemonicParsing="false" text="Toolbar"/>
+                    <SeparatorMenuItem mnemonicParsing="false"/>
+                    <Menu mnemonicParsing="false" text="UI language">
+                        <items>
+                            <MenuItem mnemonicParsing="false" text="English"/>
+                            <MenuItem mnemonicParsing="false" text="Polish"/>
+                        </items>
+                    </Menu>
+                </Menu>
+                <Menu text="_Settings">
+                    <MenuItem mnemonicParsing="false" text="Action 1"/>
+                </Menu>
+                <Menu text="_Help">
+                    <MenuItem mnemonicParsing="false" text="About LabTronic..."/>
+                </Menu>
+            </MenuBar>
+            <ToolBar prefHeight="40.0" prefWidth="200.0">
+                <Button styleClass="toolbarBtn" mnemonicParsing="false"
+                        onMouseEntered="#handleBtnMouseEnter"
+                        onMouseExited="#handleBtnMouseExit" onAction="#handleNewBtn">
+                    <tooltip>
+                        <Tooltip showDelay="500ms" text="New"/>
+                    </tooltip>
+                    <graphic>
+                        <FontIcon iconLiteral="bx-file-blank" iconSize="32"/>
+                    </graphic>
+                </Button>
+                <Button styleClass="toolbarBtn" mnemonicParsing="false"
+                        onMouseEntered="#handleBtnMouseEnter"
+                        onMouseExited="#handleBtnMouseExit">
+                    <tooltip>
+                        <Tooltip showDelay="500ms" text="Open"/>
+                    </tooltip>
+                    <graphic>
+                        <FontIcon iconLiteral="bx-folder-open" iconSize="32"/>
+                    </graphic>
+                </Button>
+                <Button styleClass="toolbarBtn" mnemonicParsing="false"
+                        onMouseEntered="#handleBtnMouseEnter"
+                        onMouseExited="#handleBtnMouseExit">
+                    <tooltip>
+                        <Tooltip showDelay="500ms" text="Save"/>
+                    </tooltip>
+                    <graphic>
+                        <FontIcon iconLiteral="bx-save" iconSize="32"/>
+                    </graphic>
+                </Button>
+                <Button styleClass="toolbarBtn" mnemonicParsing="false"
+                        onMouseEntered="#handleBtnMouseEnter"
+                        onMouseExited="#handleBtnMouseExit">
+                    <tooltip>
+                        <Tooltip showDelay="500ms" text="About"/>
+                    </tooltip>
+                    <graphic>
+                        <FontIcon iconLiteral="bx-info-circle" iconSize="32"/>
+                    </graphic>
+                </Button>
+            </ToolBar>
         </VBox>
     </top>
 </BorderPane>

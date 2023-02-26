@@ -3,7 +3,6 @@ package com.app.labtronic.ui.caltab;
 import com.app.labtronic.data.ActiveSession;
 import com.app.labtronic.data.CalData;
 import com.app.labtronic.data.valuation.MeasRangeData;
-import com.app.labtronic.ui.caltab.valuation.ExtraFreqController;
 import com.app.labtronic.ui.caltab.valuation.RangePreviewController;
 import com.app.labtronic.ui.caltab.valuation.ValuationDlgController;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -112,7 +111,7 @@ public class ValuationController {
             } else if (newValue < oldValue) {
                 removeAcFreq(true);
                 calData.getValuationData().removeExtraAcFreq("VAC");
-                calData.getValuationData().resetTotalCostObservable();
+                calData.getValuationData().resetTotalCostProperty();
             }
         });
         iacSpinner.valueProperty().addListener((observable, oldValue, newValue) -> {
@@ -122,7 +121,7 @@ public class ValuationController {
             } else if (newValue < oldValue) {
                 removeAcFreq(false);
                 calData.getValuationData().removeExtraAcFreq("IAC");
-                calData.getValuationData().resetTotalCostObservable();
+                calData.getValuationData().resetTotalCostProperty();
             }
         });
 
@@ -146,7 +145,7 @@ public class ValuationController {
         int index;
         for (TableView<MeasRangeData> table : listOfTables) {
             index = listOfTables.indexOf(table);
-            table.setItems(calData.getValuationData().getObservableArray(functions[index]));
+            table.setItems(calData.getValuationData().getRangeList(functions[index]));
 
             int i = 0;
             for (TableColumn<MeasRangeData, ?> column : table.getColumns()) {
@@ -677,23 +676,15 @@ public class ValuationController {
         private final TableView<MeasRangeData> tableView;
         private final boolean isVoltage;
         private final Label costL;
-        private ExtraFreqController controller;
         private VBox section;
+        private final VBox topLevelVBox;
 
         private AcFreqContainer(boolean isVoltage) {
             this.isVoltage = isVoltage;
             this.section = isVoltage ? vacSection : iacSection;
 
-            FXMLLoader fxmlLoader = new FXMLLoader();
-            fxmlLoader.setLocation(ValuationController.class.getResource("extra-freq.fxml"));
-
-            try {
-                dialog.getDialogPane().setContent(fxmlLoader.load());
-            } catch (IOException e) {
-                System.out.println("Couldn't load the dialog.");
-                e.printStackTrace();
-                return;
-            }
+            topLevelVBox = new VBox();
+            topLevelVBox.setSpacing(10);
 
             hBox = new HBox();
             hBox.spacingProperty().set(20);
@@ -744,6 +735,9 @@ public class ValuationController {
                 column.prefWidthProperty().bind(tableView.widthProperty().divide(5));
                 tableView.getColumns().add(column);
             }
+
+            topLevelVBox.getChildren().add(hBox);
+            topLevelVBox.getChildren().add(tableView);
         }
 
         public void initializeTableView() {
@@ -751,8 +745,8 @@ public class ValuationController {
                     "rangeTypeProperty", "costProperty"};
             String functionType = (isVoltage) ? "VAC" : "IAC";
             // TODO: validation
-            int lastIndex = calData.getValuationData().getExtraAcFreqs(functionType).size() - 1;
-            ObservableList<MeasRangeData> rangeArray = calData.getValuationData().getExtraAcFreqs(functionType).
+            int lastIndex = calData.getValuationData().getExtraAcRangeLists(functionType).size() - 1;
+            ObservableList<MeasRangeData> rangeArray = calData.getValuationData().getExtraAcRangeLists(functionType).
                     get(lastIndex);
 
             if (rangeArray != null) {
@@ -848,12 +842,12 @@ public class ValuationController {
         public void initializeCostDisplay() {
             // TODO: similar method to the initializeTableView() - merge those methods or call them from the constructor
             String functionType = (isVoltage) ? "VAC" : "IAC";
-            int lastIndex = calData.getValuationData().getExtraAcFreqs(functionType).size() - 1;
-            ObservableList<MeasRangeData> rangeList = calData.getValuationData().getExtraAcFreqs(functionType).
+            int lastIndex = calData.getValuationData().getExtraAcRangeLists(functionType).size() - 1;
+            ObservableList<MeasRangeData> rangeList = calData.getValuationData().getExtraAcRangeLists(functionType).
                     get(lastIndex);
             SimpleDoubleProperty property = calData.getValuationData().getExtraAcProperties(functionType).
                     get(lastIndex);
-            calData.getValuationData().initFunctionObservableCost(rangeList, property);
+            calData.getValuationData().initFunctionCostProperty(rangeList, property);
             costL.textProperty().bind(property.asString());
         }
 

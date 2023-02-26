@@ -16,6 +16,7 @@ public class MeasRangeData {
     private int resolution;
     private double rangeBaseUnitValue;
 
+    // for the TableView in ValuationController
     private SimpleStringProperty rangeProperty;
     private SimpleStringProperty unitProperty;
     private SimpleStringProperty numberOfPointsProperty;
@@ -144,6 +145,7 @@ public class MeasRangeData {
         this.resolution = resolution;
     }
 
+    // range value converted to the corresponding base SI unit
     private double calculateRangeBaseUnitValue() {
         double multiplier = 0;
         switch (unit) {
