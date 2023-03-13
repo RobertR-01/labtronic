@@ -35,6 +35,7 @@ public class RangePreviewController {
         }
     }
 
+    // TODO: validation?
     public void loadTableViewData(MeasRangeData rangeData) {
         if (rangeData != null) {
             List<Double> points = rangeData.getPoints();

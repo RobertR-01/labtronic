@@ -28,7 +28,6 @@ import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -77,8 +76,8 @@ public class ValuationController {
     private TableView<MeasRangeData> iacTableView;
     @FXML
     private TableView<MeasRangeData> rdcTableView;
-    private List<TableView<MeasRangeData>> vacExtraTableViews;
-    private List<TableView<MeasRangeData>> iacExtraTableViews;
+    //    private List<TableView<MeasRangeData>> vacExtraTableViews;
+//    private List<TableView<MeasRangeData>> iacExtraTableViews;
     private CalData calData;
 
     @FXML
@@ -99,11 +98,14 @@ public class ValuationController {
         calData = ActiveSession.getActiveSessionInstance().getActiveCalTabs().get(ActiveSession.getLastAddedId());
 
         // vac/iac spinners:
-        vacExtraTableViews = new LinkedList<>();
-        iacExtraTableViews = new LinkedList<>();
+//        vacExtraTableViews = new LinkedList<>();
+//        iacExtraTableViews = new LinkedList<>();
 
         vacExtraFreqContainers = new ArrayList<>();
         iacExtraFreqContainers = new ArrayList<>();
+
+        // validation for removing extra AC sections and going below 0 index in different collections is somewhat done
+        // by limiting the minimum spinner value and the lister itself
         vacSpinner.valueProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue > oldValue) {
                 calData.getValuationData().addExtraAcFreq("VAC");
@@ -136,20 +138,20 @@ public class ValuationController {
         cbList = List.of(vdcCB, vacCB, idcCB, iacCB, rdcCB);
         vBoxList = List.of(vdcSection, vacSection, idcSection, iacSection, rdcSection);
 
-        List<TableView<MeasRangeData>> listOfTables = List.of(vdcTableView, vacTableView, idcTableView, iacTableView,
+        List<TableView<MeasRangeData>> listOfBaseTables = List.of(vdcTableView, vacTableView, idcTableView, iacTableView,
                 rdcTableView);
         String[] functions = {"VDC", "VAC", "IDC", "IAC", "RDC"};
         String[] measRangeDataFields = {"rangeProperty", "unitProperty", "numberOfPointsProperty", "rangeTypeProperty",
                 "costProperty"};
 
         int index;
-        for (TableView<MeasRangeData> table : listOfTables) {
-            index = listOfTables.indexOf(table);
-            table.setItems(calData.getValuationData().getRangeList(functions[index]));
+        for (TableView<MeasRangeData> tableView : listOfBaseTables) {
+            index = listOfBaseTables.indexOf(tableView);
+            tableView.setItems(calData.getValuationData().getRangeList(functions[index]));
 
             int i = 0;
-            for (TableColumn<MeasRangeData, ?> column : table.getColumns()) {
-                column.prefWidthProperty().bind(table.widthProperty().divide(5));
+            for (TableColumn<MeasRangeData, ?> column : tableView.getColumns()) {
+                column.prefWidthProperty().bind(tableView.widthProperty().divide(5));
                 column.setCellValueFactory(new PropertyValueFactory<>(measRangeDataFields[i]));
                 i++;
             }
@@ -183,11 +185,11 @@ public class ValuationController {
             });
             emptyRowContextMenu.getItems().add(addMenuItem);
 
-            table.setContextMenu(emptyRowContextMenu);
+            tableView.setContextMenu(emptyRowContextMenu);
             // for retrieving menu's parent TableView later:
-            emptyRowContextMenu.setUserData(table);
+            emptyRowContextMenu.setUserData(tableView);
 
-            table.setRowFactory(new Callback<TableView<MeasRangeData>, TableRow<MeasRangeData>>() {
+            tableView.setRowFactory(new Callback<TableView<MeasRangeData>, TableRow<MeasRangeData>>() {
                 @Override
                 public TableRow<MeasRangeData> call(TableView<MeasRangeData> param) {
                     TableRow<MeasRangeData> row = new TableRow<>();
@@ -196,35 +198,34 @@ public class ValuationController {
                         if (isNowEmpty) {
                             row.setContextMenu(null);
                         } else {
-                            // for retrieving menu's TableView owner later in the addNewMeasRange():
+                            // for retrieving menu's TableView-owner later in the addNewMeasRange():
                             nonEmptyRowContextMenu.setUserData(row.getTableView());
 
                             row.setContextMenu(nonEmptyRowContextMenu);
                         }
                     });
-
                     return row;
                 }
             });
 
-            table.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            tableView.setOnKeyPressed(new EventHandler<KeyEvent>() {
                 @Override
                 public void handle(KeyEvent event) {
-                    if (event.getCode() == KeyCode.DELETE && table.getSelectionModel().getSelectedIndex() >= 0) {
+                    if (event.getCode() == KeyCode.DELETE && tableView.getSelectionModel().getSelectedIndex() >= 0) {
                         removeMeasRange(event);
                     }
                 }
             });
 
-            table.getSelectionModel().selectFirst();
+            tableView.getSelectionModel().selectFirst();
 
             // onDoubleClick (range preview) setup:
-            table.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            tableView.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
                     if (event.getButton().equals(MouseButton.PRIMARY)) {
                         if (event.getClickCount() == 2) {
-                            previewRange(table);
+                            previewRange(tableView);
                         }
                     }
                 }
@@ -232,19 +233,20 @@ public class ValuationController {
         }
 
         for (int i = 0; i < cbList.size(); i++) {
+            // hiding/revealing base sections:
             vBoxList.get(i).visibleProperty().bind(cbList.get(i).selectedProperty());
             vBoxList.get(i).managedProperty().bind(vBoxList.get(i).visibleProperty());
 
+            // TODO: !! add code for displayed cost recalculation here
             int finalI = i;
             cbList.get(i).selectedProperty().addListener((observable, oldValue, newValue) -> {
                 if (newValue && !oldValue) {
-                    // TODO: this is going to be a problem when external data loading gets implemented at some point
-                    listOfTables.get(finalI).getItems().addAll(calData.getValuationData().getBackupList().get(finalI));
-                    calData.getValuationData().getBackupList().get(finalI).clear();
+//                    listOfBaseTables.get(finalI).getItems().addAll(calData.getValuationData().getBackupList().get(finalI));
+//                    calData.getValuationData().getBackupList().get(finalI).clear();
                 } else {
-                    calData.getValuationData().backupList(listOfTables.get(finalI).getItems(),
-                            calData.getValuationData().getBackupList().get(finalI));
-                    listOfTables.get(finalI).getItems().clear();
+//                    calData.getValuationData().backupList(listOfBaseTables.get(finalI).getItems(),
+//                            calData.getValuationData().getBackupList().get(finalI));
+//                    listOfBaseTables.get(finalI).getItems().clear();
                 }
             });
         }
@@ -306,6 +308,7 @@ public class ValuationController {
 
             // set up the preview's TableView:
             RangePreviewController controller = fxmlLoader.getController();
+            // TODO: validation for rangeData
             controller.loadTableViewData(rangeData);
             Optional<ButtonType> result = dialog.showAndWait();
         }
@@ -641,17 +644,17 @@ public class ValuationController {
 
     private void addAcFreqContainer(boolean isVoltage) {
         AcFreqContainer container = new AcFreqContainer(isVoltage);
-        String function = null;
+//        String function = null;
         if (isVoltage) {
             vacExtraFreqContainers.add(container);
             vacSection.getChildren().add(container.getHBox());
             vacSection.getChildren().add(container.getTableView());
-            function = "VAC";
+//            function = "VAC";
         } else {
             iacExtraFreqContainers.add(container);
             iacSection.getChildren().add(container.getHBox());
             iacSection.getChildren().add(container.getTableView());
-            function = "IAC";
+//            function = "IAC";
         }
         // TODO: check for null
         container.initializeTableView();
@@ -668,62 +671,193 @@ public class ValuationController {
         acFreqs.remove(container);
     }
 
-    private class AcFreqContainer {
-        private final HBox hBox;
-        private final TextField textField;
-        private final ComboBox<String> comboBox;
-        private final Button button;
-        private final TableView<MeasRangeData> tableView;
+    private class SectionContainer {
+        private VBox topLevelVbox;
+        private HBox hBox;
+        private TextField freqTF;
+        private ComboBox<String> freqCB;
+        private Button addRangeBtn;
+        private TableView<MeasRangeData> tableView;
+        private Label costL;
+        private VBox topLevelVBox;
+
+        private SectionContainer() {
+            this.topLevelVbox = null;
+            this.hBox = null;
+            this.freqTF = null;
+            this.freqCB = null;
+            this.addRangeBtn = null;
+            this.tableView = null;
+            this.costL = null;
+            this.topLevelVBox = null;
+        }
+
+        private SectionContainer(VBox topLevelVbox, HBox hBox, TextField freqTF, ComboBox<String> freqCB,
+                                 Button addRangeBtn, TableView<MeasRangeData> tableView, Label costL,
+                                 VBox topLevelVBox) {
+            this.topLevelVbox = topLevelVbox;
+            this.hBox = hBox;
+            this.freqTF = freqTF;
+            this.freqCB = freqCB;
+            this.addRangeBtn = addRangeBtn;
+            this.tableView = tableView;
+            this.costL = costL;
+            this.topLevelVBox = topLevelVBox;
+        }
+
+        public VBox getTopLevelVbox() {
+            return topLevelVbox;
+        }
+
+        public HBox gethBox() {
+            return hBox;
+        }
+
+        public TextField getFreqTF() {
+            return freqTF;
+        }
+
+        public ComboBox<String> getFreqCB() {
+            return freqCB;
+        }
+
+        public Button getAddRangeBtn() {
+            return addRangeBtn;
+        }
+
+        public TableView<MeasRangeData> getTableView() {
+            return tableView;
+        }
+
+        public Label getCostL() {
+            return costL;
+        }
+
+        public VBox getTopLevelVBox() {
+            return topLevelVBox;
+        }
+
+        public void setTopLevelVbox(VBox topLevelVbox) {
+            this.topLevelVbox = topLevelVbox;
+        }
+
+        public void sethBox(HBox hBox) {
+            this.hBox = hBox;
+        }
+
+        public void setFreqTF(TextField freqTF) {
+            this.freqTF = freqTF;
+        }
+
+        public void setFreqCB(ComboBox<String> freqCB) {
+            this.freqCB = freqCB;
+        }
+
+        public void setAddRangeBtn(Button addRangeBtn) {
+            this.addRangeBtn = addRangeBtn;
+        }
+
+        public void setTableView(TableView<MeasRangeData> tableView) {
+            this.tableView = tableView;
+        }
+
+        public void setCostL(Label costL) {
+            this.costL = costL;
+        }
+
+        public void setTopLevelVBox(VBox topLevelVBox) {
+            this.topLevelVBox = topLevelVBox;
+        }
+    }
+
+    private class AcFreqContainer extends SectionContainer {
+        //        private final HBox hBox;
+//        private final TextField freqTF;
+//        private final ComboBox<String> freqCB;
+//        private final Button addRangeBtn;
+//        private final TableView<MeasRangeData> tableView;
         private final boolean isVoltage;
-        private final Label costL;
-        private VBox section;
-        private final VBox topLevelVBox;
+//        private final Label costL;
+        //        private VBox section;
+//        private final VBox topLevelVBox;
 
         private AcFreqContainer(boolean isVoltage) {
             this.isVoltage = isVoltage;
-            this.section = isVoltage ? vacSection : iacSection;
+//            this.section = isVoltage ? vacSection : iacSection;
 
-            topLevelVBox = new VBox();
-            topLevelVBox.setSpacing(10);
+            setTopLevelVBox(new VBox());
+            getTopLevelVBox().setSpacing(10);
+//            topLevelVBox = new VBox();
+//            topLevelVBox.setSpacing(10);
 
-            hBox = new HBox();
-            hBox.spacingProperty().set(20);
-            hBox.setAlignment(Pos.CENTER);
+            sethBox(new HBox());
+            getHBox().spacingProperty().set(20);
+            getHBox().setAlignment(Pos.CENTER);
+//            hBox = new HBox();
+//            hBox.spacingProperty().set(20);
+//            hBox.setAlignment(Pos.CENTER);
 
             String labelTxt = (isVoltage) ? "VAC" : "IAC";
             Label vacLabel = new Label(labelTxt);
             vacLabel.setUnderline(true);
-            hBox.getChildren().add(vacLabel);
+            getHBox().getChildren().add(vacLabel);
+//            hBox.getChildren().add(vacLabel);
 
-            textField = new TextField("50");
-            textField.setPrefWidth(50);
-            hBox.getChildren().add(textField);
+            setFreqTF(new TextField("50"));
+            getFreqTF().setPrefWidth(50);
+            getHBox().getChildren().add(getFreqTF());
+//            freqTF = new TextField("50");
+//            freqTF.setPrefWidth(50);
+//            hBox.getChildren().add(freqTF);
 
-            comboBox = new ComboBox<>(FXCollections.observableArrayList("Hz", "kHz"));
-            comboBox.setPrefWidth(70);
-            comboBox.setValue("Hz");
-            hBox.getChildren().add(comboBox);
+            setFreqCB(new ComboBox<>(FXCollections.observableArrayList("Hz", "kHz")));
+            getFreqCB().setPrefWidth(70);
+            getFreqCB().setValue("Hz");
+            getHBox().getChildren().add(getFreqCB());
+//            freqCB = new ComboBox<>(FXCollections.observableArrayList("Hz", "kHz"));
+//            freqCB.setPrefWidth(70);
+//            freqCB.setValue("Hz");
+//            hBox.getChildren().add(freqCB);
 
-            button = new Button();
+            setAddRangeBtn(new Button());
             Tooltip tooltip = new Tooltip("Add new measurement range / points");
             tooltip.setShowDelay(new Duration(500));
-            button.setTooltip(tooltip);
+            getAddRangeBtn().setTooltip(tooltip);
             FontIcon icon = new FontIcon("bx-plus");
             icon.setIconSize(16);
-            button.setGraphic(icon);
-            button.setOnAction(event -> ValuationController.this.addNewMeasRange(event, true));
-            hBox.getChildren().add(button);
+            getAddRangeBtn().setGraphic(icon);
+            getAddRangeBtn().setOnAction(event -> ValuationController.this.addNewMeasRange(event, true));
+            getHBox().getChildren().add(getAddRangeBtn());
+//            addRangeBtn = new Button();
+//            Tooltip tooltip = new Tooltip("Add new measurement range / points");
+//            tooltip.setShowDelay(new Duration(500));
+//            addRangeBtn.setTooltip(tooltip);
+//            FontIcon icon = new FontIcon("bx-plus");
+//            icon.setIconSize(16);
+//            addRangeBtn.setGraphic(icon);
+//            addRangeBtn.setOnAction(event -> ValuationController.this.addNewMeasRange(event, true));
+//            hBox.getChildren().add(addRangeBtn);
 
             HBox costHBox = new HBox();
             costHBox.setSpacing(10);
             costHBox.setAlignment(Pos.CENTER);
             Label sectionCostL = new Label("Section cost: ");
             sectionCostL.setAlignment(Pos.CENTER);
-            costL = new Label();
-            costL.setAlignment(Pos.CENTER);
+            setCostL(new Label());
+            getCostL().setAlignment(Pos.CENTER);
             costHBox.getChildren().add(sectionCostL);
-            costHBox.getChildren().add(costL);
-            hBox.getChildren().add(costHBox);
+            costHBox.getChildren().add(getCostL());
+            getHBox().getChildren().add(costHBox);
+//            HBox costHBox = new HBox();
+//            costHBox.setSpacing(10);
+//            costHBox.setAlignment(Pos.CENTER);
+//            Label sectionCostL = new Label("Section cost: ");
+//            sectionCostL.setAlignment(Pos.CENTER);
+//            costL = new Label();
+//            costL.setAlignment(Pos.CENTER);
+//            costHBox.getChildren().add(sectionCostL);
+//            costHBox.getChildren().add(costL);
+//            hBox.getChildren().add(costHBox);
 
             tableView = new TableView<>();
             VBox.setVgrow(tableView, Priority.ALWAYS);
@@ -746,18 +880,18 @@ public class ValuationController {
             String functionType = (isVoltage) ? "VAC" : "IAC";
             // TODO: validation
             int lastIndex = calData.getValuationData().getExtraAcRangeLists(functionType).size() - 1;
-            ObservableList<MeasRangeData> rangeArray = calData.getValuationData().getExtraAcRangeLists(functionType).
+            ObservableList<MeasRangeData> rangeList = calData.getValuationData().getExtraAcRangeLists(functionType).
                     get(lastIndex);
 
-            if (rangeArray != null) {
-                tableView.setItems(rangeArray);
+            if (rangeList != null) {
+                tableView.setItems(rangeList);
                 int i = 0;
                 for (TableColumn<MeasRangeData, ?> column : tableView.getColumns()) {
                     column.setCellValueFactory(new PropertyValueFactory<>(measRangeDataFields[i]));
                     i++;
                 }
             } else {
-                System.out.println("ValuationController.initializeTableView() error - underlying array for the" +
+                System.out.println("ValuationController.initializeTableView() error - underlying list for the" +
                         " TableView is null");
             }
 
@@ -843,6 +977,7 @@ public class ValuationController {
             // TODO: similar method to the initializeTableView() - merge those methods or call them from the constructor
             String functionType = (isVoltage) ? "VAC" : "IAC";
             int lastIndex = calData.getValuationData().getExtraAcRangeLists(functionType).size() - 1;
+            // TODO: validation?
             ObservableList<MeasRangeData> rangeList = calData.getValuationData().getExtraAcRangeLists(functionType).
                     get(lastIndex);
             SimpleDoubleProperty property = calData.getValuationData().getExtraAcProperties(functionType).
@@ -855,16 +990,16 @@ public class ValuationController {
             return hBox;
         }
 
-        public TextField getTextField() {
-            return textField;
+        public TextField getFreqTF() {
+            return freqTF;
         }
 
-        public ComboBox<String> getComboBox() {
-            return comboBox;
+        public ComboBox<String> getFreqCB() {
+            return freqCB;
         }
 
-        public Button getButton() {
-            return button;
+        public Button getAddRangeBtn() {
+            return addRangeBtn;
         }
 
         public TableView<MeasRangeData> getTableView() {
