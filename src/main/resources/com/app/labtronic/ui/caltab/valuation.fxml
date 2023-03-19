@@ -48,7 +48,7 @@
             <VBox spacing="10" alignment="CENTER" fx:id="sectionsVbox">
                 <!--VDC-->
                 <VBox fx:id="vdcSection" spacing="10">
-                    <HBox spacing="20" alignment="CENTER">
+                    <HBox fx:id="vdcHBox" spacing="20" alignment="CENTER">
                         <Label text="VDC" underline="true"/>
                         <Button fx:id="addVdcBtn" onAction="#handleAddNewMeasRange">
                             <tooltip>

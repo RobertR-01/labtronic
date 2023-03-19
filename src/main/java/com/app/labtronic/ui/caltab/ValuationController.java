@@ -56,6 +56,13 @@ public class ValuationController {
     @FXML
     private VBox rdcSection;
     private List<VBox> vBoxList;
+
+    @FXML
+    private HBox vdcHBox;
+
+    @FXML
+    private Button addVdcBtn;
+
     @FXML
     private Label vacFreqL;
     @FXML
@@ -259,6 +266,11 @@ public class ValuationController {
         rdcCostL.textProperty().bind(calData.getValuationData().observableRdcCostProperty().asString());
 
         totalCostL.textProperty().bind(calData.getValuationData().observableTotalCostProperty().asString());
+
+        // attaching section containers to AC section TableViews for easier retrieval of controls later:
+        // TODO: no check for frequency related controls being passed as null
+        SectionContainer sectionContainer = new SectionContainer(vdcSection, vdcHBox, null, null, addVdcBtn,
+                vdcTableView, vdcCostL);
     }
 
     private void previewRange(TableView<MeasRangeData> tableView) {
@@ -672,44 +684,40 @@ public class ValuationController {
     }
 
     private class SectionContainer {
-        private VBox topLevelVbox;
+        private VBox topLevelVBox;
         private HBox hBox;
         private TextField freqTF;
         private ComboBox<String> freqCB;
         private Button addRangeBtn;
         private TableView<MeasRangeData> tableView;
         private Label costL;
-        private VBox topLevelVBox;
 
         private SectionContainer() {
-            this.topLevelVbox = null;
+            this.topLevelVBox = null;
             this.hBox = null;
             this.freqTF = null;
             this.freqCB = null;
             this.addRangeBtn = null;
             this.tableView = null;
             this.costL = null;
-            this.topLevelVBox = null;
         }
 
-        private SectionContainer(VBox topLevelVbox, HBox hBox, TextField freqTF, ComboBox<String> freqCB,
-                                 Button addRangeBtn, TableView<MeasRangeData> tableView, Label costL,
-                                 VBox topLevelVBox) {
-            this.topLevelVbox = topLevelVbox;
+        private SectionContainer(VBox topLevelVBox, HBox hBox, TextField freqTF, ComboBox<String> freqCB,
+                                 Button addRangeBtn, TableView<MeasRangeData> tableView, Label costL) {
+            this.topLevelVBox = topLevelVBox;
             this.hBox = hBox;
             this.freqTF = freqTF;
             this.freqCB = freqCB;
             this.addRangeBtn = addRangeBtn;
             this.tableView = tableView;
             this.costL = costL;
-            this.topLevelVBox = topLevelVBox;
         }
 
-        public VBox getTopLevelVbox() {
-            return topLevelVbox;
+        public VBox getTopLevelVBox() {
+            return topLevelVBox;
         }
 
-        public HBox gethBox() {
+        public HBox getHBox() {
             return hBox;
         }
 
@@ -733,15 +741,11 @@ public class ValuationController {
             return costL;
         }
 
-        public VBox getTopLevelVBox() {
-            return topLevelVBox;
+        public void setTopLevelVBox(VBox topLevelVBox) {
+            this.topLevelVBox = topLevelVBox;
         }
 
-        public void setTopLevelVbox(VBox topLevelVbox) {
-            this.topLevelVbox = topLevelVbox;
-        }
-
-        public void sethBox(HBox hBox) {
+        public void setHBox(HBox hBox) {
             this.hBox = hBox;
         }
 
@@ -763,10 +767,6 @@ public class ValuationController {
 
         public void setCostL(Label costL) {
             this.costL = costL;
-        }
-
-        public void setTopLevelVBox(VBox topLevelVBox) {
-            this.topLevelVBox = topLevelVBox;
         }
     }
 
@@ -790,7 +790,7 @@ public class ValuationController {
 //            topLevelVBox = new VBox();
 //            topLevelVBox.setSpacing(10);
 
-            sethBox(new HBox());
+            setHBox(new HBox());
             getHBox().spacingProperty().set(20);
             getHBox().setAlignment(Pos.CENTER);
 //            hBox = new HBox();
@@ -859,19 +859,31 @@ public class ValuationController {
 //            costHBox.getChildren().add(costL);
 //            hBox.getChildren().add(costHBox);
 
-            tableView = new TableView<>();
-            VBox.setVgrow(tableView, Priority.ALWAYS);
+            setTableView(new TableView<>());
+            VBox.setVgrow(getTableView(), Priority.ALWAYS);
             TableColumn<MeasRangeData, String> column;
             String[] strings = {"Range", "Unit", "Number of points", "Type", "Cost"};
             for (int i = 0; i < 5; i++) {
                 column = new TableColumn<>(strings[i]);
                 column.setResizable(false);
-                column.prefWidthProperty().bind(tableView.widthProperty().divide(5));
-                tableView.getColumns().add(column);
+                column.prefWidthProperty().bind(getTableView().widthProperty().divide(5));
+                getTableView().getColumns().add(column);
             }
+//            tableView = new TableView<>();
+//            VBox.setVgrow(tableView, Priority.ALWAYS);
+//            TableColumn<MeasRangeData, String> column;
+//            String[] strings = {"Range", "Unit", "Number of points", "Type", "Cost"};
+//            for (int i = 0; i < 5; i++) {
+//                column = new TableColumn<>(strings[i]);
+//                column.setResizable(false);
+//                column.prefWidthProperty().bind(tableView.widthProperty().divide(5));
+//                tableView.getColumns().add(column);
+//            }
 
-            topLevelVBox.getChildren().add(hBox);
-            topLevelVBox.getChildren().add(tableView);
+            getTopLevelVBox().getChildren().add(getHBox());
+            getTopLevelVBox().getChildren().add(getTableView());
+//            topLevelVBox.getChildren().add(hBox);
+//            topLevelVBox.getChildren().add(tableView);
         }
 
         public void initializeTableView() {
@@ -884,9 +896,11 @@ public class ValuationController {
                     get(lastIndex);
 
             if (rangeList != null) {
-                tableView.setItems(rangeList);
+                getTableView().setItems(rangeList);
+//                tableView.setItems(rangeList);
                 int i = 0;
-                for (TableColumn<MeasRangeData, ?> column : tableView.getColumns()) {
+//                for (TableColumn<MeasRangeData, ?> column : tableView.getColumns()) {
+                for (TableColumn<MeasRangeData, ?> column : getTableView().getColumns()) {
                     column.setCellValueFactory(new PropertyValueFactory<>(measRangeDataFields[i]));
                     i++;
                 }
@@ -925,11 +939,14 @@ public class ValuationController {
             });
             emptyRowContextMenu.getItems().add(addMenuItem);
 
-            tableView.setContextMenu(emptyRowContextMenu);
+            getTableView().setContextMenu(emptyRowContextMenu);
+//            tableView.setContextMenu(emptyRowContextMenu);
             // for retrieving menu's parent TableView later:
-            emptyRowContextMenu.setUserData(tableView);
+            emptyRowContextMenu.setUserData(getTableView());
+//            emptyRowContextMenu.setUserData(tableView);
 
-            tableView.setRowFactory(new Callback<TableView<MeasRangeData>, TableRow<MeasRangeData>>() {
+//            tableView.setRowFactory(new Callback<TableView<MeasRangeData>, TableRow<MeasRangeData>>() {
+            getTableView().setRowFactory(new Callback<TableView<MeasRangeData>, TableRow<MeasRangeData>>() {
                 @Override
                 public TableRow<MeasRangeData> call(TableView<MeasRangeData> param) {
                     TableRow<MeasRangeData> row = new TableRow<>();
@@ -949,24 +966,29 @@ public class ValuationController {
                 }
             });
 
-            tableView.setOnKeyPressed(new EventHandler<KeyEvent>() {
+//            tableView.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            getTableView().setOnKeyPressed(new EventHandler<KeyEvent>() {
                 @Override
                 public void handle(KeyEvent event) {
-                    if (event.getCode() == KeyCode.DELETE && tableView.getSelectionModel().getSelectedIndex() >= 0) {
+                    if (event.getCode() == KeyCode.DELETE && getTableView().getSelectionModel().getSelectedIndex() >= 0) {
+//                    if (event.getCode() == KeyCode.DELETE && tableView.getSelectionModel().getSelectedIndex() >= 0) {
                         removeMeasRange(event);
                     }
                 }
             });
 
-            tableView.getSelectionModel().selectFirst();
+            getTableView().getSelectionModel().selectFirst();
+//            tableView.getSelectionModel().selectFirst();
 
             // onDoubleClick (range preview) setup:
-            tableView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            getTableView().setOnMouseClicked(new EventHandler<MouseEvent>() {
+//            tableView.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
                     if (event.getButton().equals(MouseButton.PRIMARY)) {
                         if (event.getClickCount() == 2) {
-                            previewRange(tableView);
+                            previewRange(getTableView());
+//                            previewRange(tableView);
                         }
                     }
                 }
@@ -983,27 +1005,28 @@ public class ValuationController {
             SimpleDoubleProperty property = calData.getValuationData().getExtraAcProperties(functionType).
                     get(lastIndex);
             calData.getValuationData().initFunctionCostProperty(rangeList, property);
-            costL.textProperty().bind(property.asString());
+            getCostL().textProperty().bind(property.asString());
+//            costL.textProperty().bind(property.asString());
         }
 
-        public HBox getHBox() {
-            return hBox;
-        }
-
-        public TextField getFreqTF() {
-            return freqTF;
-        }
-
-        public ComboBox<String> getFreqCB() {
-            return freqCB;
-        }
-
-        public Button getAddRangeBtn() {
-            return addRangeBtn;
-        }
-
-        public TableView<MeasRangeData> getTableView() {
-            return tableView;
-        }
+//        public HBox getHBox() {
+//            return hBox;
+//        }
+//
+//        public TextField getFreqTF() {
+//            return freqTF;
+//        }
+//
+//        public ComboBox<String> getFreqCB() {
+//            return freqCB;
+//        }
+//
+//        public Button getAddRangeBtn() {
+//            return addRangeBtn;
+//        }
+//
+//        public TableView<MeasRangeData> getTableView() {
+//            return tableView;
+//        }
     }
 }
