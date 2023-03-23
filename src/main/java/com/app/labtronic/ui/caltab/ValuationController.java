@@ -59,9 +59,39 @@ public class ValuationController {
 
     @FXML
     private HBox vdcHBox;
+    @FXML
+    private HBox vacHBox;
+    @FXML
+    private HBox idcHBox;
+    @FXML
+    private HBox iacHBox;
+    @FXML
+    private HBox rdcHBox;
 
     @FXML
     private Button addVdcBtn;
+    @FXML
+    private Button addVacBtn;
+    @FXML
+    private Button addIdcBtn;
+    @FXML
+    private Button addIacBtn;
+    @FXML
+    private Button addRdcBtn;
+
+    @FXML
+    private VBox vacBaseVBox;
+    @FXML
+    private VBox iacBaseVBox;
+
+    @FXML
+    private TextField vacFreqTF;
+    @FXML
+    private TextField iacFreqTF;
+    @FXML
+    private ComboBox<String> vacFreqCB;
+    @FXML
+    private ComboBox<String> iacFreqCB;
 
     @FXML
     private Label vacFreqL;
@@ -117,16 +147,23 @@ public class ValuationController {
             if (newValue > oldValue) {
                 calData.getValuationData().addExtraAcFreq("VAC");
                 addAcFreqContainer(true);
+                int lastIndex = vacExtraFreqContainers.size() - 1;
+                // TODO: no check for index out of bounds
+                vacExtraFreqContainers.get(lastIndex).getTableView().setUserData(vacExtraFreqContainers.get(lastIndex));
             } else if (newValue < oldValue) {
                 removeAcFreq(true);
                 calData.getValuationData().removeExtraAcFreq("VAC");
                 calData.getValuationData().resetTotalCostProperty();
+                // TODO: test if userData attached to a table view should be cleared
             }
         });
         iacSpinner.valueProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue > oldValue) {
                 calData.getValuationData().addExtraAcFreq("IAC");
                 addAcFreqContainer(false);
+                int lastIndex = iacExtraFreqContainers.size() - 1;
+                // TODO: no check for index out of bounds
+                iacExtraFreqContainers.get(lastIndex).getTableView().setUserData(iacExtraFreqContainers.get(lastIndex));
             } else if (newValue < oldValue) {
                 removeAcFreq(false);
                 calData.getValuationData().removeExtraAcFreq("IAC");
@@ -134,8 +171,23 @@ public class ValuationController {
             }
         });
 
-        // basic 5 TableViews setup + top panel combo boxes:
+        // attaching section containers to AC section TableViews for easier retrieval of controls later:
+        // (setUserData inside the loop below)
+        // TODO: no check for frequency related controls being passed as null
+        SectionContainer vdcSectionContainer = new SectionContainer(vdcSection, vdcHBox, null, null, addVdcBtn,
+                vdcTableView, vdcCostL, "VDC");
+        SectionContainer vacSectionContainer = new SectionContainer(vacSection, vacHBox, vacFreqTF, vacFreqCB,
+                addVacBtn, vacTableView, vacCostL, "VAC");
+        SectionContainer idcSectionContainer = new SectionContainer(idcSection, idcHBox, null, null, addIdcBtn,
+                idcTableView, idcCostL, "IDC");
+        SectionContainer iacSectionContainer = new SectionContainer(iacSection, iacHBox, iacFreqTF, iacFreqCB,
+                addIacBtn, iacTableView, iacCostL, "IAC");
+        SectionContainer rdcSectionContainer = new SectionContainer(rdcSection, rdcHBox, null, null, addRdcBtn,
+                rdcTableView, rdcCostL, "RDC");
+        List<SectionContainer> baseSectionsContainers = List.of(vdcSectionContainer, vacSectionContainer,
+                idcSectionContainer, iacSectionContainer, rdcSectionContainer);
 
+        // basic 5 TableViews setup + top panel combo boxes:
         // top panel combo box bindings:
         vacFreqL.disableProperty().bind(vacCB.selectedProperty().not());
         vacSpinner.disableProperty().bind(vacCB.selectedProperty().not());
@@ -237,6 +289,8 @@ public class ValuationController {
                     }
                 }
             });
+
+            tableView.setUserData(baseSectionsContainers.get(index));
         }
 
         for (int i = 0; i < cbList.size(); i++) {
@@ -266,11 +320,6 @@ public class ValuationController {
         rdcCostL.textProperty().bind(calData.getValuationData().observableRdcCostProperty().asString());
 
         totalCostL.textProperty().bind(calData.getValuationData().observableTotalCostProperty().asString());
-
-        // attaching section containers to AC section TableViews for easier retrieval of controls later:
-        // TODO: no check for frequency related controls being passed as null
-        SectionContainer sectionContainer = new SectionContainer(vdcSection, vdcHBox, null, null, addVdcBtn,
-                vdcTableView, vdcCostL);
     }
 
     private void previewRange(TableView<MeasRangeData> tableView) {
@@ -280,20 +329,29 @@ public class ValuationController {
             String range = String.valueOf(rangeData.getRange());
             String unit = rangeData.getUnit();
             String function = rangeData.getFunctionType().toString();
-            String frequency;
-            String frequencyUnit;
+
+            SectionContainer container = (SectionContainer) tableView.getUserData();
+            String frequency = null;
+            String frequencyUnit = null;
+
             StringBuilder headerBuilder = new StringBuilder();
             headerBuilder.append("Range: ").append(range).append(" ").append(unit);
             if (function.equalsIgnoreCase("VAC") || function.equalsIgnoreCase("IAC")) {
                 // retrieve the TableView's parent Pane (for getting some controls' data later on):
                 // TODO: find a better way of getting that data
-                Pane tableViewParentSection = (Pane) tableView.getParent();
-                Pane hBox = (Pane) tableViewParentSection.getChildren().get(0);
-                TextField frequencyTF = (TextField) hBox.getChildren().get(1);
-                ComboBox<String> frequencyUnitCB = (ComboBox<String>) hBox.getChildren().get(2);
+//                Pane tableViewParentSection = (Pane) tableView.getParent();
+//                Pane hBox = (Pane) tableViewParentSection.getChildren().get(0);
+//                TextField frequencyTF = (TextField) hBox.getChildren().get(1);
+//                ComboBox<String> frequencyUnitCB = (ComboBox<String>) hBox.getChildren().get(2);
 
-                frequency = frequencyTF.getText();
-                frequencyUnit = frequencyUnitCB.getValue();
+//                frequency = frequencyTF.getText();
+//                frequencyUnit = frequencyUnitCB.getValue();
+
+                // new way - test
+                if (container != null) {
+                    frequency = container.getFreqTF().getText();
+                    frequencyUnit = container.getFreqCB().getValue();
+                }
 
                 headerBuilder.append(" (").append(function).append(")\nf = ").append(frequency).append(" ").
                         append(frequencyUnit);
@@ -483,44 +541,47 @@ public class ValuationController {
         // TODO: find a better way of retrieving the corresponding TableView
         TableView<MeasRangeData> tableView = null;
 
-        Node sourceParentPane;
-        Node sectionPane;
+//        Node sourceParentPane;
+//        Node sectionPane;
         if (isEventSourceButton) {
             // when called by clicking a button:
-            Button eventSourceButton = (Button) event.getSource();
-            sourceParentPane = eventSourceButton.getParent();
-            sectionPane = sourceParentPane.getParent();
+            tableView = (TableView<MeasRangeData>) ((Button) event.getSource()).getUserData();
 
-            List<Node> sectionControls = ((Pane) sectionPane).getChildren();
-            int parentPaneIndex = sectionControls.indexOf(sourceParentPane);
-
-            for (Node node : sectionControls) {
-                if (node instanceof TableView<?> && (sectionControls.indexOf(node) == parentPaneIndex + 1)) {
-                    try {
-                        tableView = (TableView<MeasRangeData>) node;
-                    } catch (ClassCastException e) {
-                        e.printStackTrace();
-                        return;
-                    }
-                }
-            }
+//            Button eventSourceButton = (Button) event.getSource();
+//            sourceParentPane = eventSourceButton.getParent();
+//            sectionPane = sourceParentPane.getParent();
+//
+//            List<Node> sectionControls = ((Pane) sectionPane).getChildren();
+//            int parentPaneIndex = sectionControls.indexOf(sourceParentPane);
+//
+//            for (Node node : sectionControls) {
+//                if (node instanceof TableView<?> && (sectionControls.indexOf(node) == parentPaneIndex + 1)) {
+//                    try {
+//                        tableView = (TableView<MeasRangeData>) node;
+//                    } catch (ClassCastException e) {
+//                        e.printStackTrace();
+//                        return;
+//                    }
+//                }
+//            }
         } else {
             // when called from the ContextMenu on the TableView:
             ContextMenu menu = ((MenuItem) event.getSource()).getParentPopup();
             tableView = (TableView<MeasRangeData>) menu.getUserData();
-            sectionPane = tableView.getParent();
-            sourceParentPane = ((Pane) sectionPane).getChildren().get(0);
+//            sectionPane = tableView.getParent();
+//            sourceParentPane = ((Pane) sectionPane).getChildren().get(0);
         }
 
         // text for the topmost label in the dialog:
         // TODO: validation? else statement?
-        String text = "not initialized";
-        for (Node node : ((Pane) sourceParentPane).getChildren()) {
-            if (node instanceof Label) {
-                text = ((Label) node).getText();
-                break;
-            }
-        }
+        String text = ((SectionContainer) tableView.getUserData()).getFunctionName();
+//        String text = "not initialized";
+//        for (Node node : ((Pane) sourceParentPane).getChildren()) {
+//            if (node instanceof Label) {
+//                text = ((Label) node).getText();
+//                break;
+//            }
+//        }
 
         // set up the new dialog:
         Dialog<ButtonType> dialog = new Dialog<>();
@@ -656,17 +717,16 @@ public class ValuationController {
 
     private void addAcFreqContainer(boolean isVoltage) {
         AcFreqContainer container = new AcFreqContainer(isVoltage);
-//        String function = null;
         if (isVoltage) {
             vacExtraFreqContainers.add(container);
             vacSection.getChildren().add(container.getHBox());
             vacSection.getChildren().add(container.getTableView());
-//            function = "VAC";
+            container.setFunctionName("VAC");
         } else {
             iacExtraFreqContainers.add(container);
             iacSection.getChildren().add(container.getHBox());
             iacSection.getChildren().add(container.getTableView());
-//            function = "IAC";
+            container.setFunctionName("IAC");
         }
         // TODO: check for null
         container.initializeTableView();
@@ -691,6 +751,7 @@ public class ValuationController {
         private Button addRangeBtn;
         private TableView<MeasRangeData> tableView;
         private Label costL;
+        private String functionName;
 
         private SectionContainer() {
             this.topLevelVBox = null;
@@ -700,10 +761,12 @@ public class ValuationController {
             this.addRangeBtn = null;
             this.tableView = null;
             this.costL = null;
+            this.functionName = null;
         }
 
         private SectionContainer(VBox topLevelVBox, HBox hBox, TextField freqTF, ComboBox<String> freqCB,
-                                 Button addRangeBtn, TableView<MeasRangeData> tableView, Label costL) {
+                                 Button addRangeBtn, TableView<MeasRangeData> tableView, Label costL,
+                                 String functionName) {
             this.topLevelVBox = topLevelVBox;
             this.hBox = hBox;
             this.freqTF = freqTF;
@@ -711,6 +774,11 @@ public class ValuationController {
             this.addRangeBtn = addRangeBtn;
             this.tableView = tableView;
             this.costL = costL;
+            this.functionName = functionName;
+
+            if (addRangeBtn != null && tableView != null) {
+                addRangeBtn.setUserData(tableView);
+            }
         }
 
         public VBox getTopLevelVBox() {
@@ -741,6 +809,10 @@ public class ValuationController {
             return costL;
         }
 
+        public String getFunctionName() {
+            return functionName;
+        }
+
         public void setTopLevelVBox(VBox topLevelVBox) {
             this.topLevelVBox = topLevelVBox;
         }
@@ -767,6 +839,10 @@ public class ValuationController {
 
         public void setCostL(Label costL) {
             this.costL = costL;
+        }
+
+        public void setFunctionName(String functionName) {
+            this.functionName = functionName;
         }
     }
 
@@ -982,7 +1058,7 @@ public class ValuationController {
 
             // onDoubleClick (range preview) setup:
             getTableView().setOnMouseClicked(new EventHandler<MouseEvent>() {
-//            tableView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                //            tableView.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
                     if (event.getButton().equals(MouseButton.PRIMARY)) {

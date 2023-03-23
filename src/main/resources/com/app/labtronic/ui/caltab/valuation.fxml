@@ -76,8 +76,8 @@
 
                 <!--VAC-->
                 <VBox fx:id="vacSection" spacing="10">
-                    <VBox fx:id="vacBase" spacing="10">
-                        <HBox spacing="20" alignment="CENTER">
+                    <VBox fx:id="vacBaseVBox" spacing="10">
+                        <HBox fx:id="vacHBox" spacing="20" alignment="CENTER">
                             <Label text="VAC" underline="true"/>
                             <TextField text="50" fx:id="vacFreqTF" prefWidth="50"/>
                             <ComboBox fx:id="vacFreqCB" prefWidth="70">
@@ -118,7 +118,7 @@
 
                 <!--IDC-->
                 <VBox fx:id="idcSection" spacing="10">
-                    <HBox spacing="20" alignment="CENTER">
+                    <HBox fx:id="idcHBox" spacing="20" alignment="CENTER">
                         <Label text="IDC" underline="true"/>
                         <Button fx:id="addIdcBtn" onAction="#handleAddNewMeasRange">
                             <tooltip>
@@ -146,8 +146,8 @@
 
                 <!--IAC-->
                 <VBox fx:id="iacSection" spacing="10">
-                    <VBox fx:id="iacBase" spacing="10">
-                        <HBox spacing="20" alignment="CENTER">
+                    <VBox fx:id="iacBaseVBox" spacing="10">
+                        <HBox fx:id="iacHBox" spacing="20" alignment="CENTER">
                             <Label text="IAC" underline="true"/>
                             <TextField text="50" fx:id="iacFreqTF" prefWidth="50"/>
                             <ComboBox fx:id="iacFreqCB">
@@ -188,7 +188,7 @@
 
                 <!--RDC-->
                 <VBox fx:id="rdcSection" spacing="10">
-                    <HBox spacing="20" alignment="CENTER">
+                    <HBox fx:id="rdcHBox" spacing="20" alignment="CENTER">
                         <Label text="RDC" underline="true"/>
                         <Button fx:id="addRdcBtn" onAction="#handleAddNewMeasRange">
                             <tooltip>
