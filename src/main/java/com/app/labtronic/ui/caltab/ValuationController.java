@@ -754,14 +754,7 @@ public class ValuationController {
         private String functionName;
 
         private SectionContainer() {
-            this.topLevelVBox = null;
-            this.hBox = null;
-            this.freqTF = null;
-            this.freqCB = null;
-            this.addRangeBtn = null;
-            this.tableView = null;
-            this.costL = null;
-            this.functionName = null;
+
         }
 
         private SectionContainer(VBox topLevelVBox, HBox hBox, TextField freqTF, ComboBox<String> freqCB,
@@ -776,6 +769,10 @@ public class ValuationController {
             this.costL = costL;
             this.functionName = functionName;
 
+            setUserDataForButton();
+        }
+
+        private void setUserDataForButton() {
             if (addRangeBtn != null && tableView != null) {
                 addRangeBtn.setUserData(tableView);
             }
@@ -1069,6 +1066,8 @@ public class ValuationController {
                     }
                 }
             });
+
+            getAddRangeBtn().setUserData(getTableView());
         }
 
         public void initializeCostDisplay() {
