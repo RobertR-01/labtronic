@@ -337,17 +337,6 @@ public class ValuationController {
             StringBuilder headerBuilder = new StringBuilder();
             headerBuilder.append("Range: ").append(range).append(" ").append(unit);
             if (function.equalsIgnoreCase("VAC") || function.equalsIgnoreCase("IAC")) {
-                // retrieve the TableView's parent Pane (for getting some controls' data later on):
-                // TODO: find a better way of getting that data
-//                Pane tableViewParentSection = (Pane) tableView.getParent();
-//                Pane hBox = (Pane) tableViewParentSection.getChildren().get(0);
-//                TextField frequencyTF = (TextField) hBox.getChildren().get(1);
-//                ComboBox<String> frequencyUnitCB = (ComboBox<String>) hBox.getChildren().get(2);
-
-//                frequency = frequencyTF.getText();
-//                frequencyUnit = frequencyUnitCB.getValue();
-
-                // new way - test
                 if (container != null) {
                     frequency = container.getFreqTF().getText();
                     frequencyUnit = container.getFreqCB().getValue();
@@ -536,40 +525,15 @@ public class ValuationController {
     // TODO: lots of duplicate code from NewCalDlgController
     @FXML
     private void addNewMeasRange(ActionEvent event, boolean isEventSourceButton) {
-        // getting the proper tableView:
-        // (eventSourceButton -> sourceParentPane -> sectionPane)
-        // TODO: find a better way of retrieving the corresponding TableView
         TableView<MeasRangeData> tableView = null;
 
-//        Node sourceParentPane;
-//        Node sectionPane;
         if (isEventSourceButton) {
             // when called by clicking a button:
             tableView = (TableView<MeasRangeData>) ((Button) event.getSource()).getUserData();
-
-//            Button eventSourceButton = (Button) event.getSource();
-//            sourceParentPane = eventSourceButton.getParent();
-//            sectionPane = sourceParentPane.getParent();
-//
-//            List<Node> sectionControls = ((Pane) sectionPane).getChildren();
-//            int parentPaneIndex = sectionControls.indexOf(sourceParentPane);
-//
-//            for (Node node : sectionControls) {
-//                if (node instanceof TableView<?> && (sectionControls.indexOf(node) == parentPaneIndex + 1)) {
-//                    try {
-//                        tableView = (TableView<MeasRangeData>) node;
-//                    } catch (ClassCastException e) {
-//                        e.printStackTrace();
-//                        return;
-//                    }
-//                }
-//            }
         } else {
             // when called from the ContextMenu on the TableView:
             ContextMenu menu = ((MenuItem) event.getSource()).getParentPopup();
             tableView = (TableView<MeasRangeData>) menu.getUserData();
-//            sectionPane = tableView.getParent();
-//            sourceParentPane = ((Pane) sectionPane).getChildren().get(0);
         }
 
         // text for the topmost label in the dialog:
@@ -844,53 +808,31 @@ public class ValuationController {
     }
 
     private class AcFreqContainer extends SectionContainer {
-        //        private final HBox hBox;
-//        private final TextField freqTF;
-//        private final ComboBox<String> freqCB;
-//        private final Button addRangeBtn;
-//        private final TableView<MeasRangeData> tableView;
         private final boolean isVoltage;
-//        private final Label costL;
-        //        private VBox section;
-//        private final VBox topLevelVBox;
 
         private AcFreqContainer(boolean isVoltage) {
             this.isVoltage = isVoltage;
-//            this.section = isVoltage ? vacSection : iacSection;
 
             setTopLevelVBox(new VBox());
             getTopLevelVBox().setSpacing(10);
-//            topLevelVBox = new VBox();
-//            topLevelVBox.setSpacing(10);
 
             setHBox(new HBox());
             getHBox().spacingProperty().set(20);
             getHBox().setAlignment(Pos.CENTER);
-//            hBox = new HBox();
-//            hBox.spacingProperty().set(20);
-//            hBox.setAlignment(Pos.CENTER);
 
             String labelTxt = (isVoltage) ? "VAC" : "IAC";
             Label vacLabel = new Label(labelTxt);
             vacLabel.setUnderline(true);
             getHBox().getChildren().add(vacLabel);
-//            hBox.getChildren().add(vacLabel);
 
             setFreqTF(new TextField("50"));
             getFreqTF().setPrefWidth(50);
             getHBox().getChildren().add(getFreqTF());
-//            freqTF = new TextField("50");
-//            freqTF.setPrefWidth(50);
-//            hBox.getChildren().add(freqTF);
 
             setFreqCB(new ComboBox<>(FXCollections.observableArrayList("Hz", "kHz")));
             getFreqCB().setPrefWidth(70);
             getFreqCB().setValue("Hz");
             getHBox().getChildren().add(getFreqCB());
-//            freqCB = new ComboBox<>(FXCollections.observableArrayList("Hz", "kHz"));
-//            freqCB.setPrefWidth(70);
-//            freqCB.setValue("Hz");
-//            hBox.getChildren().add(freqCB);
 
             setAddRangeBtn(new Button());
             Tooltip tooltip = new Tooltip("Add new measurement range / points");
@@ -901,15 +843,6 @@ public class ValuationController {
             getAddRangeBtn().setGraphic(icon);
             getAddRangeBtn().setOnAction(event -> ValuationController.this.addNewMeasRange(event, true));
             getHBox().getChildren().add(getAddRangeBtn());
-//            addRangeBtn = new Button();
-//            Tooltip tooltip = new Tooltip("Add new measurement range / points");
-//            tooltip.setShowDelay(new Duration(500));
-//            addRangeBtn.setTooltip(tooltip);
-//            FontIcon icon = new FontIcon("bx-plus");
-//            icon.setIconSize(16);
-//            addRangeBtn.setGraphic(icon);
-//            addRangeBtn.setOnAction(event -> ValuationController.this.addNewMeasRange(event, true));
-//            hBox.getChildren().add(addRangeBtn);
 
             HBox costHBox = new HBox();
             costHBox.setSpacing(10);
@@ -921,16 +854,6 @@ public class ValuationController {
             costHBox.getChildren().add(sectionCostL);
             costHBox.getChildren().add(getCostL());
             getHBox().getChildren().add(costHBox);
-//            HBox costHBox = new HBox();
-//            costHBox.setSpacing(10);
-//            costHBox.setAlignment(Pos.CENTER);
-//            Label sectionCostL = new Label("Section cost: ");
-//            sectionCostL.setAlignment(Pos.CENTER);
-//            costL = new Label();
-//            costL.setAlignment(Pos.CENTER);
-//            costHBox.getChildren().add(sectionCostL);
-//            costHBox.getChildren().add(costL);
-//            hBox.getChildren().add(costHBox);
 
             setTableView(new TableView<>());
             VBox.setVgrow(getTableView(), Priority.ALWAYS);
@@ -942,21 +865,9 @@ public class ValuationController {
                 column.prefWidthProperty().bind(getTableView().widthProperty().divide(5));
                 getTableView().getColumns().add(column);
             }
-//            tableView = new TableView<>();
-//            VBox.setVgrow(tableView, Priority.ALWAYS);
-//            TableColumn<MeasRangeData, String> column;
-//            String[] strings = {"Range", "Unit", "Number of points", "Type", "Cost"};
-//            for (int i = 0; i < 5; i++) {
-//                column = new TableColumn<>(strings[i]);
-//                column.setResizable(false);
-//                column.prefWidthProperty().bind(tableView.widthProperty().divide(5));
-//                tableView.getColumns().add(column);
-//            }
 
             getTopLevelVBox().getChildren().add(getHBox());
             getTopLevelVBox().getChildren().add(getTableView());
-//            topLevelVBox.getChildren().add(hBox);
-//            topLevelVBox.getChildren().add(tableView);
         }
 
         public void initializeTableView() {
@@ -970,9 +881,7 @@ public class ValuationController {
 
             if (rangeList != null) {
                 getTableView().setItems(rangeList);
-//                tableView.setItems(rangeList);
                 int i = 0;
-//                for (TableColumn<MeasRangeData, ?> column : tableView.getColumns()) {
                 for (TableColumn<MeasRangeData, ?> column : getTableView().getColumns()) {
                     column.setCellValueFactory(new PropertyValueFactory<>(measRangeDataFields[i]));
                     i++;
@@ -1013,12 +922,9 @@ public class ValuationController {
             emptyRowContextMenu.getItems().add(addMenuItem);
 
             getTableView().setContextMenu(emptyRowContextMenu);
-//            tableView.setContextMenu(emptyRowContextMenu);
             // for retrieving menu's parent TableView later:
             emptyRowContextMenu.setUserData(getTableView());
-//            emptyRowContextMenu.setUserData(tableView);
 
-//            tableView.setRowFactory(new Callback<TableView<MeasRangeData>, TableRow<MeasRangeData>>() {
             getTableView().setRowFactory(new Callback<TableView<MeasRangeData>, TableRow<MeasRangeData>>() {
                 @Override
                 public TableRow<MeasRangeData> call(TableView<MeasRangeData> param) {
@@ -1039,29 +945,24 @@ public class ValuationController {
                 }
             });
 
-//            tableView.setOnKeyPressed(new EventHandler<KeyEvent>() {
             getTableView().setOnKeyPressed(new EventHandler<KeyEvent>() {
                 @Override
                 public void handle(KeyEvent event) {
                     if (event.getCode() == KeyCode.DELETE && getTableView().getSelectionModel().getSelectedIndex() >= 0) {
-//                    if (event.getCode() == KeyCode.DELETE && tableView.getSelectionModel().getSelectedIndex() >= 0) {
                         removeMeasRange(event);
                     }
                 }
             });
 
             getTableView().getSelectionModel().selectFirst();
-//            tableView.getSelectionModel().selectFirst();
 
             // onDoubleClick (range preview) setup:
             getTableView().setOnMouseClicked(new EventHandler<MouseEvent>() {
-                //            tableView.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
                     if (event.getButton().equals(MouseButton.PRIMARY)) {
                         if (event.getClickCount() == 2) {
                             previewRange(getTableView());
-//                            previewRange(tableView);
                         }
                     }
                 }
@@ -1081,27 +982,6 @@ public class ValuationController {
                     get(lastIndex);
             calData.getValuationData().initFunctionCostProperty(rangeList, property);
             getCostL().textProperty().bind(property.asString());
-//            costL.textProperty().bind(property.asString());
         }
-
-//        public HBox getHBox() {
-//            return hBox;
-//        }
-//
-//        public TextField getFreqTF() {
-//            return freqTF;
-//        }
-//
-//        public ComboBox<String> getFreqCB() {
-//            return freqCB;
-//        }
-//
-//        public Button getAddRangeBtn() {
-//            return addRangeBtn;
-//        }
-//
-//        public TableView<MeasRangeData> getTableView() {
-//            return tableView;
-//        }
     }
 }
