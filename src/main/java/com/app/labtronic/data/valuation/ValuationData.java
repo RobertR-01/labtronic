@@ -80,7 +80,7 @@ public class ValuationData {
         }
     }
 
-    // calculates the cost of all measurement ranges within that measurement function
+    // calculates the cost of all measurement ranges within that measurement function/section
     private double calculateFunctionCost(ObservableList<MeasRangeData> rangeList) {
         double cost = 0;
         if (rangeList != null && !rangeList.isEmpty()) {

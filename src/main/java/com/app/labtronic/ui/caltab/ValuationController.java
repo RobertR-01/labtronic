@@ -322,6 +322,15 @@ public class ValuationController {
         totalCostL.textProperty().bind(calData.getValuationData().observableTotalCostProperty().asString());
     }
 
+    @FXML
+    private void clearSection(String section) {
+
+
+
+
+        // reset total cost property
+    }
+
     private void previewRange(TableView<MeasRangeData> tableView) {
         if (tableView != null && !tableView.getSelectionModel().isEmpty()) {
             MeasRangeData rangeData = tableView.getSelectionModel().getSelectedItem();
@@ -525,7 +534,7 @@ public class ValuationController {
     // TODO: lots of duplicate code from NewCalDlgController
     @FXML
     private void addNewMeasRange(ActionEvent event, boolean isEventSourceButton) {
-        TableView<MeasRangeData> tableView = null;
+        TableView<MeasRangeData> tableView;
 
         if (isEventSourceButton) {
             // when called by clicking a button:
@@ -539,13 +548,6 @@ public class ValuationController {
         // text for the topmost label in the dialog:
         // TODO: validation? else statement?
         String text = ((SectionContainer) tableView.getUserData()).getFunctionName();
-//        String text = "not initialized";
-//        for (Node node : ((Pane) sourceParentPane).getChildren()) {
-//            if (node instanceof Label) {
-//                text = ((Label) node).getText();
-//                break;
-//            }
-//        }
 
         // set up the new dialog:
         Dialog<ButtonType> dialog = new Dialog<>();
