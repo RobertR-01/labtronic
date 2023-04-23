@@ -298,16 +298,28 @@ public class ValuationController {
             vBoxList.get(i).visibleProperty().bind(cbList.get(i).selectedProperty());
             vBoxList.get(i).managedProperty().bind(vBoxList.get(i).visibleProperty());
 
-            // TODO: !! add code for displayed cost recalculation here
+            // reset the section cost and the total cost on hiding the entire section via check box (including extra
+            // frequencies for AC functions):
             int finalI = i;
             cbList.get(i).selectedProperty().addListener((observable, oldValue, newValue) -> {
-                if (newValue && !oldValue) {
-//                    listOfBaseTables.get(finalI).getItems().addAll(calData.getValuationData().getBackupList().get(finalI));
-//                    calData.getValuationData().getBackupList().get(finalI).clear();
-                } else {
-//                    calData.getValuationData().backupList(listOfBaseTables.get(finalI).getItems(),
-//                            calData.getValuationData().getBackupList().get(finalI));
-//                    listOfBaseTables.get(finalI).getItems().clear();
+                if (!newValue && oldValue) {
+                    if (finalI == 0) {
+//                        calData.getValuationData().getRangeList("VDC").clear();
+                        calData.getValuationData().setObservableVdcCost(0);
+                        calData.getValuationData().resetTotalCostProperty();
+                    }
+//
+//                    if (finalI == 1) {
+//                        System.out.println("ben");
+//                        calData.getValuationData().getRangeList("VAC").clear();
+//                        calData.getValuationData().getExtraAcRangeLists("VAC").clear();
+//
+//                        calData.getValuationData().resetTotalCostProperty();
+//                    }
+                } else if (newValue && !oldValue) {
+                    calData.getValuationData().initFunctionCostProperty(calData.getValuationData().getRangeList("VDC"),
+                            calData.getValuationData().observableVdcCostProperty());
+//                    calData.getValuationData().resetTotalCostProperty();
                 }
             });
         }
@@ -323,12 +335,13 @@ public class ValuationController {
     }
 
     @FXML
-    private void clearSection(String section) {
+    private void clearSection(VBox section) {
+        if (section == null) {
+            return;
+        }
 
 
-
-
-        // reset total cost property
+        calData.getValuationData().resetTotalCostProperty();
     }
 
     private void previewRange(TableView<MeasRangeData> tableView) {
