@@ -298,28 +298,47 @@ public class ValuationController {
             vBoxList.get(i).visibleProperty().bind(cbList.get(i).selectedProperty());
             vBoxList.get(i).managedProperty().bind(vBoxList.get(i).visibleProperty());
 
-            // reset the section cost and the total cost on hiding the entire section via check box (including extra
+            // reset the section cost and the total cost when hiding the entire section via check box (including extra
             // frequencies for AC functions):
             int finalI = i;
             cbList.get(i).selectedProperty().addListener((observable, oldValue, newValue) -> {
                 if (!newValue && oldValue) {
-                    if (finalI == 0) {
-//                        calData.getValuationData().getRangeList("VDC").clear();
-                        calData.getValuationData().setObservableVdcCost(0);
-                        calData.getValuationData().resetTotalCostProperty();
+                    int spinnerValue;
+                    switch (finalI) {
+                        case 0:
+                            calData.getValuationData().getRangeList("VDC").clear();
+                            calData.getValuationData().setObservableVdcCost(0);
+                            break;
+                        case 1:
+                            spinnerValue = vacSpinner.getValue();
+                            for (int j = spinnerValue; j > 1; j--) {
+                                vacSpinner.getValueFactory().setValue(j - 1);
+                            }
+                            vacExtraFreqContainers.clear();
+                            calData.getValuationData().getRangeList("VAC").clear();
+                            calData.getValuationData().getExtraAcRangeLists("VAC").clear();
+                            calData.getValuationData().setObservableVacCost(0);
+                            break;
+                        case 2:
+                            calData.getValuationData().getRangeList("IDC").clear();
+                            calData.getValuationData().setObservableIdcCost(0);
+                            break;
+                        case 3:
+                            spinnerValue = iacSpinner.getValue();
+                            for (int j = spinnerValue; j > 1; j--) {
+                                iacSpinner.getValueFactory().setValue(j - 1);
+                            }
+                            iacExtraFreqContainers.clear();
+                            calData.getValuationData().getRangeList("IAC").clear();
+                            calData.getValuationData().getExtraAcRangeLists("IAC").clear();
+                            calData.getValuationData().setObservableIacCost(0);
+                            break;
+                        case 4:
+                            calData.getValuationData().getRangeList("RDC").clear();
+                            calData.getValuationData().setObservableRdcCost(0);
+                            break;
                     }
-//
-//                    if (finalI == 1) {
-//                        System.out.println("ben");
-//                        calData.getValuationData().getRangeList("VAC").clear();
-//                        calData.getValuationData().getExtraAcRangeLists("VAC").clear();
-//
-//                        calData.getValuationData().resetTotalCostProperty();
-//                    }
-                } else if (newValue && !oldValue) {
-                    calData.getValuationData().initFunctionCostProperty(calData.getValuationData().getRangeList("VDC"),
-                            calData.getValuationData().observableVdcCostProperty());
-//                    calData.getValuationData().resetTotalCostProperty();
+                    calData.getValuationData().resetTotalCostProperty();
                 }
             });
         }
