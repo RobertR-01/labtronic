@@ -6,101 +6,101 @@
 <?import javafx.scene.layout.*?>
 <?import java.lang.String?>
 <BorderPane fx:id="root" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-            stylesheets="@sub-tab-styles.css" fx:controller="com.app.labtronic.ui.caltab.GenInfoController">
+            stylesheets="@sub-tab-styles.css" fx:controller="com.app.labtronic.ui.caltab.BudgetsController">
     <padding>
         <Insets top="10" right="10" bottom="10" left="10"/>
     </padding>
     <left>
-        <GridPane vgap="10" minWidth="400" maxWidth="425" styleClass="borderPaneAreas">
+        <VBox spacing="10" minWidth="400" maxWidth="425" styleClass="borderPaneAreas" alignment="CENTER">
             <padding>
                 <Insets top="10" right="10" bottom="10" left="10"/>
             </padding>
-            <rowConstraints>
-                <RowConstraints percentHeight="25"/>
-                <RowConstraints percentHeight="75"/>
-            </rowConstraints>
 
-            <Label text="Measurement function:" underline="true" GridPane.columnIndex="0" GridPane.rowIndex="0"
-                   GridPane.halignment="CENTER">
-                <GridPane.margin>
+            <Label text="Measurement function:" underline="true">
+                <VBox.margin>
                     <Insets bottom="10"/>
-                </GridPane.margin>
+                </VBox.margin>
             </Label>
 
-            <ListView>
+            <ListView/>
+            <Separator/>
 
-            </ListView>
-
-            <Label text="Registry number (Kubacki): " GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-            <TextField fx:id="kubackiRegNoTF" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-
-            <Label text="Registry number (Switez): " GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-            <TextField fx:id="switezRegNoTF" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
-
-            <Label text="Date of order: " GridPane.columnIndex="0" GridPane.rowIndex="3"/>
-            <DatePicker fx:id="datePicker" GridPane.columnIndex="1" GridPane.rowIndex="3" editable="false"/>
-
-            <Label text="Accreditation: " GridPane.columnIndex="0" GridPane.rowIndex="4"/>
-            <CheckBox fx:id="accreditationCB" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
-
-            <Separator GridPane.columnIndex="0" GridPane.rowIndex="5" GridPane.columnSpan="2"/>
-
-            <Label text="Calibration site" underline="true" GridPane.columnIndex="0" GridPane.rowIndex="6"
-                   GridPane.columnSpan="2" GridPane.halignment="CENTER">
-                <GridPane.margin>
+            <Label text="Measurement range:" underline="true">
+                <VBox.margin>
                     <Insets bottom="10"/>
-                </GridPane.margin>
+                </VBox.margin>
             </Label>
 
-            <Label text="Lab name: " GridPane.columnIndex="0" GridPane.rowIndex="7" GridPane.valignment="TOP"/>
-            <TextArea fx:id="labName" GridPane.columnIndex="1" GridPane.rowIndex="7" wrapText="true">
-                Okręgowy Urząd Miar we Wrocławiu, Laboratorium Elektryczności
-            </TextArea>
+            <ListView/>
+            <Separator/>
 
-            <Label text="Address: " GridPane.columnIndex="0" GridPane.rowIndex="8" GridPane.valignment="TOP"/>
-            <TextArea fx:id="labAddress" GridPane.columnIndex="1" GridPane.rowIndex="8" wrapText="true">
-                53-647 Wrocław, ul. Młodych Techników 61/63
-            </TextArea>
+            <Label text="Measurement point:" underline="true">
+                <VBox.margin>
+                    <Insets bottom="10"/>
+                </VBox.margin>
+            </Label>
 
-        </GridPane>
+            <ListView/>
+        </VBox>
     </left>
     <center>
-        <GridPane vgap="10" styleClass="borderPaneAreas" minWidth="400" maxWidth="425">
+        <VBox spacing="10" minWidth="400" maxWidth="425" styleClass="borderPaneAreas" alignment="CENTER">
             <padding>
                 <Insets top="10" right="10" bottom="10" left="10"/>
             </padding>
-            <columnConstraints>
-                <ColumnConstraints percentWidth="30"/>
-                <ColumnConstraints percentWidth="70"/>
-            </columnConstraints>
 
-            <Label text="Customer details" underline="true" GridPane.columnIndex="0" GridPane.rowIndex="0"
-                   GridPane.columnSpan="2" GridPane.halignment="CENTER">
-                <GridPane.margin>
+            <Label text="Measurement details:" underline="true">
+                <VBox.margin>
                     <Insets bottom="10"/>
-                </GridPane.margin>
+                </VBox.margin>
             </Label>
 
-            <Label text="Name: " GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.valignment="TOP"/>
-            <TextArea fx:id="customerNameTA" GridPane.columnIndex="1" GridPane.rowIndex="1" wrapText="true"/>
+            <GridPane vgap="10">
+                <columnConstraints>
+                    <ColumnConstraints percentWidth="30"/>
+                    <ColumnConstraints percentWidth="70"/>
+                </columnConstraints>
 
-            <Label text="Address: " GridPane.columnIndex="0" GridPane.rowIndex="2" GridPane.valignment="TOP"/>
-            <TextArea fx:id="customerAddressTA" GridPane.columnIndex="1" GridPane.rowIndex="2" wrapText="true"/>
+                <Label text="Instrument type: " GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                <Label fx:id="instrumentType" text="test" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
 
-            <Separator GridPane.columnIndex="0" GridPane.rowIndex="3" GridPane.columnSpan="2"/>
+                <Label text="Readings resolution (DUT): " GridPane.columnIndex="0" GridPane.rowIndex="1"
+                       wrapText="true">
+                    <minHeight>
+                        <Control fx:constant="USE_PREF_SIZE"/>
+                    </minHeight>
+                    <prefHeight>
+                        <Control fx:constant="USE_COMPUTED_SIZE"/>
+                    </prefHeight>
+                </Label>
+                <Spinner fx:id="resDUTSpin" GridPane.columnIndex="1" GridPane.rowIndex="1"
+                         initialValue="0" min="0" max="8" amountToStepBy="1" prefWidth="100"/>
 
-            <Label text="End-user: " GridPane.columnIndex="0" GridPane.rowIndex="4"/>
-            <CheckBox fx:id="endUserCB" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+                <Label text="Readings resolution (reference standard): " GridPane.columnIndex="0"
+                       GridPane.rowIndex="2"/>
+                <Spinner fx:id="resStandardSpin" GridPane.columnIndex="1" GridPane.rowIndex="2"
+                         initialValue="0" min="0" max="8" amountToStepBy="1" prefWidth="100"/>
 
-            <Label fx:id="endUserNameL" text="Name: " GridPane.columnIndex="0" GridPane.rowIndex="5"
-                   GridPane.valignment="TOP"/>
-            <TextArea fx:id="endUserNameTA" text="n/a" GridPane.columnIndex="1" GridPane.rowIndex="5" wrapText="true"/>
 
-            <Label fx:id="endUserAddressL" text="Address: " GridPane.columnIndex="0" GridPane.rowIndex="6"
-                   GridPane.valignment="TOP"/>
-            <TextArea fx:id="endUserAddressTA" text="n/a" GridPane.columnIndex="1" GridPane.rowIndex="6"
-                      wrapText="true"/>
-        </GridPane>
+            </GridPane>
+
+            <Label text="Measurement range:" underline="true">
+                <VBox.margin>
+                    <Insets bottom="10"/>
+                </VBox.margin>
+            </Label>
+
+            <ListView/>
+            <Separator/>
+
+            <Label text="Measurement point:" underline="true">
+                <VBox.margin>
+                    <Insets bottom="10"/>
+                </VBox.margin>
+            </Label>
+
+            <ListView/>
+        </VBox>
     </center>
     <right>
         <GridPane vgap="10" minWidth="400" maxWidth="425" styleClass="borderPaneAreas">
@@ -159,4 +159,3 @@
         </GridPane>
     </right>
 </BorderPane>
-
