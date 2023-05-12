@@ -49,7 +49,7 @@
                 <Insets top="10" right="10" bottom="10" left="10"/>
             </padding>
 
-            <Label text="Measurement details:" underline="true">
+            <Label text="DUT details:" underline="true">
                 <VBox.margin>
                     <Insets bottom="10"/>
                 </VBox.margin>
@@ -57,15 +57,15 @@
 
             <GridPane vgap="10">
                 <columnConstraints>
-                    <ColumnConstraints percentWidth="30"/>
-                    <ColumnConstraints percentWidth="70"/>
+                    <ColumnConstraints percentWidth="50"/>
+                    <ColumnConstraints percentWidth="50"/>
                 </columnConstraints>
 
                 <Label text="Instrument type: " GridPane.columnIndex="0" GridPane.rowIndex="0"/>
                 <Label fx:id="instrumentType" text="test" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
 
                 <Label text="Readings resolution (DUT): " GridPane.columnIndex="0" GridPane.rowIndex="1"
-                       wrapText="true">
+                       wrapText="true" alignment="CENTER_LEFT">
                     <minHeight>
                         <Control fx:constant="USE_PREF_SIZE"/>
                     </minHeight>
@@ -73,16 +73,56 @@
                         <Control fx:constant="USE_COMPUTED_SIZE"/>
                     </prefHeight>
                 </Label>
-                <Spinner fx:id="resDUTSpin" GridPane.columnIndex="1" GridPane.rowIndex="1"
-                         initialValue="0" min="0" max="8" amountToStepBy="1" prefWidth="100"/>
+                <Spinner fx:id="dutResSpinner" GridPane.columnIndex="1" GridPane.rowIndex="1"
+                         initialValue="0" min="0" max="8" amountToStepBy="1" prefWidth="50"/>
+
+                <Label text="Internal resolution: " GridPane.columnIndex="0" GridPane.rowIndex="2"
+                       wrapText="true" alignment="CENTER_LEFT"/>
+                <TextField fx:id="internalRes" text="test" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+            </GridPane>
+
+            <Separator/>
+
+            <Label text="Reference standard details:" underline="true">
+                <VBox.margin>
+                    <Insets bottom="10"/>
+                </VBox.margin>
+            </Label>
+
+            <GridPane vgap="10">
+                <columnConstraints>
+                    <ColumnConstraints percentWidth="50"/>
+                    <ColumnConstraints percentWidth="50"/>
+                </columnConstraints>
+
+                <Label text="Calibration method: " GridPane.columnIndex="0"
+                       GridPane.rowIndex="0" wrapText="true" alignment="CENTER_LEFT"/>
+                <ComboBox fx:id="resolutionCB" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                    <items>
+                        <FXCollections fx:factory="observableArrayList">
+                            <String fx:value="&#x22DC; 4 8/9 digit"/>
+                            <String fx:value="5 1/2 &#x00F7; 6 1/2 digit"/>
+                            <String fx:value="&#x22DD; 7 1/2 digit"/>
+                        </FXCollections>
+                    </items>
+                    <value>
+                        <String fx:value="&#x22DC; 4 8/9 digit"/>
+                    </value>
+                </ComboBox>
 
                 <Label text="Readings resolution (reference standard): " GridPane.columnIndex="0"
-                       GridPane.rowIndex="2"/>
-                <Spinner fx:id="resStandardSpin" GridPane.columnIndex="1" GridPane.rowIndex="2"
-                         initialValue="0" min="0" max="8" amountToStepBy="1" prefWidth="100"/>
-
-
+                       GridPane.rowIndex="0" wrapText="true" alignment="CENTER_LEFT">
+                    <minHeight>
+                        <Control fx:constant="USE_PREF_SIZE"/>
+                    </minHeight>
+                    <prefHeight>
+                        <Control fx:constant="USE_COMPUTED_SIZE"/>
+                    </prefHeight>
+                </Label>
+                <Spinner fx:id="standardResSpinner" GridPane.columnIndex="1" GridPane.rowIndex="0"
+                         initialValue="0" min="0" max="8" amountToStepBy="1" prefWidth="50"/>
             </GridPane>
+
 
             <Label text="Measurement range:" underline="true">
                 <VBox.margin>

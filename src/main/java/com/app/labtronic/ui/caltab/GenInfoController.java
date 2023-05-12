@@ -127,6 +127,11 @@ public class GenInfoController {
 //                calData.getValuationData().getBaseProperties()
 //            }
 //        });
+
+        // TODO: it shouldn't be possible to change the instrument category past the new cal dialog - refactor that
+        //  section
+        dmmRadio.disableProperty().set(true);
+        calRadio.disableProperty().set(true);
     }
 
     // TODO: incomplete + validation?
