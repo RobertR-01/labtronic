@@ -16,44 +16,25 @@
                 <Insets top="10" right="10" bottom="10" left="10"/>
             </padding>
 
-            <Label text="Measurement function:" underline="true">
-                <VBox.margin>
-                    <Insets bottom="10"/>
-                </VBox.margin>
-            </Label>
+            <Label text="Measurement function" underline="true"/>
 
             <ListView/>
+
             <Separator/>
 
-            <Label text="Measurement range:" underline="true">
-                <VBox.margin>
-                    <Insets bottom="10"/>
-                </VBox.margin>
-            </Label>
+            <Label text="Measurement range" underline="true"/>
 
             <ListView/>
+
             <Separator/>
 
-            <Label text="Measurement point:" underline="true">
-                <VBox.margin>
-                    <Insets bottom="10"/>
-                </VBox.margin>
-            </Label>
+            <Label text="Measurement point" underline="true"/>
 
             <ListView/>
-        </VBox>
-    </left>
-    <center>
-        <VBox spacing="10" minWidth="400" maxWidth="425" styleClass="borderPaneAreas" alignment="CENTER">
-            <padding>
-                <Insets top="10" right="10" bottom="10" left="10"/>
-            </padding>
 
-            <Label text="DUT details:" underline="true">
-                <VBox.margin>
-                    <Insets bottom="10"/>
-                </VBox.margin>
-            </Label>
+            <Separator/>
+
+            <Label text="DUT details" underline="true"/>
 
             <GridPane vgap="10">
                 <columnConstraints>
@@ -65,7 +46,7 @@
                 <Label fx:id="instrumentType" text="test" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
 
                 <Label text="Readings resolution (DUT): " GridPane.columnIndex="0" GridPane.rowIndex="1"
-                       wrapText="true" alignment="CENTER_LEFT">
+                       wrapText="true">
                     <minHeight>
                         <Control fx:constant="USE_PREF_SIZE"/>
                     </minHeight>
@@ -73,45 +54,44 @@
                         <Control fx:constant="USE_COMPUTED_SIZE"/>
                     </prefHeight>
                 </Label>
-                <Spinner fx:id="dutResSpinner" GridPane.columnIndex="1" GridPane.rowIndex="1"
-                         initialValue="0" min="0" max="8" amountToStepBy="1" prefWidth="50"/>
+                <Spinner fx:id="dutResSpinner" GridPane.columnIndex="1" GridPane.rowIndex="1" initialValue="0"
+                         min="0" max="8" amountToStepBy="1" prefWidth="50"/>
 
                 <Label text="Internal resolution: " GridPane.columnIndex="0" GridPane.rowIndex="2"
-                       wrapText="true" alignment="CENTER_LEFT"/>
+                       wrapText="true"/>
                 <TextField fx:id="internalRes" text="test" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
             </GridPane>
+        </VBox>
+    </left>
+    <center>
+        <VBox spacing="10" minWidth="400" maxWidth="425" styleClass="borderPaneAreas" alignment="CENTER">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
 
-            <Separator/>
-
-            <Label text="Reference standard details:" underline="true">
-                <VBox.margin>
-                    <Insets bottom="10"/>
-                </VBox.margin>
-            </Label>
+            <Label text="Reference standard details" underline="true"/>
 
             <GridPane vgap="10">
                 <columnConstraints>
-                    <ColumnConstraints percentWidth="50"/>
-                    <ColumnConstraints percentWidth="50"/>
+                    <ColumnConstraints percentWidth="35"/>
+                    <ColumnConstraints percentWidth="65"/>
                 </columnConstraints>
 
-                <Label text="Calibration method: " GridPane.columnIndex="0"
-                       GridPane.rowIndex="0" wrapText="true" alignment="CENTER_LEFT"/>
-                <ComboBox fx:id="resolutionCB" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                <Label text="Calibration method: " GridPane.columnIndex="0" GridPane.rowIndex="0" wrapText="true"/>
+                <ComboBox fx:id="calMethodSpinner" GridPane.columnIndex="1" GridPane.rowIndex="0">
                     <items>
                         <FXCollections fx:factory="observableArrayList">
-                            <String fx:value="&#x22DC; 4 8/9 digit"/>
-                            <String fx:value="5 1/2 &#x00F7; 6 1/2 digit"/>
-                            <String fx:value="&#x22DD; 7 1/2 digit"/>
+                            <String fx:value="Direct measurement"/>
+                            <String fx:value="Comparative"/>
                         </FXCollections>
                     </items>
                     <value>
-                        <String fx:value="&#x22DC; 4 8/9 digit"/>
+                        <String fx:value="Direct measurement"/>
                     </value>
                 </ComboBox>
 
-                <Label text="Readings resolution (reference standard): " GridPane.columnIndex="0"
-                       GridPane.rowIndex="0" wrapText="true" alignment="CENTER_LEFT">
+                <Label text="Readings resolution (reference standard): " GridPane.columnIndex="0" GridPane.rowIndex="1"
+                       wrapText="true">
                     <minHeight>
                         <Control fx:constant="USE_PREF_SIZE"/>
                     </minHeight>
@@ -119,27 +99,124 @@
                         <Control fx:constant="USE_COMPUTED_SIZE"/>
                     </prefHeight>
                 </Label>
-                <Spinner fx:id="standardResSpinner" GridPane.columnIndex="1" GridPane.rowIndex="0"
+                <Spinner fx:id="standardResSpinner" GridPane.columnIndex="1" GridPane.rowIndex="1"
                          initialValue="0" min="0" max="8" amountToStepBy="1" prefWidth="50"/>
+
+                <Label text="Maximum permissible error: " GridPane.columnIndex="0" GridPane.rowIndex="2"
+                       wrapText="true" GridPane.columnSpan="2" GridPane.halignment="CENTER">
+                    <minHeight>
+                        <Control fx:constant="USE_PREF_SIZE"/>
+                    </minHeight>
+                    <prefHeight>
+                        <Control fx:constant="USE_COMPUTED_SIZE"/>
+                    </prefHeight>
+                </Label>
+                <HBox GridPane.columnIndex="0" GridPane.rowIndex="3" spacing="5" GridPane.columnSpan="2"
+                      GridPane.halignment="CENTER" alignment="CENTER">
+                    <Label text="&#x00B1; ("/>
+                    <TextField minWidth="50" maxWidth="50"/>
+                    <Label text="ppm Reading(*) +"/>
+                    <TextField minWidth="50" maxWidth="50"/>
+                    <Label text="ppm FS(*) +"/>
+                    <TextField minWidth="50" maxWidth="50"/>
+                    <Label text="&#x00B5;V )"/>
+                </HBox>
             </GridPane>
 
-
-            <Label text="Measurement range:" underline="true">
-                <VBox.margin>
-                    <Insets bottom="10"/>
-                </VBox.margin>
-            </Label>
-
-            <ListView/>
             <Separator/>
 
-            <Label text="Measurement point:" underline="true">
-                <VBox.margin>
-                    <Insets bottom="10"/>
-                </VBox.margin>
-            </Label>
+            <Label text="Readings" underline="true"/>
 
-            <ListView/>
+            <GridPane vgap="10">
+                <columnConstraints>
+                    <ColumnConstraints percentWidth="47"/>
+                    <ColumnConstraints percentWidth="6"/>
+                    <ColumnConstraints percentWidth="47"/>
+                </columnConstraints>
+
+                <VBox GridPane.columnIndex="0" GridPane.rowIndex="0" alignment="CENTER">
+                    <Label text="DUT" wrapText="true"/>
+                    <GridPane>
+                        <columnConstraints>
+                            <ColumnConstraints percentWidth="10"/>
+                            <ColumnConstraints percentWidth="90"/>
+                        </columnConstraints>
+
+                        <Label text="1. " GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                        <TextField fx:id="dutReading0" text="0.0" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+                        <Label text="2. " GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                        <TextField fx:id="dutReading1" text="0.0" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+                        <Label text="3. " GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                        <TextField fx:id="dutReading2" text="0.0" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+                        <Label text="4. " GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+                        <TextField fx:id="dutReading3" text="0.0" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+
+                        <Label text="5. " GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+                        <TextField fx:id="dutReading4" text="0.0" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+
+                        <Label text="6. " GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+                        <TextField fx:id="dutReading5" text="0.0" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+
+                        <Label text="7. " GridPane.columnIndex="0" GridPane.rowIndex="6"/>
+                        <TextField fx:id="dutReading6" text="0.0" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+
+                        <Label text="8. " GridPane.columnIndex="0" GridPane.rowIndex="7"/>
+                        <TextField fx:id="dutReading7" text="0.0" GridPane.columnIndex="1" GridPane.rowIndex="7"/>
+
+                        <Label text="9. " GridPane.columnIndex="0" GridPane.rowIndex="8"/>
+                        <TextField fx:id="dutReading8" text="0.0" GridPane.columnIndex="1" GridPane.rowIndex="8"/>
+
+                        <Label text="10. " GridPane.columnIndex="0" GridPane.rowIndex="9"/>
+                        <TextField fx:id="dutReading9" text="0.0" GridPane.columnIndex="1" GridPane.rowIndex="9"/>
+                    </GridPane>
+                </VBox>
+
+                <Separator orientation="VERTICAL" GridPane.rowIndex="0" GridPane.columnIndex="1"
+                           GridPane.halignment="CENTER"/>
+
+                <VBox GridPane.columnIndex="2" GridPane.rowIndex="0" alignment="CENTER">
+                    <Label text="Reference DMM" wrapText="true"/>
+                    <GridPane>
+                        <columnConstraints>
+                            <ColumnConstraints percentWidth="10"/>
+                            <ColumnConstraints percentWidth="90"/>
+                        </columnConstraints>
+
+                        <Label text="1. " GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                        <TextField fx:id="refDMMReading0" text="0.0" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+                        <Label text="2. " GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                        <TextField fx:id="refDMMReading1" text="0.0" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+                        <Label text="3. " GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                        <TextField fx:id="refDMMReading2" text="0.0" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+                        <Label text="4. " GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+                        <TextField fx:id="refDMMReading3" text="0.0" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+
+                        <Label text="5. " GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+                        <TextField fx:id="refDMMReading4" text="0.0" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+
+                        <Label text="6. " GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+                        <TextField fx:id="refDMMReading5" text="0.0" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+
+                        <Label text="7. " GridPane.columnIndex="0" GridPane.rowIndex="6"/>
+                        <TextField fx:id="refDMMReading6" text="0.0" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+
+                        <Label text="8. " GridPane.columnIndex="0" GridPane.rowIndex="7"/>
+                        <TextField fx:id="refDMMReading7" text="0.0" GridPane.columnIndex="1" GridPane.rowIndex="7"/>
+
+                        <Label text="9. " GridPane.columnIndex="0" GridPane.rowIndex="8"/>
+                        <TextField fx:id="refDMMReading8" text="0.0" GridPane.columnIndex="1" GridPane.rowIndex="8"/>
+
+                        <Label text="10. " GridPane.columnIndex="0" GridPane.rowIndex="9"/>
+                        <TextField fx:id="refDMMReading9" text="0.0" GridPane.columnIndex="1" GridPane.rowIndex="9"/>
+                    </GridPane>
+                </VBox>
+            </GridPane>
         </VBox>
     </center>
     <right>
@@ -152,50 +229,12 @@
                 <ColumnConstraints percentWidth="60"/>
             </columnConstraints>
 
-            <Label text="Instrument details" underline="true" GridPane.columnIndex="0" GridPane.rowIndex="0"
+            <Label text="Results" underline="true" GridPane.columnIndex="0" GridPane.rowIndex="0"
                    GridPane.columnSpan="2" GridPane.halignment="CENTER">
                 <GridPane.margin>
                     <Insets bottom="10"/>
                 </GridPane.margin>
             </Label>
-
-            <GridPane GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.columnSpan="2">
-                <columnConstraints>
-                    <ColumnConstraints percentWidth="50"/>
-                    <ColumnConstraints percentWidth="50"/>
-                </columnConstraints>
-                <fx:define>
-                    <ToggleGroup fx:id="toggleGroup"/>
-                </fx:define>
-                <RadioButton fx:id="dmmRadio" text="Multimeter" GridPane.columnIndex="0"
-                             toggleGroup="$toggleGroup" GridPane.halignment="CENTER"/>
-                <RadioButton fx:id="calRadio" text="Calibrator" GridPane.columnIndex="1"
-                             toggleGroup="$toggleGroup" GridPane.halignment="CENTER"/>
-            </GridPane>
-
-            <Label text="Manufacturer: " GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-            <TextField fx:id="manufacturerTF" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
-
-            <Label text="Type: " GridPane.columnIndex="0" GridPane.rowIndex="3"/>
-            <TextField fx:id="typeTF" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
-
-            <Label text="Serial No: " GridPane.columnIndex="0" GridPane.rowIndex="4"/>
-            <TextField fx:id="serialNoTF" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
-
-            <Label fx:id="resolutionLabel" text="Resolution (pricing tier): " GridPane.columnIndex="0"
-                   GridPane.rowIndex="5"/>
-            <ComboBox fx:id="resolutionCB" GridPane.columnIndex="1" GridPane.rowIndex="5">
-                <items>
-                    <FXCollections fx:factory="observableArrayList">
-                        <String fx:value="&#x22DC; 4 8/9 digit"/>
-                        <String fx:value="5 1/2 &#x00F7; 6 1/2 digit"/>
-                        <String fx:value="&#x22DD; 7 1/2 digit"/>
-                    </FXCollections>
-                </items>
-                <value>
-                    <String fx:value="&#x22DC; 4 8/9 digit"/>
-                </value>
-            </ComboBox>
         </GridPane>
     </right>
 </BorderPane>
