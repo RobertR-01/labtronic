@@ -11,7 +11,7 @@
         <Insets top="10" right="10" bottom="10" left="10"/>
     </padding>
     <left>
-        <VBox spacing="10" minWidth="400" maxWidth="425" styleClass="borderPaneAreas" alignment="CENTER">
+        <VBox spacing="10" minWidth="400" maxWidth="425" styleClass="borderPaneAreas" alignment="TOP_CENTER">
             <padding>
                 <Insets top="10" right="10" bottom="10" left="10"/>
             </padding>
@@ -64,7 +64,7 @@
         </VBox>
     </left>
     <center>
-        <VBox spacing="10" minWidth="400" maxWidth="425" styleClass="borderPaneAreas" alignment="CENTER">
+        <VBox spacing="10" minWidth="400" maxWidth="425" styleClass="borderPaneAreas" alignment="TOP_CENTER">
             <padding>
                 <Insets top="10" right="10" bottom="10" left="10"/>
             </padding>
@@ -111,7 +111,7 @@
                     </prefHeight>
                 </Label>
                 <HBox GridPane.columnIndex="1" GridPane.rowIndex="2" spacing="5" alignment="CENTER_LEFT">
-                    <TextField minWidth="50" maxWidth="50"/>
+                    <TextField minWidth="70" maxWidth="70"/>
                     <Label text="\%"/>
                 </HBox>
 
@@ -233,14 +233,10 @@
         </VBox>
     </center>
     <right>
-        <GridPane vgap="10" minWidth="400" maxWidth="425" styleClass="borderPaneAreas">
+        <VBox spacing="10" minWidth="400" maxWidth="425" styleClass="borderPaneAreas" alignment="TOP_CENTER">
             <padding>
                 <Insets top="10" right="10" bottom="10" left="10"/>
             </padding>
-            <columnConstraints>
-                <ColumnConstraints percentWidth="40"/>
-                <ColumnConstraints percentWidth="60"/>
-            </columnConstraints>
 
             <Label text="Results" underline="true" GridPane.columnIndex="0" GridPane.rowIndex="0"
                    GridPane.columnSpan="2" GridPane.halignment="CENTER">
@@ -248,6 +244,49 @@
                     <Insets bottom="10"/>
                 </GridPane.margin>
             </Label>
-        </GridPane>
+
+            <HBox alignment="CENTER_LEFT">
+                <Button text="Calculate"/>
+            </HBox>
+
+            <Separator/>
+
+            <GridPane vgap="10">
+                <columnConstraints>
+                    <ColumnConstraints percentWidth="35"/>
+                    <ColumnConstraints percentWidth="65"/>
+                </columnConstraints>
+
+                <Label text="Observed value (mean):" GridPane.columnIndex="0" GridPane.rowIndex="0" wrapText="true"/>
+                <HBox GridPane.columnIndex="1" GridPane.rowIndex="0" spacing="5" alignment="CENTER_RIGHT">
+                    <Label text="X̄ ="/>
+                    <TextField text="1.999999" editable="false"/>
+                </HBox>
+
+                <Label text="True value:" GridPane.columnIndex="0" GridPane.rowIndex="1" wrapText="true"/>
+                <HBox GridPane.columnIndex="1" GridPane.rowIndex="1" spacing="5" alignment="CENTER_RIGHT">
+                    <Label text="T ="/>
+                    <TextField text="1.999999" editable="false"/>
+                </HBox>
+
+                <Label text="Measurement error (X̄ - T):" GridPane.columnIndex="0" GridPane.rowIndex="2"
+                       wrapText="true"/>
+                <HBox GridPane.columnIndex="1" GridPane.rowIndex="2" spacing="5" alignment="CENTER_RIGHT">
+                    <Label text="ΔX ="/>
+                    <TextField text="1.999999" editable="false"/>
+                </HBox>
+
+                <Label text="Measurement uncertainty (expanded | k = 2):" GridPane.columnIndex="0" GridPane.rowIndex="3"
+                       wrapText="true"/>
+                <HBox GridPane.columnIndex="1" GridPane.rowIndex="3" spacing="5" alignment="CENTER_RIGHT">
+                    <Label text="U ="/>
+                    <TextField text="1.999999" editable="false"/>
+                </HBox>
+            </GridPane>
+
+            <Separator/>
+
+
+        </VBox>
     </right>
 </BorderPane>
