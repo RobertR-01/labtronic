@@ -140,7 +140,7 @@
 
             <Label text="Readings" underline="true"/>
 
-            <GridPane vgap="10">
+            <GridPane>
                 <columnConstraints>
                     <ColumnConstraints percentWidth="47"/>
                     <ColumnConstraints percentWidth="6"/>
@@ -149,41 +149,52 @@
 
                 <VBox GridPane.columnIndex="0" GridPane.rowIndex="0" alignment="CENTER">
                     <Label text="DUT" wrapText="true"/>
-                    <GridPane>
+                    <GridPane hgap="5" alignment="CENTER" vgap="1.5">
                         <columnConstraints>
                             <ColumnConstraints percentWidth="10"/>
-                            <ColumnConstraints percentWidth="90"/>
+                            <ColumnConstraints percentWidth="75"/>
+                            <ColumnConstraints percentWidth="15"/>
                         </columnConstraints>
 
-                        <Label text="1. " GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                        <Label text="1." GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.halignment="RIGHT"/>
                         <TextField fx:id="dutReading0" text="0.0" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                        <Label text="mV" GridPane.columnIndex="2" GridPane.rowIndex="0"/>
 
-                        <Label text="2. " GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                        <Label text="2." GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.halignment="RIGHT"/>
                         <TextField fx:id="dutReading1" text="0.0" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                        <Label text="mV" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
 
-                        <Label text="3. " GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                        <Label text="3." GridPane.columnIndex="0" GridPane.rowIndex="2" GridPane.halignment="RIGHT"/>
                         <TextField fx:id="dutReading2" text="0.0" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                        <Label text="mV" GridPane.columnIndex="2" GridPane.rowIndex="2"/>
 
-                        <Label text="4. " GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+                        <Label text="4." GridPane.columnIndex="0" GridPane.rowIndex="3" GridPane.halignment="RIGHT"/>
                         <TextField fx:id="dutReading3" text="0.0" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+                        <Label text="mV" GridPane.columnIndex="2" GridPane.rowIndex="3"/>
 
-                        <Label text="5. " GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+                        <Label text="5." GridPane.columnIndex="0" GridPane.rowIndex="4" GridPane.halignment="RIGHT"/>
                         <TextField fx:id="dutReading4" text="0.0" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+                        <Label text="mV" GridPane.columnIndex="2" GridPane.rowIndex="4"/>
 
-                        <Label text="6. " GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+                        <Label text="6." GridPane.columnIndex="0" GridPane.rowIndex="5" GridPane.halignment="RIGHT"/>
                         <TextField fx:id="dutReading5" text="0.0" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+                        <Label text="mV" GridPane.columnIndex="2" GridPane.rowIndex="5"/>
 
-                        <Label text="7. " GridPane.columnIndex="0" GridPane.rowIndex="6"/>
+                        <Label text="7." GridPane.columnIndex="0" GridPane.rowIndex="6" GridPane.halignment="RIGHT"/>
                         <TextField fx:id="dutReading6" text="0.0" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+                        <Label text="mV" GridPane.columnIndex="2" GridPane.rowIndex="6"/>
 
-                        <Label text="8. " GridPane.columnIndex="0" GridPane.rowIndex="7"/>
+                        <Label text="8." GridPane.columnIndex="0" GridPane.rowIndex="7" GridPane.halignment="RIGHT"/>
                         <TextField fx:id="dutReading7" text="0.0" GridPane.columnIndex="1" GridPane.rowIndex="7"/>
+                        <Label text="mV" GridPane.columnIndex="2" GridPane.rowIndex="7"/>
 
-                        <Label text="9. " GridPane.columnIndex="0" GridPane.rowIndex="8"/>
+                        <Label text="9." GridPane.columnIndex="0" GridPane.rowIndex="8" GridPane.halignment="RIGHT"/>
                         <TextField fx:id="dutReading8" text="0.0" GridPane.columnIndex="1" GridPane.rowIndex="8"/>
+                        <Label text="mV" GridPane.columnIndex="2" GridPane.rowIndex="8"/>
 
-                        <Label text="10. " GridPane.columnIndex="0" GridPane.rowIndex="9"/>
+                        <Label text="10." GridPane.columnIndex="0" GridPane.rowIndex="9" GridPane.halignment="RIGHT"/>
                         <TextField fx:id="dutReading9" text="0.0" GridPane.columnIndex="1" GridPane.rowIndex="9"/>
+                        <Label text="mV" GridPane.columnIndex="2" GridPane.rowIndex="9"/>
                     </GridPane>
                 </VBox>
 
@@ -191,42 +202,53 @@
                            GridPane.halignment="CENTER"/>
 
                 <VBox GridPane.columnIndex="2" GridPane.rowIndex="0" alignment="CENTER">
-                    <Label text="Reference DMM" wrapText="true"/>
-                    <GridPane>
+                    <Label text="Reference DMM" wrapText="true" VBox.margin="0, 0, 5, 0"/>
+                    <GridPane hgap="5" alignment="CENTER" vgap="1.5">
                         <columnConstraints>
                             <ColumnConstraints percentWidth="10"/>
-                            <ColumnConstraints percentWidth="90"/>
+                            <ColumnConstraints percentWidth="75"/>
+                            <ColumnConstraints percentWidth="15"/>
                         </columnConstraints>
 
-                        <Label text="1. " GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                        <Label text="1." GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.halignment="RIGHT"/>
                         <TextField fx:id="refDMMReading0" text="0.0" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                        <Label text="mV" GridPane.columnIndex="2" GridPane.rowIndex="0"/>
 
-                        <Label text="2. " GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                        <Label text="2." GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.halignment="RIGHT"/>
                         <TextField fx:id="refDMMReading1" text="0.0" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                        <Label text="mV" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
 
-                        <Label text="3. " GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                        <Label text="3." GridPane.columnIndex="0" GridPane.rowIndex="2" GridPane.halignment="RIGHT"/>
                         <TextField fx:id="refDMMReading2" text="0.0" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                        <Label text="mV" GridPane.columnIndex="2" GridPane.rowIndex="2"/>
 
-                        <Label text="4. " GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+                        <Label text="4." GridPane.columnIndex="0" GridPane.rowIndex="3" GridPane.halignment="RIGHT"/>
                         <TextField fx:id="refDMMReading3" text="0.0" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+                        <Label text="mV" GridPane.columnIndex="2" GridPane.rowIndex="3"/>
 
-                        <Label text="5. " GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+                        <Label text="5." GridPane.columnIndex="0" GridPane.rowIndex="4" GridPane.halignment="RIGHT"/>
                         <TextField fx:id="refDMMReading4" text="0.0" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+                        <Label text="mV" GridPane.columnIndex="2" GridPane.rowIndex="4"/>
 
-                        <Label text="6. " GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+                        <Label text="6." GridPane.columnIndex="0" GridPane.rowIndex="5" GridPane.halignment="RIGHT"/>
                         <TextField fx:id="refDMMReading5" text="0.0" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+                        <Label text="mV" GridPane.columnIndex="2" GridPane.rowIndex="5"/>
 
-                        <Label text="7. " GridPane.columnIndex="0" GridPane.rowIndex="6"/>
+                        <Label text="7." GridPane.columnIndex="0" GridPane.rowIndex="6" GridPane.halignment="RIGHT"/>
                         <TextField fx:id="refDMMReading6" text="0.0" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+                        <Label text="mV" GridPane.columnIndex="2" GridPane.rowIndex="6"/>
 
-                        <Label text="8. " GridPane.columnIndex="0" GridPane.rowIndex="7"/>
+                        <Label text="8." GridPane.columnIndex="0" GridPane.rowIndex="7" GridPane.halignment="RIGHT"/>
                         <TextField fx:id="refDMMReading7" text="0.0" GridPane.columnIndex="1" GridPane.rowIndex="7"/>
+                        <Label text="mV" GridPane.columnIndex="2" GridPane.rowIndex="7"/>
 
-                        <Label text="9. " GridPane.columnIndex="0" GridPane.rowIndex="8"/>
+                        <Label text="9." GridPane.columnIndex="0" GridPane.rowIndex="8" GridPane.halignment="RIGHT"/>
                         <TextField fx:id="refDMMReading8" text="0.0" GridPane.columnIndex="1" GridPane.rowIndex="8"/>
+                        <Label text="mV" GridPane.columnIndex="2" GridPane.rowIndex="8"/>
 
-                        <Label text="10. " GridPane.columnIndex="0" GridPane.rowIndex="9"/>
+                        <Label text="10." GridPane.columnIndex="0" GridPane.rowIndex="9" GridPane.halignment="RIGHT"/>
                         <TextField fx:id="refDMMReading9" text="0.0" GridPane.columnIndex="1" GridPane.rowIndex="9"/>
+                        <Label text="mV" GridPane.columnIndex="2" GridPane.rowIndex="9"/>
                     </GridPane>
                 </VBox>
             </GridPane>
@@ -261,12 +283,14 @@
                 <HBox GridPane.columnIndex="1" GridPane.rowIndex="0" spacing="5" alignment="CENTER_RIGHT">
                     <Label text="X̄ ="/>
                     <TextField text="1.999999" editable="false"/>
+                    <Label text="mV" minWidth="35"/>
                 </HBox>
 
                 <Label text="True value:" GridPane.columnIndex="0" GridPane.rowIndex="1" wrapText="true"/>
                 <HBox GridPane.columnIndex="1" GridPane.rowIndex="1" spacing="5" alignment="CENTER_RIGHT">
                     <Label text="T ="/>
                     <TextField text="1.999999" editable="false"/>
+                    <Label text="mV" minWidth="35"/>
                 </HBox>
 
                 <Label text="Measurement error (X̄ - T):" GridPane.columnIndex="0" GridPane.rowIndex="2"
@@ -274,6 +298,7 @@
                 <HBox GridPane.columnIndex="1" GridPane.rowIndex="2" spacing="5" alignment="CENTER_RIGHT">
                     <Label text="ΔX ="/>
                     <TextField text="1.999999" editable="false"/>
+                    <Label text="mV" minWidth="35"/>
                 </HBox>
 
                 <Label text="Measurement uncertainty (expanded | k = 2):" GridPane.columnIndex="0" GridPane.rowIndex="3"
@@ -281,6 +306,7 @@
                 <HBox GridPane.columnIndex="1" GridPane.rowIndex="3" spacing="5" alignment="CENTER_RIGHT">
                     <Label text="U ="/>
                     <TextField text="1.999999" editable="false"/>
+                    <Label text="mV" minWidth="35"/>
                 </HBox>
             </GridPane>
 
