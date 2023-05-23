@@ -11,147 +11,139 @@
         <Insets top="10" right="10" bottom="10" left="10"/>
     </padding>
     <left>
-        <GridPane vgap="10" minWidth="400" maxWidth="425" styleClass="borderPaneAreas">
+        <VBox spacing="10" minWidth="410" maxWidth="410" styleClass="borderPaneAreas" alignment="TOP_CENTER">
             <padding>
                 <Insets top="10" right="10" bottom="10" left="10"/>
             </padding>
-            <columnConstraints>
-                <ColumnConstraints percentWidth="40"/>
-                <ColumnConstraints percentWidth="60"/>
-            </columnConstraints>
+            <GridPane vgap="10">
+                <columnConstraints>
+                    <ColumnConstraints percentWidth="40"/>
+                    <ColumnConstraints percentWidth="60"/>
+                </columnConstraints>
 
-            <Label text="Case details" underline="true" GridPane.columnIndex="0" GridPane.rowIndex="0"
-                   GridPane.columnSpan="2" GridPane.halignment="CENTER">
-                <GridPane.margin>
-                    <Insets bottom="10"/>
-                </GridPane.margin>
-            </Label>
+                <Label text="Case details" underline="true" GridPane.columnIndex="0" GridPane.rowIndex="0"
+                       GridPane.columnSpan="2" GridPane.halignment="CENTER"/>
 
-            <Label text="Registry number (Kubacki): " GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-            <TextField fx:id="kubackiRegNoTF" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                <Label text="Registry number (Kubacki): " GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                <TextField fx:id="kubackiRegNoTF" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
 
-            <Label text="Registry number (Switez): " GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-            <TextField fx:id="switezRegNoTF" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                <Label text="Registry number (Switez): " GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                <TextField fx:id="switezRegNoTF" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
 
-            <Label text="Date of order: " GridPane.columnIndex="0" GridPane.rowIndex="3"/>
-            <DatePicker fx:id="datePicker" GridPane.columnIndex="1" GridPane.rowIndex="3" editable="false"/>
+                <Label text="Date of order: " GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+                <DatePicker fx:id="datePicker" GridPane.columnIndex="1" GridPane.rowIndex="3" editable="false"/>
 
-            <Label text="Accreditation: " GridPane.columnIndex="0" GridPane.rowIndex="4"/>
-            <CheckBox fx:id="accreditationCB" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+                <Label text="Accreditation: " GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+                <CheckBox fx:id="accreditationCB" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
 
-            <Separator GridPane.columnIndex="0" GridPane.rowIndex="5" GridPane.columnSpan="2"/>
+                <Separator GridPane.columnIndex="0" GridPane.rowIndex="5" GridPane.columnSpan="2"/>
 
-            <Label text="Calibration site" underline="true" GridPane.columnIndex="0" GridPane.rowIndex="6"
-                   GridPane.columnSpan="2" GridPane.halignment="CENTER">
-                <GridPane.margin>
-                    <Insets bottom="10"/>
-                </GridPane.margin>
-            </Label>
+                <Label text="Calibration site" underline="true" GridPane.columnIndex="0" GridPane.rowIndex="6"
+                       GridPane.columnSpan="2" GridPane.halignment="CENTER"/>
 
-            <Label text="Lab name: " GridPane.columnIndex="0" GridPane.rowIndex="7" GridPane.valignment="TOP"/>
-            <TextArea fx:id="labName" GridPane.columnIndex="1" GridPane.rowIndex="7" wrapText="true">
-                Okręgowy Urząd Miar we Wrocławiu, Laboratorium Elektryczności
-            </TextArea>
+                <Label text="Lab name: " GridPane.columnIndex="0" GridPane.rowIndex="7" GridPane.valignment="TOP"/>
+                <TextArea fx:id="labName" GridPane.columnIndex="1" GridPane.rowIndex="7" wrapText="true">
+                    Okręgowy Urząd Miar we Wrocławiu, Laboratorium Elektryczności
+                </TextArea>
 
-            <Label text="Address: " GridPane.columnIndex="0" GridPane.rowIndex="8" GridPane.valignment="TOP"/>
-            <TextArea fx:id="labAddress" GridPane.columnIndex="1" GridPane.rowIndex="8" wrapText="true">
-                53-647 Wrocław, ul. Młodych Techników 61/63
-            </TextArea>
+                <Label text="Address: " GridPane.columnIndex="0" GridPane.rowIndex="8" GridPane.valignment="TOP"/>
+                <TextArea fx:id="labAddress" GridPane.columnIndex="1" GridPane.rowIndex="8" wrapText="true">
+                    53-647 Wrocław, ul. Młodych Techników 61/63
+                </TextArea>
 
-        </GridPane>
+            </GridPane>
+        </VBox>
     </left>
     <center>
-        <GridPane vgap="10" styleClass="borderPaneAreas" minWidth="400" maxWidth="425">
+        <VBox spacing="10" minWidth="410" maxWidth="410" styleClass="borderPaneAreas" alignment="TOP_CENTER">
             <padding>
                 <Insets top="10" right="10" bottom="10" left="10"/>
             </padding>
-            <columnConstraints>
-                <ColumnConstraints percentWidth="30"/>
-                <ColumnConstraints percentWidth="70"/>
-            </columnConstraints>
 
-            <Label text="Customer details" underline="true" GridPane.columnIndex="0" GridPane.rowIndex="0"
-                   GridPane.columnSpan="2" GridPane.halignment="CENTER">
-                <GridPane.margin>
-                    <Insets bottom="10"/>
-                </GridPane.margin>
-            </Label>
+            <GridPane vgap="10">
+                <columnConstraints>
+                    <ColumnConstraints percentWidth="30"/>
+                    <ColumnConstraints percentWidth="70"/>
+                </columnConstraints>
 
-            <Label text="Name: " GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.valignment="TOP"/>
-            <TextArea fx:id="customerNameTA" GridPane.columnIndex="1" GridPane.rowIndex="1" wrapText="true"/>
+                <Label text="Customer details" underline="true" GridPane.columnIndex="0" GridPane.rowIndex="0"
+                       GridPane.columnSpan="2" GridPane.halignment="CENTER"/>
 
-            <Label text="Address: " GridPane.columnIndex="0" GridPane.rowIndex="2" GridPane.valignment="TOP"/>
-            <TextArea fx:id="customerAddressTA" GridPane.columnIndex="1" GridPane.rowIndex="2" wrapText="true"/>
+                <Label text="Name: " GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.valignment="TOP"/>
+                <TextArea fx:id="customerNameTA" GridPane.columnIndex="1" GridPane.rowIndex="1" wrapText="true"/>
 
-            <Separator GridPane.columnIndex="0" GridPane.rowIndex="3" GridPane.columnSpan="2"/>
+                <Label text="Address: " GridPane.columnIndex="0" GridPane.rowIndex="2" GridPane.valignment="TOP"/>
+                <TextArea fx:id="customerAddressTA" GridPane.columnIndex="1" GridPane.rowIndex="2" wrapText="true"/>
 
-            <Label text="End-user: " GridPane.columnIndex="0" GridPane.rowIndex="4"/>
-            <CheckBox fx:id="endUserCB" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+                <Separator GridPane.columnIndex="0" GridPane.rowIndex="3" GridPane.columnSpan="2"/>
 
-            <Label fx:id="endUserNameL" text="Name: " GridPane.columnIndex="0" GridPane.rowIndex="5"
-                   GridPane.valignment="TOP"/>
-            <TextArea fx:id="endUserNameTA" text="n/a" GridPane.columnIndex="1" GridPane.rowIndex="5" wrapText="true"/>
+                <Label text="End-user: " GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+                <CheckBox fx:id="endUserCB" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
 
-            <Label fx:id="endUserAddressL" text="Address: " GridPane.columnIndex="0" GridPane.rowIndex="6"
-                   GridPane.valignment="TOP"/>
-            <TextArea fx:id="endUserAddressTA" text="n/a" GridPane.columnIndex="1" GridPane.rowIndex="6"
-                      wrapText="true"/>
-        </GridPane>
+                <Label fx:id="endUserNameL" text="Name: " GridPane.columnIndex="0" GridPane.rowIndex="5"
+                       GridPane.valignment="TOP"/>
+                <TextArea fx:id="endUserNameTA" text="n/a" GridPane.columnIndex="1" GridPane.rowIndex="5"
+                          wrapText="true"/>
+
+                <Label fx:id="endUserAddressL" text="Address: " GridPane.columnIndex="0" GridPane.rowIndex="6"
+                       GridPane.valignment="TOP"/>
+                <TextArea fx:id="endUserAddressTA" text="n/a" GridPane.columnIndex="1" GridPane.rowIndex="6"
+                          wrapText="true"/>
+            </GridPane>
+        </VBox>
     </center>
     <right>
-        <GridPane vgap="10" minWidth="400" maxWidth="425" styleClass="borderPaneAreas">
+        <VBox spacing="10" minWidth="410" maxWidth="410" styleClass="borderPaneAreas" alignment="TOP_CENTER">
             <padding>
                 <Insets top="10" right="10" bottom="10" left="10"/>
             </padding>
-            <columnConstraints>
-                <ColumnConstraints percentWidth="40"/>
-                <ColumnConstraints percentWidth="60"/>
-            </columnConstraints>
-
-            <Label text="Instrument details" underline="true" GridPane.columnIndex="0" GridPane.rowIndex="0"
-                   GridPane.columnSpan="2" GridPane.halignment="CENTER">
-                <GridPane.margin>
-                    <Insets bottom="10"/>
-                </GridPane.margin>
-            </Label>
-
-            <GridPane GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.columnSpan="2">
+            <GridPane vgap="10">
                 <columnConstraints>
-                    <ColumnConstraints percentWidth="50"/>
-                    <ColumnConstraints percentWidth="50"/>
+                    <ColumnConstraints percentWidth="40"/>
+                    <ColumnConstraints percentWidth="60"/>
                 </columnConstraints>
-                <fx:define>
-                    <ToggleGroup fx:id="toggleGroup"/>
-                </fx:define>
-                <RadioButton fx:id="dmmRadio" text="Multimeter" GridPane.columnIndex="0"
-                             toggleGroup="$toggleGroup" GridPane.halignment="CENTER"/>
-                <RadioButton fx:id="calRadio" text="Calibrator" GridPane.columnIndex="1"
-                             toggleGroup="$toggleGroup" GridPane.halignment="CENTER"/>
-            </GridPane>
 
-            <Label text="Manufacturer: " GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-            <TextField fx:id="manufacturerTF" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                <Label text="Instrument details" underline="true" GridPane.columnIndex="0" GridPane.rowIndex="0"
+                       GridPane.columnSpan="2" GridPane.halignment="CENTER"/>
 
-            <Label text="Type: " GridPane.columnIndex="0" GridPane.rowIndex="3"/>
-            <TextField fx:id="typeTF" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+                <GridPane GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.columnSpan="2">
+                    <columnConstraints>
+                        <ColumnConstraints percentWidth="50"/>
+                        <ColumnConstraints percentWidth="50"/>
+                    </columnConstraints>
+                    <fx:define>
+                        <ToggleGroup fx:id="toggleGroup"/>
+                    </fx:define>
+                    <RadioButton fx:id="dmmRadio" text="Multimeter" GridPane.columnIndex="0"
+                                 toggleGroup="$toggleGroup" GridPane.halignment="CENTER"/>
+                    <RadioButton fx:id="calRadio" text="Calibrator" GridPane.columnIndex="1"
+                                 toggleGroup="$toggleGroup" GridPane.halignment="CENTER"/>
+                </GridPane>
 
-            <Label text="Serial No: " GridPane.columnIndex="0" GridPane.rowIndex="4"/>
-            <TextField fx:id="serialNoTF" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+                <Label text="Manufacturer: " GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                <TextField fx:id="manufacturerTF" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
 
-            <Label fx:id="resolutionLabel" text="Resolution (pricing tier): " GridPane.columnIndex="0"
-                   GridPane.rowIndex="5"/>
-            <ComboBox fx:id="resolutionCB" GridPane.columnIndex="1" GridPane.rowIndex="5">
-                <items>
-                    <FXCollections fx:factory="observableArrayList">
+                <Label text="Type: " GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+                <TextField fx:id="typeTF" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+
+                <Label text="Serial No: " GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+                <TextField fx:id="serialNoTF" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+
+                <Label fx:id="resolutionLabel" text="Resolution (pricing tier): " GridPane.columnIndex="0"
+                       GridPane.rowIndex="5"/>
+                <ComboBox fx:id="resolutionCB" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                    <items>
+                        <FXCollections fx:factory="observableArrayList">
+                            <String fx:value="&#x22DC; 4 8/9 digit"/>
+                            <String fx:value="5 1/2 &#x00F7; 6 1/2 digit"/>
+                            <String fx:value="&#x22DD; 7 1/2 digit"/>
+                        </FXCollections>
+                    </items>
+                    <value>
                         <String fx:value="&#x22DC; 4 8/9 digit"/>
-                        <String fx:value="5 1/2 &#x00F7; 6 1/2 digit"/>
-                        <String fx:value="&#x22DD; 7 1/2 digit"/>
-                    </FXCollections>
-                </items>
-                <value>
-                    <String fx:value="&#x22DC; 4 8/9 digit"/>
-                </value>
-            </ComboBox>
-        </GridPane>
+                    </value>
+                </ComboBox>
+            </GridPane>
+        </VBox>
     </right>
 </BorderPane>

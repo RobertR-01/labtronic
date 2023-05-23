@@ -11,7 +11,7 @@
         <Insets top="10" right="10" bottom="10" left="10"/>
     </padding>
     <left>
-        <VBox spacing="10" minWidth="400" maxWidth="425" styleClass="borderPaneAreas" alignment="TOP_CENTER">
+        <VBox spacing="10" minWidth="410" maxWidth="410" styleClass="borderPaneAreas" alignment="TOP_CENTER">
             <padding>
                 <Insets top="10" right="10" bottom="10" left="10"/>
             </padding>
@@ -64,7 +64,7 @@
         </VBox>
     </left>
     <center>
-        <VBox spacing="10" minWidth="400" maxWidth="425" styleClass="borderPaneAreas" alignment="TOP_CENTER">
+        <VBox spacing="10" minWidth="410" maxWidth="410" styleClass="borderPaneAreas" alignment="TOP_CENTER">
             <padding>
                 <Insets top="10" right="10" bottom="10" left="10"/>
             </padding>
@@ -140,7 +140,7 @@
 
             <Label text="Readings" underline="true"/>
 
-            <GridPane>
+            <GridPane gridLinesVisible="true">
                 <columnConstraints>
                     <ColumnConstraints percentWidth="47"/>
                     <ColumnConstraints percentWidth="6"/>
@@ -148,7 +148,11 @@
                 </columnConstraints>
 
                 <VBox GridPane.columnIndex="0" GridPane.rowIndex="0" alignment="CENTER">
-                    <Label text="DUT" wrapText="true"/>
+                    <Label text="DUT" wrapText="true">
+                        <VBox.margin>
+                            <Insets bottom="5" top="5"/>
+                        </VBox.margin>
+                    </Label>
                     <GridPane hgap="5" alignment="CENTER" vgap="1.5">
                         <columnConstraints>
                             <ColumnConstraints percentWidth="10"/>
@@ -202,7 +206,11 @@
                            GridPane.halignment="CENTER"/>
 
                 <VBox GridPane.columnIndex="2" GridPane.rowIndex="0" alignment="CENTER">
-                    <Label text="Reference DMM" wrapText="true" VBox.margin="0, 0, 5, 0"/>
+                    <Label text="Reference DMM" wrapText="true">
+                        <VBox.margin>
+                            <Insets bottom="5" top="5"/>
+                        </VBox.margin>
+                    </Label>
                     <GridPane hgap="5" alignment="CENTER" vgap="1.5">
                         <columnConstraints>
                             <ColumnConstraints percentWidth="10"/>
@@ -255,7 +263,7 @@
         </VBox>
     </center>
     <right>
-        <VBox spacing="10" minWidth="400" maxWidth="425" styleClass="borderPaneAreas" alignment="TOP_CENTER">
+        <VBox spacing="10" minWidth="410" maxWidth="410" styleClass="borderPaneAreas" alignment="TOP_CENTER">
             <padding>
                 <Insets top="10" right="10" bottom="10" left="10"/>
             </padding>
