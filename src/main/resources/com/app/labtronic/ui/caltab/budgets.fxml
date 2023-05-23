@@ -140,7 +140,7 @@
 
             <Label text="Readings" underline="true"/>
 
-            <GridPane gridLinesVisible="true">
+            <GridPane>
                 <columnConstraints>
                     <ColumnConstraints percentWidth="47"/>
                     <ColumnConstraints percentWidth="6"/>
@@ -275,6 +275,10 @@
                 </GridPane.margin>
             </Label>
 
+            <GridPane>
+                <
+            </GridPane>
+
             <HBox alignment="CENTER_LEFT">
                 <Button text="Calculate"/>
             </HBox>
@@ -301,7 +305,7 @@
                     <Label text="mV" minWidth="35"/>
                 </HBox>
 
-                <Label text="Measurement error (X̄ - T):" GridPane.columnIndex="0" GridPane.rowIndex="2"
+                <Label text="Measurement error &#10;(X̄ - T):" GridPane.columnIndex="0" GridPane.rowIndex="2"
                        wrapText="true"/>
                 <HBox GridPane.columnIndex="1" GridPane.rowIndex="2" spacing="5" alignment="CENTER_RIGHT">
                     <Label text="ΔX ="/>
@@ -309,11 +313,33 @@
                     <Label text="mV" minWidth="35"/>
                 </HBox>
 
-                <Label text="Measurement uncertainty (expanded | k = 2):" GridPane.columnIndex="0" GridPane.rowIndex="3"
+                <Label text="Estimated uncertainty (expanded, absolute):" GridPane.columnIndex="0" GridPane.rowIndex="3"
                        wrapText="true"/>
                 <HBox GridPane.columnIndex="1" GridPane.rowIndex="3" spacing="5" alignment="CENTER_RIGHT">
                     <Label text="U ="/>
                     <TextField text="1.999999" editable="false"/>
+                    <Label text="mV" minWidth="35"/>
+                </HBox>
+
+                <Label text="Estimated uncertainty (relative to X̄):" GridPane.columnIndex="0" GridPane.rowIndex="4"
+                       wrapText="true"/>
+                <HBox GridPane.columnIndex="1" GridPane.rowIndex="4" spacing="5" alignment="CENTER_RIGHT">
+                    <Label text="U(%) ="/>
+                    <TextField text="1.000000" editable="false"/>
+                    <Label text="\%" minWidth="35"/>
+                </HBox>
+
+                <Label text="Uncertainty based on CMC:" GridPane.columnIndex="0" GridPane.rowIndex="5"
+                       wrapText="true"/>
+                <HBox GridPane.columnIndex="1" GridPane.rowIndex="5" spacing="5" alignment="CENTER_RIGHT">
+                    <Label text="U(CMC) ="/>
+                    <TextField text="1.000000" editable="false"/>
+                    <Label text="mV" minWidth="35"/>
+                </HBox>
+
+                <HBox GridPane.columnIndex="1" GridPane.rowIndex="5" spacing="5" alignment="CENTER_RIGHT">
+                    <Label text="U(CMC) ="/>
+                    <TextField text="1.000000" editable="false"/>
                     <Label text="mV" minWidth="35"/>
                 </HBox>
             </GridPane>
