@@ -16,23 +16,23 @@
             <padding>
                 <Insets bottom="10"/>
             </padding>
-            <CheckBox text="VDC" fx:id="vdcCB"/>
+            <CheckBox text="VDC" fx:id="vdcCB" minWidth="45"/>
             <Separator orientation="VERTICAL"/>
             <HBox spacing="10" alignment="CENTER">
-                <CheckBox text="VAC" fx:id="vacCB"/>
+                <CheckBox text="VAC" fx:id="vacCB" minWidth="45"/>
                 <Label text="VAC frequency levels:" fx:id="vacFreqL"/>
                 <Spinner fx:id="vacSpinner" initialValue="1" min="1" max="10" amountToStepBy="1" prefWidth="65"/>
             </HBox>
             <Separator orientation="VERTICAL"/>
-            <CheckBox text="IDC" fx:id="idcCB"/>
+            <CheckBox text="IDC" fx:id="idcCB" minWidth="45"/>
             <Separator orientation="VERTICAL"/>
             <HBox spacing="10" alignment="CENTER">
-                <CheckBox text="IAC" fx:id="iacCB"/>
+                <CheckBox text="IAC" fx:id="iacCB" minWidth="45"/>
                 <Label text="IAC frequency levels:" fx:id="iacFreqL"/>
                 <Spinner fx:id="iacSpinner" initialValue="1" min="1" max="10" amountToStepBy="1" prefWidth="65"/>
             </HBox>
             <Separator orientation="VERTICAL"/>
-            <CheckBox text="RDC" fx:id="rdcCB"/>
+            <CheckBox text="RDC" fx:id="rdcCB" minWidth="45"/>
             <Separator orientation="VERTICAL"/>
             <HBox spacing="10" alignment="CENTER">
                 <Label text="Total cost: " alignment="CENTER"/>

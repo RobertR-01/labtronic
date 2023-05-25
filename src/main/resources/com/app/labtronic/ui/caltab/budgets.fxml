@@ -147,12 +147,20 @@
                     <ColumnConstraints percentWidth="47"/>
                 </columnConstraints>
 
-                <VBox GridPane.columnIndex="0" GridPane.rowIndex="0" alignment="CENTER">
-                    <Label text="DUT" wrapText="true">
-                        <VBox.margin>
-                            <Insets bottom="5" top="5"/>
-                        </VBox.margin>
-                    </Label>
+                <Label text="DUT" wrapText="true" GridPane.columnIndex="0" GridPane.rowIndex="0" alignment="CENTER"
+                       GridPane.halignment="CENTER">
+                    <GridPane.margin>
+                        <Insets bottom="5" top="-5"/>
+                    </GridPane.margin>
+                </Label>
+                <Label text="Reference DMM" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="0"
+                       alignment="CENTER" GridPane.halignment="CENTER">
+                    <GridPane.margin>
+                        <Insets bottom="5" top="-5"/>
+                    </GridPane.margin>
+                </Label>
+
+                <VBox GridPane.columnIndex="0" GridPane.rowIndex="1" alignment="CENTER">
                     <GridPane hgap="5" alignment="CENTER" vgap="1.5">
                         <columnConstraints>
                             <ColumnConstraints percentWidth="10"/>
@@ -202,15 +210,10 @@
                     </GridPane>
                 </VBox>
 
-                <Separator orientation="VERTICAL" GridPane.rowIndex="0" GridPane.columnIndex="1"
+                <Separator orientation="VERTICAL" GridPane.rowIndex="1" GridPane.columnIndex="1"
                            GridPane.halignment="CENTER"/>
 
-                <VBox GridPane.columnIndex="2" GridPane.rowIndex="0" alignment="CENTER">
-                    <Label text="Reference DMM" wrapText="true">
-                        <VBox.margin>
-                            <Insets bottom="5" top="5"/>
-                        </VBox.margin>
-                    </Label>
+                <VBox GridPane.columnIndex="2" GridPane.rowIndex="1" alignment="CENTER">
                     <GridPane hgap="5" alignment="CENTER" vgap="1.5">
                         <columnConstraints>
                             <ColumnConstraints percentWidth="10"/>
@@ -275,13 +278,19 @@
                 </GridPane.margin>
             </Label>
 
-            <GridPane>
-                <
-            </GridPane>
+            <GridPane vgap="10" alignment="CENTER">
+                <columnConstraints>
+                    <ColumnConstraints percentWidth="50" hgrow="ALWAYS" halignment="CENTER"/>
+                    <ColumnConstraints percentWidth="50" hgrow="ALWAYS" halignment="CENTER"/>
+                </columnConstraints>
 
-            <HBox alignment="CENTER_LEFT">
-                <Button text="Calculate"/>
-            </HBox>
+                <Button text="Calculate" GridPane.columnIndex="0" GridPane.rowIndex="0" maxWidth="Infinity"/>
+                <HBox GridPane.columnIndex="1" GridPane.rowIndex="0" spacing="5" alignment="CENTER">
+                    <Label text="Coverage factor"/>
+                    <Label text="k ="/>
+                    <TextField text="2" editable="false" maxWidth="40" alignment="CENTER"/>
+                </HBox>
+            </GridPane>
 
             <Separator/>
 
@@ -346,7 +355,17 @@
 
             <Separator/>
 
+            <GridPane>
+                <columnConstraints>
+                    <ColumnConstraints percentWidth="50"/>
+                    <ColumnConstraints percentWidth="50"/>
+                </columnConstraints>
 
+                <Label GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.halignment="CENTER" wrapText="true"
+                       text="Expand the uncertainty budget to get more details on uncertainty components:"/>
+                <Button GridPane.columnIndex="1" GridPane.rowIndex="0" GridPane.halignment="CENTER"
+                        text="Expand budget"/>
+            </GridPane>
         </VBox>
     </right>
 </BorderPane>
