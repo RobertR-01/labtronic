@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.HBox?>
 <DialogPane prefHeight="300.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/18"
             xmlns:fx="http://javafx.com/fxml/1" stylesheets="@../sub-tab-styles.css"
-            fx:controller="com.app.labtronic.ui.caltab.budgets.BudgetPreviewController" fx:id="root">
+            fx:controller="com.app.labtronic.ui.caltab.budgets.BudgetPreviewDlgController" fx:id="root">
     <content>
         <HBox alignment="CENTER">
             <TableView fx:id="tableView" HBox.hgrow="ALWAYS">

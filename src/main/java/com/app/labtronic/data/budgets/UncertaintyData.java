@@ -25,7 +25,13 @@ public class UncertaintyData {
     private double finalUncertainty;
     private final double COVERAGE_FACTOR = 2;
 
-    public UncertaintyData() {
+    private List<UncertaintyComponent> components;
 
+    public UncertaintyData() {
+        this.components = List.of(repeatability, refStdUncertainty, resolution, refStdStability, predictionError);
+    }
+
+    public List<UncertaintyComponent> getComponents() {
+        return components;
     }
 }

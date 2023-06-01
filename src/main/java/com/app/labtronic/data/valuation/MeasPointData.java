@@ -1,10 +1,12 @@
 package com.app.labtronic.data.valuation;
 
+import com.app.labtronic.data.budgets.UncertaintyData;
 import javafx.beans.property.SimpleStringProperty;
 
 public class MeasPointData {
     private SimpleStringProperty pointValueProperty;
     private SimpleStringProperty unitProperty;
+    private UncertaintyData uncertaintyData;
 
     public MeasPointData(String pointValue, String unit) {
         pointValueProperty = new SimpleStringProperty();
@@ -39,5 +41,13 @@ public class MeasPointData {
 
     public void setUnitProperty(String unitProperty) {
         this.unitProperty.set(unitProperty);
+    }
+
+    public UncertaintyData getUncertaintyData() {
+        return uncertaintyData;
+    }
+
+    public void setUncertaintyData(UncertaintyData uncertaintyData) {
+        this.uncertaintyData = uncertaintyData;
     }
 }
