@@ -5,10 +5,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.*;
 
 public class ValuationData {
     private final ObservableList<MeasRangeData> vdcRangeList;
@@ -19,8 +16,8 @@ public class ValuationData {
 
     private final LinkedHashMap<String, ObservableList<MeasRangeData>> vacExtraRangeLists;
     private final LinkedHashMap<String, ObservableList<MeasRangeData>> iacExtraRangeLists;
-//    private final List<ObservableList<MeasRangeData>> vacExtraRangeLists;
-//    private final List<ObservableList<MeasRangeData>> iacExtraRangeLists;
+    private final List<String> vacExtraFrequencies;
+    private final List<String> iacExtraFrequencies;
 
     private SimpleDoubleProperty observableVdcCost;
     private SimpleDoubleProperty observableVacCost;
@@ -40,6 +37,9 @@ public class ValuationData {
     private ObservableList<String> activeMeasFunctions;
 
     public ValuationData() {
+        this.vacExtraFrequencies = new LinkedList<>();
+        this.iacExtraFrequencies = new LinkedList<>();
+
         this.vdcRangeList = FXCollections.observableArrayList();
         this.vacRangeList = FXCollections.observableArrayList();
         this.idcRangeList = FXCollections.observableArrayList();
@@ -119,13 +119,13 @@ public class ValuationData {
             }
         }
         if (vacExtraProperties != null && !vacExtraProperties.isEmpty()) {
-            for (SimpleDoubleProperty property : vacExtraProperties) {
-                totalCost += property.get();
+            for (Map.Entry<String, SimpleDoubleProperty> entry : vacExtraProperties.entrySet()) {
+                totalCost += entry.getValue().get();
             }
         }
         if (iacExtraProperties != null && !iacExtraProperties.isEmpty()) {
-            for (SimpleDoubleProperty property : iacExtraProperties) {
-                totalCost += property.get();
+            for (Map.Entry<String, SimpleDoubleProperty> entry : iacExtraProperties.entrySet()) {
+                totalCost += entry.getValue().get();
             }
         }
 
@@ -204,16 +204,24 @@ public class ValuationData {
         this.observableTotalCost.set(observableTotalCost);
     }
 
-    public List<SimpleDoubleProperty> getVacExtraProperties() {
+    public LinkedHashMap<String, SimpleDoubleProperty> getVacExtraProperties() {
         return vacExtraProperties;
     }
 
-    public List<SimpleDoubleProperty> getIacExtraProperties() {
+    public LinkedHashMap<String, SimpleDoubleProperty> getIacExtraProperties() {
         return iacExtraProperties;
     }
 
     public List<SimpleDoubleProperty> getBaseProperties() {
         return baseProperties;
+    }
+
+    public List<String> getVacExtraFrequencies() {
+        return vacExtraFrequencies;
+    }
+
+    public List<String> getIacExtraFrequencies() {
+        return iacExtraFrequencies;
     }
 
     // results -> {first range exists check, duplicate range check}
@@ -307,16 +315,14 @@ public class ValuationData {
         if (function != null && !function.isBlank() && frequency != null && !frequency.isBlank()) {
             switch (function.trim().toUpperCase()) {
                 case "VAC" -> {
+                    vacExtraFrequencies.add(frequency);
                     vacExtraRangeLists.put(frequency, FXCollections.observableArrayList());
                     vacExtraProperties.put(frequency, new SimpleDoubleProperty());
-//                    vacExtraRangeLists.add(FXCollections.observableArrayList());
-//                    vacExtraProperties.add(new SimpleDoubleProperty());
                 }
                 case "IAC" -> {
+                    iacExtraFrequencies.add(frequency);
                     iacExtraRangeLists.put(frequency, FXCollections.observableArrayList());
                     iacExtraProperties.put(frequency, new SimpleDoubleProperty());
-//                    iacExtraRangeLists.add(FXCollections.observableArrayList());
-//                    iacExtraProperties.add(new SimpleDoubleProperty());
                 }
             }
             return true;
@@ -330,25 +336,24 @@ public class ValuationData {
         if (function != null && !function.isBlank()) {
             LinkedHashMap<String, ObservableList<MeasRangeData>> freqLists = null;
             LinkedHashMap<String, SimpleDoubleProperty> properties = null;
-//            List<ObservableList<MeasRangeData>> freqsList = null;
-//            List<SimpleDoubleProperty> properties = null;
+            List<String> frequencies = null;
             switch (function.trim().toUpperCase()) {
                 case "VAC":
+                    frequencies = vacExtraFrequencies;
                     freqLists = vacExtraRangeLists;
                     properties = vacExtraProperties;
                     break;
                 case "IAC":
+                    frequencies = iacExtraFrequencies;
                     freqLists = iacExtraRangeLists;
                     properties = iacExtraProperties;
                     break;
             }
-            if (freqLists != null && freqLists.size() != 0 && properties != null && properties.size() != 0) {
-                ArrayList<String> keys
-                        = new ArrayList<>(Arrays.asList(freqLists.keySet().toArray(new String[0])));
-                int index = freqLists.keySet().size() - 1; // TODO: check if it's ordered properly
-                String lastAddedKey = freqLists.ge
-                freqLists.remove(freqLists.get(freqLists.size() - 1));
-                properties.remove(properties.get(properties.size() - 1));
+            if (freqLists != null && freqLists.size() != 0 && properties != null && properties.size() != 0
+            && frequencies != null && !frequencies.isEmpty()) {
+                String frequency = frequencies.get(frequencies.size() - 1);
+                freqLists.remove(frequency);
+                properties.remove(frequency);
                 return true;
             } else {
                 return false;
@@ -384,20 +389,20 @@ public class ValuationData {
     }
 
     // for additional frequency levels:
-    public List<ObservableList<MeasRangeData>> getExtraAcRangeLists(String function) {
-        List<ObservableList<MeasRangeData>> freqsList = null;
+    public LinkedHashMap<String, ObservableList<MeasRangeData>> getExtraAcRangeLists(String function) {
+        LinkedHashMap<String, ObservableList<MeasRangeData>> freqsMap = null;
         if (function != null && !function.isBlank()) {
             switch (function.trim()) {
-                case "VAC" -> freqsList = vacExtraRangeLists;
-                case "IAC" -> freqsList = iacExtraRangeLists;
+                case "VAC" -> freqsMap = vacExtraRangeLists;
+                case "IAC" -> freqsMap = iacExtraRangeLists;
             }
         }
-        return freqsList;
+        return freqsMap;
     }
 
     // for additional frequency levels:
-    public List<SimpleDoubleProperty> getExtraAcProperties(String function) {
-        List<SimpleDoubleProperty> properties = null;
+    public LinkedHashMap<String, SimpleDoubleProperty> getExtraAcProperties(String function) {
+        LinkedHashMap<String, SimpleDoubleProperty> properties = null;
         if (function != null && !function.isBlank()) {
             switch (function.trim()) {
                 case "VAC" -> properties = vacExtraProperties;

@@ -22,7 +22,10 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 import javafx.util.Duration;
 import org.kordamp.ikonli.javafx.FontIcon;
@@ -146,7 +149,8 @@ public class ValuationController {
         // by limiting the minimum spinner value and the lister itself
         vacSpinner.valueProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue > oldValue) {
-                calData.getValuationData().addExtraAcFreq("VAC");
+                String frequency = vacFreqTF.getText().trim() + vacFreqCB.getValue();
+                calData.getValuationData().addExtraAcFreq(frequency, "VAC");
                 addAcFreqContainer(true);
                 int lastIndex = vacExtraFreqContainers.size() - 1;
                 // TODO: no check for index out of bounds
@@ -160,7 +164,8 @@ public class ValuationController {
         });
         iacSpinner.valueProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue > oldValue) {
-                calData.getValuationData().addExtraAcFreq("IAC");
+                String frequency = iacFreqTF.getText().trim() + iacFreqCB.getValue();
+                calData.getValuationData().addExtraAcFreq(frequency, "IAC");
                 addAcFreqContainer(false);
                 int lastIndex = iacExtraFreqContainers.size() - 1;
                 // TODO: no check for index out of bounds
@@ -1060,13 +1065,24 @@ public class ValuationController {
         public void initializeCostDisplay() {
             // TODO: similar method to the initializeTableView() - merge those methods or call them from the constructor
             String functionType = (isVoltage) ? "VAC" : "IAC";
-            int lastIndex = calData.getValuationData().getExtraAcRangeLists(functionType).size() - 1;
+            List<String> frequencies = null;
+            switch (functionType) {
+                case "VAC":
+                    frequencies = calData.getValuationData().getVacExtraFrequencies();
+                    break;
+                case "IAC":
+                    frequencies = calData.getValuationData().getIacExtraFrequencies();
+                    break;
+                    // TODO: default?
+            }
+            int lastIndex = frequencies.size() - 1;
+            String frequency = frequencies.get(lastIndex);
             // TODO: validation?
-            ObservableList<MeasRangeData> rangeList = calData.getValuationData().getExtraAcRangeLists(functionType).
-                    get(lastIndex);
+            ObservableList<MeasRangeData> rangeLists = calData.getValuationData().getExtraAcRangeLists(functionType).
+                    get(frequency);
             SimpleDoubleProperty property = calData.getValuationData().getExtraAcProperties(functionType).
-                    get(lastIndex);
-            calData.getValuationData().initFunctionCostProperty(rangeList, property);
+                    get(frequency);
+            calData.getValuationData().initFunctionCostProperty(rangeLists, property);
             getCostL().textProperty().bind(property.asString());
         }
     }
