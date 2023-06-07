@@ -1,21 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.collections.FXCollections?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.*?>
+<?import java.lang.String?>
 <DialogPane prefHeight="100.0" prefWidth="150.0" xmlns="http://javafx.com/javafx/18"
             xmlns:fx="http://javafx.com/fxml/1" stylesheets="@../sub-tab-styles.css"
             fx:controller="com.app.labtronic.ui.caltab.valuation.FrequencyDlgController" fx:id="root">
     <content>
-        <VBox alignment="CENTER" spacing="10">
-            <HBox spacing="5">
-                <Label text="Frequency value:"/>
-                <TextField fx:id="value"/>
-            </HBox>
-            <HBox spacing="5">
-                <Label text="Unit:"/>
-                <TextField fx:id="unit"/>
-            </HBox>
-        </VBox>
+        <GridPane vgap="10" hgap="10">
+            <columnConstraints>
+                <ColumnConstraints percentWidth="50"/>
+                <ColumnConstraints percentWidth="50"/>
+            </columnConstraints>
+
+            <Label text="Frequency value:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+            <TextField fx:id="valueTF" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+            <Label text="Unit:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+            <ComboBox fx:id="freqCB" GridPane.rowIndex="1" GridPane.columnIndex="1">
+                <items>
+                    <FXCollections fx:factory="observableArrayList">
+                        <String fx:value="Hz"/>
+                        <String fx:value="kHz"/>
+                    </FXCollections>
+                </items>
+                <value>
+                    <String fx:value="Hz"/>
+                </value>
+            </ComboBox>
+        </GridPane>
     </content>
 </DialogPane>

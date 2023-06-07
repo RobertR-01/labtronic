@@ -149,6 +149,38 @@ public class ValuationController {
         // by limiting the minimum spinner value and the lister itself
         vacSpinner.valueProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue > oldValue) {
+//                openNewAcSectionDlg();
+
+                // try this: alert.setOnHidden(evt -> Platform.exit());
+
+                Dialog<ButtonType> dialog = new Dialog<>();
+                dialog.initOwner(root.getScene().getWindow());
+                dialog.setTitle("Choosing frequency");
+                dialog.setHeaderText("Enter a desired frequency for this section:");
+                FXMLLoader fxmlLoader = new FXMLLoader();
+                fxmlLoader.setLocation(getClass().getResource("valuation/frequency-dlg.fxml"));
+
+                try {
+                    dialog.getDialogPane().setContent(fxmlLoader.load());
+                } catch (IOException e) {
+                    System.out.println("Couldn't load the dialog.");
+                    e.printStackTrace();
+                    return;
+                }
+
+                dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
+                dialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
+
+                FrequencyDlgController controller = fxmlLoader.getController();
+                dialog.show();
+//                Optional<ButtonType> result = dialog.showAndWait();
+//                if (result.isPresent() && result.get() == ButtonType.OK) {
+//
+//
+//                } else {
+//
+//                }
+
                 String frequency = vacFreqTF.getText().trim() + vacFreqCB.getValue();
                 calData.getValuationData().addExtraAcFreq(frequency, "VAC");
                 addAcFreqContainer(true);

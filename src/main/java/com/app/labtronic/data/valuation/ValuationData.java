@@ -1,6 +1,7 @@
 package com.app.labtronic.data.valuation;
 
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -36,6 +37,9 @@ public class ValuationData {
 
     private ObservableList<String> activeMeasFunctions;
 
+    private SimpleStringProperty baseVacFrequency;
+    private SimpleStringProperty baseIacFrequency;
+
     public ValuationData() {
         this.vacExtraFrequencies = new LinkedList<>();
         this.iacExtraFrequencies = new LinkedList<>();
@@ -50,6 +54,9 @@ public class ValuationData {
         this.iacExtraRangeLists = new LinkedHashMap<>();
 //        this.vacExtraRangeLists = new ArrayList<>();
 //        this.iacExtraRangeLists = new ArrayList<>();
+
+        this.baseVacFrequency = new SimpleStringProperty("50 Hz");
+        this.baseIacFrequency = new SimpleStringProperty("50 Hz");
 
         this.observableVdcCost = new SimpleDoubleProperty();
         this.observableVacCost = new SimpleDoubleProperty();
@@ -222,6 +229,38 @@ public class ValuationData {
 
     public List<String> getIacExtraFrequencies() {
         return iacExtraFrequencies;
+    }
+
+    public String getBaseVacFrequency() {
+        return baseVacFrequency.get();
+    }
+
+    public SimpleStringProperty baseVacFrequencyProperty() {
+        return baseVacFrequency;
+    }
+
+    public void setBaseVacFrequency(String baseVacFrequency) {
+        if (baseVacFrequency != null && !baseVacFrequency.isBlank()) {
+            this.baseVacFrequency.set(baseVacFrequency);
+        } else {
+            System.out.println("ValuationData -> setBaseVacFrequency() -> invalid frequency value.");
+        }
+    }
+
+    public String getBaseIacFrequency() {
+        return baseIacFrequency.get();
+    }
+
+    public SimpleStringProperty baseIacFrequencyProperty() {
+        return baseIacFrequency;
+    }
+
+    public void setBaseIacFrequency(String baseIacFrequency) {
+        if (baseIacFrequency != null && !baseIacFrequency.isBlank()) {
+            this.baseIacFrequency.set(baseIacFrequency);
+        } else {
+            System.out.println("ValuationData -> setBaseIacFrequency() -> invalid frequency value.");
+        }
     }
 
     // results -> {first range exists check, duplicate range check}
