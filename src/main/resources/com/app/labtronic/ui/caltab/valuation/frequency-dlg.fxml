@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<DialogPane prefHeight="100.0" prefWidth="150.0" xmlns="http://javafx.com/javafx/18"
+            xmlns:fx="http://javafx.com/fxml/1" stylesheets="@../sub-tab-styles.css"
+            fx:controller="com.app.labtronic.ui.caltab.valuation.FrequencyDlgController" fx:id="root">
+    <content>
+        <VBox alignment="CENTER" spacing="10">
+            <HBox spacing="5">
+                <Label text="Frequency value:"/>
+                <TextField fx:id="value"/>
+            </HBox>
+            <HBox spacing="5">
+                <Label text="Unit:"/>
+                <TextField fx:id="unit"/>
+            </HBox>
+        </VBox>
+    </content>
+</DialogPane>

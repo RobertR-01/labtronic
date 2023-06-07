@@ -15,6 +15,7 @@ public class MeasRangeData {
     private double cost;
     private int resolution;
     private double rangeBaseUnitValue;
+    private String frequency;
 
     // for the TableView in ValuationController
     private SimpleStringProperty rangeProperty;
@@ -35,6 +36,7 @@ public class MeasRangeData {
         this.resolution = resolution;
         this.cost = 0;
         this.rangeBaseUnitValue = calculateRangeBaseUnitValue();
+        this.frequency = null;
     }
 
     public double getRange() {
@@ -143,6 +145,19 @@ public class MeasRangeData {
 
     public void setResolution(int resolution) {
         this.resolution = resolution;
+    }
+
+    public String getFrequency() {
+        return frequency;
+    }
+
+    public void setFrequency(String frequency) {
+        if ((functionType.toString().equals("VAC") || functionType.toString().equals("IAC")) &&frequency != null
+                && !frequency.isBlank()) {
+            this.frequency = frequency;
+        } else {
+            System.out.println("MeasRangeData -> setFrequency() -> invalid frequency string.");
+        }
     }
 
     // range value converted to the corresponding base SI unit

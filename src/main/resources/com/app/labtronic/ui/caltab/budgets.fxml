@@ -154,7 +154,7 @@
                     </GridPane.margin>
                 </Label>
                 <Label text="Reference DMM" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="0"
-                       alignment="CENTER" GridPane.halignment="CENTER">
+                       alignment="CENTER" GridPane.halignment="CENTER" disable="true">
                     <GridPane.margin>
                         <Insets bottom="5" top="-5"/>
                     </GridPane.margin>
@@ -213,7 +213,7 @@
                 <Separator orientation="VERTICAL" GridPane.rowIndex="1" GridPane.columnIndex="1"
                            GridPane.halignment="CENTER"/>
 
-                <VBox GridPane.columnIndex="2" GridPane.rowIndex="1" alignment="CENTER">
+                <VBox GridPane.columnIndex="2" GridPane.rowIndex="1" alignment="CENTER" disable="true">
                     <GridPane hgap="5" alignment="CENTER" vgap="1.5">
                         <columnConstraints>
                             <ColumnConstraints percentWidth="10"/>

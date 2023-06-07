@@ -3,6 +3,7 @@ package com.app.labtronic.ui.caltab;
 import com.app.labtronic.data.ActiveSession;
 import com.app.labtronic.data.CalData;
 import com.app.labtronic.data.valuation.MeasRangeData;
+import com.app.labtronic.ui.caltab.valuation.FrequencyDlgController;
 import com.app.labtronic.ui.caltab.valuation.RangePreviewController;
 import com.app.labtronic.ui.caltab.valuation.ValuationDlgController;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -221,7 +222,7 @@ public class ValuationController {
             editMenuItem.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
-                    editMeanRange(event);
+                    editMeasRange(event);
                 }
             });
             MenuItem deleteMenuItem = new MenuItem("Delete");
@@ -359,8 +360,40 @@ public class ValuationController {
             return;
         }
 
-
         calData.getValuationData().resetTotalCostProperty();
+    }
+
+    private String[] openNewAcSectionDlg() {
+        String[] frequency = new String[2];
+
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.initOwner(root.getScene().getWindow());
+        dialog.setTitle("Choosing frequency");
+        dialog.setHeaderText("Enter a desired frequency for this section:");
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource("valuation/frequency-dlg.fxml"));
+
+        try {
+            dialog.getDialogPane().setContent(fxmlLoader.load());
+        } catch (IOException e) {
+            System.out.println("Couldn't load the dialog.");
+            e.printStackTrace();
+            return null;
+        }
+
+        dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
+        dialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
+
+        FrequencyDlgController controller = fxmlLoader.getController();
+
+        Optional<ButtonType> result = dialog.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+
+
+            return frequency;
+        } else {
+            return null;
+        }
     }
 
     private void previewRange(TableView<MeasRangeData> tableView) {
@@ -415,7 +448,7 @@ public class ValuationController {
     }
 
     @FXML
-    private void editMeanRange(ActionEvent event) {
+    private void editMeasRange(ActionEvent event) {
         // getting the proper TableView:
         TableView<MeasRangeData> tableView;
         ContextMenu menu = ((MenuItem) event.getSource()).getParentPopup();
@@ -424,6 +457,8 @@ public class ValuationController {
             System.out.println("ValuationDlgController.editMeasRange() -> TableView not found.");
             return;
         }
+
+        SectionContainer container = (SectionContainer) tableView.getUserData();
 
         MeasRangeData oldRange = tableView.getSelectionModel().getSelectedItem();
         ObservableList<MeasRangeData> rangeList = tableView.getItems();
@@ -513,7 +548,14 @@ public class ValuationController {
             } else {
                 // check for duplicate range value / duplicate first range
                 MeasRangeData newRange = controller.exportData();
+
                 if (newRange != null) {
+                    if (newRange.getFunctionType().toString().equals("VAC")
+                            || newRange.getFunctionType().toString().equals("IAC")) {
+                        String frequency = container.freqTF.getText() + " " + container.freqCB.getValue();
+                        newRange.setFrequency(frequency);
+                    }
+
                     newRange.calculateCost();
                     newRange.initializeProperties();
                     ObservableList<MeasRangeData> rangeObservableArray = tableView.getItems();
@@ -576,6 +618,9 @@ public class ValuationController {
             ContextMenu menu = ((MenuItem) event.getSource()).getParentPopup();
             tableView = (TableView<MeasRangeData>) menu.getUserData();
         }
+
+        // TODO: no check for tableView being null? same for the above (getUserData() could return null?)
+        SectionContainer container = (SectionContainer) tableView.getUserData();
 
         // text for the topmost label in the dialog:
         // TODO: validation? else statement?
@@ -650,7 +695,14 @@ public class ValuationController {
             } else {
                 // check for duplicate range value / duplicate first range and process the results
                 MeasRangeData newRange = controller.exportData();
+
                 if (newRange != null) {
+                    if (newRange.getFunctionType().toString().equals("VAC")
+                            || newRange.getFunctionType().toString().equals("IAC")) {
+                        String frequency = container.freqTF.getText() + " " + container.freqCB.getValue();
+                        newRange.setFrequency(frequency);
+                    }
+
                     newRange.calculateCost();
                     newRange.initializeProperties();
                     if (finalTableView != null) {
@@ -933,7 +985,7 @@ public class ValuationController {
             editMenuItem.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
-                    editMeanRange(event);
+                    editMeasRange(event);
                 }
             });
             MenuItem deleteMenuItem = new MenuItem("Delete");
