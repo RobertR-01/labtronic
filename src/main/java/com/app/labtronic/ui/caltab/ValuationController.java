@@ -147,32 +147,52 @@ public class ValuationController {
 
         // validation for removing extra AC sections and going below 0 index in different collections is somewhat done
         // by limiting the minimum spinner value and the lister itself
+//        vacSpinner.getEditor().addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
+//            System.out.println(event.getSource());
+////            vacSpinner.getValueFactory().setValue(vacSpinner.getValueFactory().getValue() + 1);
+////            event.consume();
+//        });
+
+//        vacSpinner.sceneProperty().addListener((observable, oldValue, newValue) -> {
+//            Node increment = vacSpinner.lookup(".increment-arrow-button");
+//            if (increment != null) {
+//                increment.getOnMouseReleased().handle(null);
+//            }
+//            Node decrement = vacSpinner.lookup(".decrement-arrow-button");
+//            if (decrement != null) {
+//                decrement.getOnMouseReleased().handle(null);
+//            }
+//        });
+
         vacSpinner.valueProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue > oldValue) {
+                Node increment = vacSpinner.lookup(".increment-arrow-button");
+                if (increment != null) {
+                    increment.setDisable(true);
+                }
 //                openNewAcSectionDlg();
-
                 // try this: alert.setOnHidden(evt -> Platform.exit());
 
-                Dialog<ButtonType> dialog = new Dialog<>();
-                dialog.initOwner(root.getScene().getWindow());
-                dialog.setTitle("Choosing frequency");
-                dialog.setHeaderText("Enter a desired frequency for this section:");
-                FXMLLoader fxmlLoader = new FXMLLoader();
-                fxmlLoader.setLocation(getClass().getResource("valuation/frequency-dlg.fxml"));
-
-                try {
-                    dialog.getDialogPane().setContent(fxmlLoader.load());
-                } catch (IOException e) {
-                    System.out.println("Couldn't load the dialog.");
-                    e.printStackTrace();
-                    return;
-                }
-
-                dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
-                dialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
-
-                FrequencyDlgController controller = fxmlLoader.getController();
-                dialog.show();
+//                Dialog<ButtonType> dialog = new Dialog<>();
+//                dialog.initOwner(root.getScene().getWindow());
+//                dialog.setTitle("Choosing frequency");
+//                dialog.setHeaderText("Enter a desired frequency for this section:");
+//                FXMLLoader fxmlLoader = new FXMLLoader();
+//                fxmlLoader.setLocation(getClass().getResource("valuation/frequency-dlg.fxml"));
+//
+//                try {
+//                    dialog.getDialogPane().setContent(fxmlLoader.load());
+//                } catch (IOException e) {
+//                    System.out.println("Couldn't load the dialog.");
+//                    e.printStackTrace();
+//                    return;
+//                }
+//
+//                dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
+//                dialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
+//
+//                FrequencyDlgController controller = fxmlLoader.getController();
+////                dialog.show();
 //                Optional<ButtonType> result = dialog.showAndWait();
 //                if (result.isPresent() && result.get() == ButtonType.OK) {
 //
