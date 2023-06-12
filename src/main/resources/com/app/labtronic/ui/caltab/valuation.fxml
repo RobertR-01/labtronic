@@ -21,7 +21,11 @@
             <HBox spacing="10" alignment="CENTER">
                 <CheckBox text="VAC" fx:id="vacCB" minWidth="45"/>
                 <Label text="VAC frequency levels:" fx:id="vacFreqL"/>
-                <Spinner fx:id="vacSpinner" initialValue="1" min="1" max="10" amountToStepBy="1" prefWidth="65"/>
+                <HBox spacing="5" fx:id="vacFreqLevelsHBox">
+                    <TextField text="1" fx:id="vacFreqLevelsL" editable="false" prefWidth="65"/>
+                    <Button fx:id="vacFreqDecrement" text="-"/>
+                    <Button fx:id="vacFreqIncrement" text="+" onAction="#vacFreqIncrementHandler"/>
+                </HBox>
             </HBox>
             <Separator orientation="VERTICAL"/>
             <CheckBox text="IDC" fx:id="idcCB" minWidth="45"/>

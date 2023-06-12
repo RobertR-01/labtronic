@@ -100,7 +100,13 @@ public class ValuationController {
     @FXML
     private Label vacFreqL;
     @FXML
-    private Spinner<Integer> vacSpinner;
+    private HBox vacFreqLevelsHBox;
+    @FXML
+    private TextField vacFreqLevelsL;
+    @FXML
+    private Button vacFreqDecrement;
+    @FXML
+    private Button vacFreqIncrement;
     @FXML
     private Label iacFreqL;
     @FXML
@@ -138,82 +144,16 @@ public class ValuationController {
     private void initialize() {
         calData = ActiveSession.getActiveSessionInstance().getActiveCalTabs().get(ActiveSession.getLastAddedId());
 
-        // vac/iac spinners:
-//        vacExtraTableViews = new LinkedList<>();
-//        iacExtraTableViews = new LinkedList<>();
-
         vacExtraFreqContainers = new ArrayList<>();
         iacExtraFreqContainers = new ArrayList<>();
 
-        // validation for removing extra AC sections and going below 0 index in different collections is somewhat done
-        // by limiting the minimum spinner value and the lister itself
-//        vacSpinner.getEditor().addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
-//            System.out.println(event.getSource());
-////            vacSpinner.getValueFactory().setValue(vacSpinner.getValueFactory().getValue() + 1);
-////            event.consume();
-//        });
-
-//        vacSpinner.sceneProperty().addListener((observable, oldValue, newValue) -> {
-//            Node increment = vacSpinner.lookup(".increment-arrow-button");
-//            if (increment != null) {
-//                increment.getOnMouseReleased().handle(null);
-//            }
-//            Node decrement = vacSpinner.lookup(".decrement-arrow-button");
-//            if (decrement != null) {
-//                decrement.getOnMouseReleased().handle(null);
+//            } else if (newValue < oldValue) {
+//                removeAcFreq(true);
+//                calData.getValuationData().removeExtraAcFreq("VAC");
+//                calData.getValuationData().resetTotalCostProperty();
+//                // TODO: test if userData attached to a table view should be cleared
 //            }
 //        });
-
-        vacSpinner.valueProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue > oldValue) {
-                Node increment = vacSpinner.lookup(".increment-arrow-button");
-                if (increment != null) {
-                    increment.setDisable(true);
-                }
-//                openNewAcSectionDlg();
-                // try this: alert.setOnHidden(evt -> Platform.exit());
-
-//                Dialog<ButtonType> dialog = new Dialog<>();
-//                dialog.initOwner(root.getScene().getWindow());
-//                dialog.setTitle("Choosing frequency");
-//                dialog.setHeaderText("Enter a desired frequency for this section:");
-//                FXMLLoader fxmlLoader = new FXMLLoader();
-//                fxmlLoader.setLocation(getClass().getResource("valuation/frequency-dlg.fxml"));
-//
-//                try {
-//                    dialog.getDialogPane().setContent(fxmlLoader.load());
-//                } catch (IOException e) {
-//                    System.out.println("Couldn't load the dialog.");
-//                    e.printStackTrace();
-//                    return;
-//                }
-//
-//                dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
-//                dialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
-//
-//                FrequencyDlgController controller = fxmlLoader.getController();
-////                dialog.show();
-//                Optional<ButtonType> result = dialog.showAndWait();
-//                if (result.isPresent() && result.get() == ButtonType.OK) {
-//
-//
-//                } else {
-//
-//                }
-
-                String frequency = vacFreqTF.getText().trim() + vacFreqCB.getValue();
-                calData.getValuationData().addExtraAcFreq(frequency, "VAC");
-                addAcFreqContainer(true);
-                int lastIndex = vacExtraFreqContainers.size() - 1;
-                // TODO: no check for index out of bounds
-                vacExtraFreqContainers.get(lastIndex).getTableView().setUserData(vacExtraFreqContainers.get(lastIndex));
-            } else if (newValue < oldValue) {
-                removeAcFreq(true);
-                calData.getValuationData().removeExtraAcFreq("VAC");
-                calData.getValuationData().resetTotalCostProperty();
-                // TODO: test if userData attached to a table view should be cleared
-            }
-        });
         iacSpinner.valueProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue > oldValue) {
                 String frequency = iacFreqTF.getText().trim() + iacFreqCB.getValue();
@@ -248,7 +188,7 @@ public class ValuationController {
         // basic 5 TableViews setup + top panel combo boxes:
         // top panel combo box bindings:
         vacFreqL.disableProperty().bind(vacCB.selectedProperty().not());
-        vacSpinner.disableProperty().bind(vacCB.selectedProperty().not());
+        vacFreqLevelsHBox.disableProperty().bind(vacCB.selectedProperty().not());
         iacFreqL.disableProperty().bind(iacCB.selectedProperty().not());
         iacSpinner.disableProperty().bind(iacCB.selectedProperty().not());
 
@@ -368,14 +308,15 @@ public class ValuationController {
                             calData.getValuationData().setObservableVdcCost(0);
                             break;
                         case 1:
-                            spinnerValue = vacSpinner.getValue();
-                            for (int j = spinnerValue; j > 1; j--) {
-                                vacSpinner.getValueFactory().setValue(j - 1);
-                            }
-                            vacExtraFreqContainers.clear();
-                            calData.getValuationData().getRangeList("VAC").clear();
-                            calData.getValuationData().getExtraAcRangeLists("VAC").clear();
-                            calData.getValuationData().setObservableVacCost(0);
+                            // TODO: fix it (spinner removed)
+//                            spinnerValue = vacSpinner.getValue();
+//                            for (int j = spinnerValue; j > 1; j--) {
+//                                vacSpinner.getValueFactory().setValue(j - 1);
+//                            }
+//                            vacExtraFreqContainers.clear();
+//                            calData.getValuationData().getRangeList("VAC").clear();
+//                            calData.getValuationData().getExtraAcRangeLists("VAC").clear();
+//                            calData.getValuationData().setObservableVacCost(0);
                             break;
                         case 2:
                             calData.getValuationData().getRangeList("IDC").clear();
@@ -409,6 +350,42 @@ public class ValuationController {
         rdcCostL.textProperty().bind(calData.getValuationData().observableRdcCostProperty().asString());
 
         totalCostL.textProperty().bind(calData.getValuationData().observableTotalCostProperty().asString());
+    }
+
+    @FXML
+    private void vacFreqIncrementHandler() {
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.initOwner(root.getScene().getWindow());
+        dialog.setTitle("Choosing frequency");
+        dialog.setHeaderText("Enter a desired frequency for this section:");
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource("valuation/frequency-dlg.fxml"));
+
+        try {
+            dialog.getDialogPane().setContent(fxmlLoader.load());
+        } catch (IOException e) {
+            System.out.println("Couldn't load the dialog.");
+            e.printStackTrace();
+            return;
+        }
+
+        dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
+        dialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
+
+        FrequencyDlgController controller = fxmlLoader.getController();
+        Optional<ButtonType> result = dialog.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            String[] frequency = controller.exportData();
+            String frequencyString = frequency[0] + " " + frequency[1];
+            calData.getValuationData().addExtraAcFreq("VAC", frequencyString);
+            addAcFreqContainer(true);
+            int lastIndex = vacExtraFreqContainers.size() - 1;
+            // TODO: no check for index out of bounds
+            vacExtraFreqContainers.get(lastIndex).getTableView().setUserData(vacExtraFreqContainers.get(lastIndex));
+        } else {
+            System.out.println("ValuationController -> vacFreqIncrementHandler() -> something wrong with the user " +
+                    "input");
+        }
     }
 
     @FXML
@@ -1017,10 +994,20 @@ public class ValuationController {
             String[] measRangeDataFields = {"rangeProperty", "unitProperty", "numberOfPointsProperty",
                     "rangeTypeProperty", "costProperty"};
             String functionType = (isVoltage) ? "VAC" : "IAC";
-            // TODO: validation
-            int lastIndex = calData.getValuationData().getExtraAcRangeLists(functionType).size() - 1;
+            List<String> frequencies = null;
+            switch (functionType) {
+                case "VAC":
+                    frequencies = calData.getValuationData().getVacExtraFrequencies();
+                    break;
+                case "IAC":
+                    frequencies = calData.getValuationData().getIacExtraFrequencies();
+                    break;
+            }
+            int lastIndex = frequencies.size() - 1;
+            String frequency = frequencies.get(lastIndex);
+            // TODO: validation?
             ObservableList<MeasRangeData> rangeList = calData.getValuationData().getExtraAcRangeLists(functionType).
-                    get(lastIndex);
+                    get(frequency);
 
             if (rangeList != null) {
                 getTableView().setItems(rangeList);

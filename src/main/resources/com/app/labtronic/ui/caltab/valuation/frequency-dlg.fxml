@@ -15,7 +15,7 @@
             </columnConstraints>
 
             <Label text="Frequency value:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
-            <TextField fx:id="valueTF" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+            <TextField fx:id="valueTF" text="50" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
             <Label text="Unit:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
             <ComboBox fx:id="freqCB" GridPane.rowIndex="1" GridPane.columnIndex="1">
                 <items>
