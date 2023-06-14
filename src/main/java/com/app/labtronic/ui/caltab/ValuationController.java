@@ -6,7 +6,9 @@ import com.app.labtronic.data.valuation.MeasRangeData;
 import com.app.labtronic.ui.caltab.valuation.FrequencyDlgController;
 import com.app.labtronic.ui.caltab.valuation.RangePreviewController;
 import com.app.labtronic.ui.caltab.valuation.ValuationDlgController;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -31,7 +33,6 @@ import javafx.util.Duration;
 import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -93,9 +94,9 @@ public class ValuationController {
     @FXML
     private TextField iacFreqTF;
     @FXML
-    private ComboBox<String> vacFreqCB;
+    private Label vacFreqUnitL;
     @FXML
-    private ComboBox<String> iacFreqCB;
+    private Label iacFreqUnitL;
 
     @FXML
     private Label vacFreqL;
@@ -104,15 +105,15 @@ public class ValuationController {
     @FXML
     private TextField vacFreqLevelsL;
     @FXML
-    private Button vacFreqDecrement;
+    private Button vacFreqDecrementBtn;
     @FXML
-    private Button vacFreqIncrement;
+    private Button vacFreqIncrementBtn;
     @FXML
     private Label iacFreqL;
     @FXML
     private Spinner<Integer> iacSpinner;
-    private List<AcFreqContainer> vacExtraFreqContainers;
-    private List<AcFreqContainer> iacExtraFreqContainers;
+    private ObservableList<AcFreqContainer> vacExtraFreqContainers;
+    private ObservableList<AcFreqContainer> iacExtraFreqContainers;
     @FXML
     private TableView<MeasRangeData> vdcTableView;
     @FXML
@@ -144,19 +145,17 @@ public class ValuationController {
     private void initialize() {
         calData = ActiveSession.getActiveSessionInstance().getActiveCalTabs().get(ActiveSession.getLastAddedId());
 
-        vacExtraFreqContainers = new ArrayList<>();
-        iacExtraFreqContainers = new ArrayList<>();
+        vacExtraFreqContainers = FXCollections.observableArrayList();
+        iacExtraFreqContainers = FXCollections.observableArrayList();
+        SimpleIntegerProperty counter = new SimpleIntegerProperty();
 
-//            } else if (newValue < oldValue) {
-//                removeAcFreq(true);
-//                calData.getValuationData().removeExtraAcFreq("VAC");
-//                calData.getValuationData().resetTotalCostProperty();
-//                // TODO: test if userData attached to a table view should be cleared
-//            }
-//        });
+        vacFreqLevelsL.textProperty().bind(Bindings.size(vacExtraFreqContainers).add(1).asString());
+//        iacFreqLevelsL.textProperty().bind(Bindings.size(iacExtraFreqContainers).asString());
+
+
         iacSpinner.valueProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue > oldValue) {
-                String frequency = iacFreqTF.getText().trim() + iacFreqCB.getValue();
+                String frequency = iacFreqTF.getText().trim() + iacFreqUnitL.getText();
                 calData.getValuationData().addExtraAcFreq(frequency, "IAC");
                 addAcFreqContainer(false);
                 int lastIndex = iacExtraFreqContainers.size() - 1;
@@ -174,11 +173,11 @@ public class ValuationController {
         // TODO: no check for frequency related controls being passed as null
         SectionContainer vdcSectionContainer = new SectionContainer(vdcSection, vdcHBox, null, null, addVdcBtn,
                 vdcTableView, vdcCostL, "VDC");
-        SectionContainer vacSectionContainer = new SectionContainer(vacSection, vacHBox, vacFreqTF, vacFreqCB,
+        SectionContainer vacSectionContainer = new SectionContainer(vacSection, vacHBox, vacFreqTF, vacFreqUnitL,
                 addVacBtn, vacTableView, vacCostL, "VAC");
         SectionContainer idcSectionContainer = new SectionContainer(idcSection, idcHBox, null, null, addIdcBtn,
                 idcTableView, idcCostL, "IDC");
-        SectionContainer iacSectionContainer = new SectionContainer(iacSection, iacHBox, iacFreqTF, iacFreqCB,
+        SectionContainer iacSectionContainer = new SectionContainer(iacSection, iacHBox, iacFreqTF, iacFreqUnitL,
                 addIacBtn, iacTableView, iacCostL, "IAC");
         SectionContainer rdcSectionContainer = new SectionContainer(rdcSection, rdcHBox, null, null, addRdcBtn,
                 rdcTableView, rdcCostL, "RDC");
@@ -301,30 +300,32 @@ public class ValuationController {
             int finalI = i;
             cbList.get(i).selectedProperty().addListener((observable, oldValue, newValue) -> {
                 if (!newValue && oldValue) {
-                    int spinnerValue;
+                    int acCounter;
                     switch (finalI) {
                         case 0:
                             calData.getValuationData().getRangeList("VDC").clear();
                             calData.getValuationData().setObservableVdcCost(0);
                             break;
                         case 1:
-                            // TODO: fix it (spinner removed)
-//                            spinnerValue = vacSpinner.getValue();
-//                            for (int j = spinnerValue; j > 1; j--) {
-//                                vacSpinner.getValueFactory().setValue(j - 1);
-//                            }
-//                            vacExtraFreqContainers.clear();
-//                            calData.getValuationData().getRangeList("VAC").clear();
-//                            calData.getValuationData().getExtraAcRangeLists("VAC").clear();
-//                            calData.getValuationData().setObservableVacCost(0);
+                            acCounter = Integer.parseInt(vacFreqLevelsL.getText());
+                            for (int j = acCounter; j > 1; j--) {
+                                removeAcFreq(true);
+                                calData.getValuationData().removeExtraAcFreq("VAC");
+                                calData.getValuationData().resetTotalCostProperty();
+                            }
+                            vacExtraFreqContainers.clear();
+                            calData.getValuationData().getRangeList("VAC").clear();
+                            calData.getValuationData().getExtraAcRangeLists("VAC").clear();
+                            calData.getValuationData().setObservableVacCost(0);
                             break;
                         case 2:
                             calData.getValuationData().getRangeList("IDC").clear();
                             calData.getValuationData().setObservableIdcCost(0);
                             break;
                         case 3:
-                            spinnerValue = iacSpinner.getValue();
-                            for (int j = spinnerValue; j > 1; j--) {
+                            // TODO: fix it (see vac section - case: 1)
+                            acCounter = iacSpinner.getValue();
+                            for (int j = acCounter; j > 1; j--) {
                                 iacSpinner.getValueFactory().setValue(j - 1);
                             }
                             iacExtraFreqContainers.clear();
@@ -354,6 +355,17 @@ public class ValuationController {
 
     @FXML
     private void vacFreqIncrementHandler() {
+        // max size 8 because the text field value is always being increased by 1
+        if (vacExtraFreqContainers.size() > 8) {
+            // TODO: creating multiple, similar alerts within the same method :/
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.initOwner(root.getScene().getWindow());
+            alert.setTitle("Error while adding a new AC section");
+            alert.setContentText("Extra frequencies cap for this measurement function has been reached.");
+            alert.showAndWait();
+            return;
+        }
+
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.initOwner(root.getScene().getWindow());
         dialog.setTitle("Choosing frequency");
@@ -373,18 +385,57 @@ public class ValuationController {
         dialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
 
         FrequencyDlgController controller = fxmlLoader.getController();
-        Optional<ButtonType> result = dialog.showAndWait();
-        if (result.isPresent() && result.get() == ButtonType.OK) {
+        final Button buttonOK = (Button) dialog.getDialogPane().lookupButton(ButtonType.OK);
+        buttonOK.addEventFilter(ActionEvent.ACTION, actionEvent -> {
             String[] frequency = controller.exportData();
             String frequencyString = frequency[0] + " " + frequency[1];
-            calData.getValuationData().addExtraAcFreq("VAC", frequencyString);
-            addAcFreqContainer(true);
-            int lastIndex = vacExtraFreqContainers.size() - 1;
-            // TODO: no check for index out of bounds
-            vacExtraFreqContainers.get(lastIndex).getTableView().setUserData(vacExtraFreqContainers.get(lastIndex));
+
+            boolean problem = frequencyString.equals(calData.getValuationData().getBaseVacFrequency())
+                    || calData.getValuationData().getVacExtraFrequencies().contains(frequencyString);
+
+            if (!problem) {
+                calData.getValuationData().addExtraAcFreq("VAC", frequencyString);
+                addAcFreqContainer(true);
+                int lastIndex = vacExtraFreqContainers.size() - 1;
+                // TODO: no check for index out of bounds
+                vacExtraFreqContainers.get(lastIndex).getTableView().setUserData(vacExtraFreqContainers.get(lastIndex));
+            } else {
+                actionEvent.consume();
+                System.out.println("ValuationController -> vacFreqIncrementHandler() -> AC section not added.");
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.initOwner(root.getScene().getWindow());
+                alert.setTitle("Error while adding a new frequency");
+                alert.setContentText("A section for this frequency level already exists. Try a different value.");
+                alert.showAndWait();
+            }
+        });
+        Optional<ButtonType> result = dialog.showAndWait();
+    }
+
+    @FXML
+    private void vacFreqDecrementHandler() {
+        System.out.println(vacExtraFreqContainers.size());
+        if (vacExtraFreqContainers.size() < 1) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.initOwner(root.getScene().getWindow());
+            alert.setTitle("Error while removing existing AC section");
+            alert.setContentText("There are no extra AC sections present.");
+            alert.showAndWait();
+            return;
+        }
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.initOwner(root.getScene().getWindow());
+        alert.setTitle("Removing AC section");
+        alert.setContentText("Are you sure you want the last added AC section removed?");
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if (result.isPresent() && (result.get() == ButtonType.OK)) {
+            removeAcFreq(true);
+            calData.getValuationData().removeExtraAcFreq("VAC");
+            calData.getValuationData().resetTotalCostProperty();
         } else {
-            System.out.println("ValuationController -> vacFreqIncrementHandler() -> something wrong with the user " +
-                    "input");
+            System.out.println("ValuationController -> vacFreqDecrementHandler() -> AC section not removed.");
         }
     }
 
@@ -395,39 +446,6 @@ public class ValuationController {
         }
 
         calData.getValuationData().resetTotalCostProperty();
-    }
-
-    private String[] openNewAcSectionDlg() {
-        String[] frequency = new String[2];
-
-        Dialog<ButtonType> dialog = new Dialog<>();
-        dialog.initOwner(root.getScene().getWindow());
-        dialog.setTitle("Choosing frequency");
-        dialog.setHeaderText("Enter a desired frequency for this section:");
-        FXMLLoader fxmlLoader = new FXMLLoader();
-        fxmlLoader.setLocation(getClass().getResource("valuation/frequency-dlg.fxml"));
-
-        try {
-            dialog.getDialogPane().setContent(fxmlLoader.load());
-        } catch (IOException e) {
-            System.out.println("Couldn't load the dialog.");
-            e.printStackTrace();
-            return null;
-        }
-
-        dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
-        dialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
-
-        FrequencyDlgController controller = fxmlLoader.getController();
-
-        Optional<ButtonType> result = dialog.showAndWait();
-        if (result.isPresent() && result.get() == ButtonType.OK) {
-
-
-            return frequency;
-        } else {
-            return null;
-        }
     }
 
     private void previewRange(TableView<MeasRangeData> tableView) {
@@ -447,7 +465,7 @@ public class ValuationController {
             if (function.equalsIgnoreCase("VAC") || function.equalsIgnoreCase("IAC")) {
                 if (container != null) {
                     frequency = container.getFreqTF().getText();
-                    frequencyUnit = container.getFreqCB().getValue();
+                    frequencyUnit = container.getFreqUnitL().getText();
                 }
 
                 headerBuilder.append(" (").append(function).append(")\nf = ").append(frequency).append(" ").
@@ -586,7 +604,7 @@ public class ValuationController {
                 if (newRange != null) {
                     if (newRange.getFunctionType().toString().equals("VAC")
                             || newRange.getFunctionType().toString().equals("IAC")) {
-                        String frequency = container.freqTF.getText() + " " + container.freqCB.getValue();
+                        String frequency = container.freqTF.getText() + " " + container.freqUnitL.getText();
                         newRange.setFrequency(frequency);
                     }
 
@@ -733,7 +751,7 @@ public class ValuationController {
                 if (newRange != null) {
                     if (newRange.getFunctionType().toString().equals("VAC")
                             || newRange.getFunctionType().toString().equals("IAC")) {
-                        String frequency = container.freqTF.getText() + " " + container.freqCB.getValue();
+                        String frequency = container.freqTF.getText() + " " + container.freqUnitL.getText();
                         newRange.setFrequency(frequency);
                     }
 
@@ -831,7 +849,7 @@ public class ValuationController {
         private VBox topLevelVBox;
         private HBox hBox;
         private TextField freqTF;
-        private ComboBox<String> freqCB;
+        private Label freqUnitL;
         private Button addRangeBtn;
         private TableView<MeasRangeData> tableView;
         private Label costL;
@@ -841,13 +859,13 @@ public class ValuationController {
 
         }
 
-        private SectionContainer(VBox topLevelVBox, HBox hBox, TextField freqTF, ComboBox<String> freqCB,
+        private SectionContainer(VBox topLevelVBox, HBox hBox, TextField freqTF, Label freqUnitL,
                                  Button addRangeBtn, TableView<MeasRangeData> tableView, Label costL,
                                  String functionName) {
             this.topLevelVBox = topLevelVBox;
             this.hBox = hBox;
             this.freqTF = freqTF;
-            this.freqCB = freqCB;
+            this.freqUnitL = freqUnitL;
             this.addRangeBtn = addRangeBtn;
             this.tableView = tableView;
             this.costL = costL;
@@ -874,8 +892,8 @@ public class ValuationController {
             return freqTF;
         }
 
-        public ComboBox<String> getFreqCB() {
-            return freqCB;
+        public Label getFreqUnitL() {
+            return freqUnitL;
         }
 
         public Button getAddRangeBtn() {
@@ -906,8 +924,8 @@ public class ValuationController {
             this.freqTF = freqTF;
         }
 
-        public void setFreqCB(ComboBox<String> freqCB) {
-            this.freqCB = freqCB;
+        public void setFreqUnitL(Label freqUnitL) {
+            this.freqUnitL = freqUnitL;
         }
 
         public void setAddRangeBtn(Button addRangeBtn) {
@@ -947,12 +965,14 @@ public class ValuationController {
 
             setFreqTF(new TextField("50"));
             getFreqTF().setPrefWidth(50);
+            getFreqTF().setEditable(false);
+            getFreqTF().setAlignment(Pos.CENTER);
             getHBox().getChildren().add(getFreqTF());
 
-            setFreqCB(new ComboBox<>(FXCollections.observableArrayList("Hz", "kHz")));
-            getFreqCB().setPrefWidth(70);
-            getFreqCB().setValue("Hz");
-            getHBox().getChildren().add(getFreqCB());
+            setFreqUnitL(new Label());
+            getFreqUnitL().setPrefWidth(45);
+            getFreqUnitL().setText("Hz");
+            getHBox().getChildren().add(getFreqUnitL());
 
             setAddRangeBtn(new Button());
             Tooltip tooltip = new Tooltip("Add new measurement range / points");
@@ -1112,7 +1132,7 @@ public class ValuationController {
                 case "IAC":
                     frequencies = calData.getValuationData().getIacExtraFrequencies();
                     break;
-                    // TODO: default?
+                // TODO: default?
             }
             int lastIndex = frequencies.size() - 1;
             String frequency = frequencies.get(lastIndex);

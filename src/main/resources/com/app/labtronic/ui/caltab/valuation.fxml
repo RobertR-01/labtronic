@@ -23,8 +23,8 @@
                 <Label text="VAC frequency levels:" fx:id="vacFreqL"/>
                 <HBox spacing="5" fx:id="vacFreqLevelsHBox">
                     <TextField text="1" fx:id="vacFreqLevelsL" editable="false" prefWidth="65"/>
-                    <Button fx:id="vacFreqDecrement" text="-"/>
-                    <Button fx:id="vacFreqIncrement" text="+" onAction="#vacFreqIncrementHandler"/>
+                    <Button fx:id="vacFreqDecrementBtn" text="-" onAction="#vacFreqDecrementHandler"/>
+                    <Button fx:id="vacFreqIncrementBtn" text="+" onAction="#vacFreqIncrementHandler"/>
                 </HBox>
             </HBox>
             <Separator orientation="VERTICAL"/>
@@ -83,18 +83,8 @@
                     <VBox fx:id="vacBaseVBox" spacing="10">
                         <HBox fx:id="vacHBox" spacing="20" alignment="CENTER">
                             <Label text="VAC" underline="true"/>
-                            <TextField text="50" fx:id="vacFreqTF" prefWidth="50"/>
-                            <ComboBox fx:id="vacFreqCB" prefWidth="70">
-                                <items>
-                                    <FXCollections fx:factory="observableArrayList">
-                                        <String fx:value="Hz"/>
-                                        <String fx:value="kHz"/>
-                                    </FXCollections>
-                                </items>
-                                <value>
-                                    <String fx:value="Hz"/>
-                                </value>
-                            </ComboBox>
+                            <TextField text="50" fx:id="vacFreqTF" prefWidth="50" editable="false" alignment="CENTER"/>
+                            <Label fx:id="vacFreqUnitL" prefWidth="45"/>
                             <Button fx:id="addVacBtn" onAction="#handleAddNewMeasRange">
                                 <tooltip>
                                     <Tooltip showDelay="500ms" text="Add new measurement range / points"/>
@@ -153,18 +143,8 @@
                     <VBox fx:id="iacBaseVBox" spacing="10">
                         <HBox fx:id="iacHBox" spacing="20" alignment="CENTER">
                             <Label text="IAC" underline="true"/>
-                            <TextField text="50" fx:id="iacFreqTF" prefWidth="50"/>
-                            <ComboBox fx:id="iacFreqCB">
-                                <items>
-                                    <FXCollections fx:factory="observableArrayList">
-                                        <String fx:value="Hz"/>
-                                        <String fx:value="kHz"/>
-                                    </FXCollections>
-                                </items>
-                                <value>
-                                    <String fx:value="Hz"/>
-                                </value>
-                            </ComboBox>
+                            <TextField text="50" fx:id="iacFreqTF" prefWidth="50" editable="false" alignment="CENTER"/>
+                            <Label fx:id="iacFreqUnitL" prefWidth="45"/>
                             <Button fx:id="addIacBtn" onAction="#handleAddNewMeasRange">
                                 <tooltip>
                                     <Tooltip showDelay="500ms" text="Add new measurement range / points"/>
