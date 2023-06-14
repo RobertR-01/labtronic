@@ -393,6 +393,9 @@ public class ValuationData {
                 String frequency = frequencies.get(frequencies.size() - 1);
                 freqLists.remove(frequency);
                 properties.remove(frequency);
+                if (frequencies.size() > 0) {
+                    frequencies.remove(frequencies.get(frequencies.size() - 1));
+                }
                 return true;
             } else {
                 return false;

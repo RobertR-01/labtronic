@@ -414,7 +414,6 @@ public class ValuationController {
 
     @FXML
     private void vacFreqDecrementHandler() {
-        System.out.println(vacExtraFreqContainers.size());
         if (vacExtraFreqContainers.size() < 1) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.initOwner(root.getScene().getWindow());
