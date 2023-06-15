@@ -281,54 +281,73 @@ public class ValuationController {
 
         for (int i = 0; i < cbList.size(); i++) {
             // hiding/revealing base sections:
-            vBoxList.get(i).visibleProperty().bind(cbList.get(i).selectedProperty());
-            vBoxList.get(i).managedProperty().bind(vBoxList.get(i).visibleProperty());
+//            vBoxList.get(i).visibleProperty().bind(cbList.get(i).selectedProperty());
+//            vBoxList.get(i).managedProperty().bind(vBoxList.get(i).visibleProperty());
+            vBoxList.get(i).visibleProperty().set(false);
+            vBoxList.get(i).managedProperty().set(false);
 
             // reset the section cost and the total cost when hiding the entire section via check box (including extra
             // frequencies for AC functions):
             int finalI = i;
             cbList.get(i).selectedProperty().addListener((observable, oldValue, newValue) -> {
                 if (!newValue && oldValue) {
-                    int acCounter;
-                    switch (finalI) {
-                        case 0:
-                            calData.getValuationData().getRangeList("VDC").clear();
-                            calData.getValuationData().setObservableVdcCost(0);
-                            break;
-                        case 1:
-                            acCounter = Integer.parseInt(vacFreqLevelsL.getText());
-                            for (int j = acCounter; j > 1; j--) {
-                                removeAcFreq(true);
-                                calData.getValuationData().removeExtraAcFreq("VAC");
-                                calData.getValuationData().resetTotalCostProperty();
-                            }
-                            vacExtraFreqContainers.clear();
-                            calData.getValuationData().getRangeList("VAC").clear();
-                            calData.getValuationData().getExtraAcRangeLists("VAC").clear();
-                            calData.getValuationData().setObservableVacCost(0);
-                            break;
-                        case 2:
-                            calData.getValuationData().getRangeList("IDC").clear();
-                            calData.getValuationData().setObservableIdcCost(0);
-                            break;
-                        case 3:
-                            acCounter = Integer.parseInt(iacFreqLevelsL.getText());
-                            for (int j = acCounter; j > 1; j--) {
-                                removeAcFreq(false);
-                                calData.getValuationData().removeExtraAcFreq("IAC");
-                                calData.getValuationData().resetTotalCostProperty();
-                            }
-                            iacExtraFreqContainers.clear();
-                            calData.getValuationData().getRangeList("IAC").clear();
-                            calData.getValuationData().getExtraAcRangeLists("IAC").clear();
-                            calData.getValuationData().setObservableIacCost(0);
-                            break;
-                        case 4:
-                            calData.getValuationData().getRangeList("RDC").clear();
-                            calData.getValuationData().setObservableRdcCost(0);
-                            break;
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.initOwner(root.getScene().getWindow());
+                    alert.setTitle("Warning");
+                    alert.setContentText("Are you sure you want to remove this entire section?");
+                    Optional<ButtonType> result = alert.showAndWait();
+
+                    if (result.isPresent() && (result.get() == ButtonType.OK)) {
+                        vBoxList.get(finalI).visibleProperty().set(false);
+                        vBoxList.get(finalI).managedProperty().set(false);
+
+                        int acCounter;
+                        switch (finalI) {
+                            case 0:
+                                calData.getValuationData().getRangeList("VDC").clear();
+                                calData.getValuationData().setObservableVdcCost(0);
+                                break;
+                            case 1:
+                                acCounter = Integer.parseInt(vacFreqLevelsL.getText());
+                                for (int j = acCounter; j > 1; j--) {
+                                    removeAcFreq(true);
+                                    calData.getValuationData().removeExtraAcFreq("VAC");
+                                    calData.getValuationData().resetTotalCostProperty();
+                                }
+                                vacExtraFreqContainers.clear();
+                                calData.getValuationData().getRangeList("VAC").clear();
+                                calData.getValuationData().getExtraAcRangeLists("VAC").clear();
+                                calData.getValuationData().setObservableVacCost(0);
+                                break;
+                            case 2:
+                                calData.getValuationData().getRangeList("IDC").clear();
+                                calData.getValuationData().setObservableIdcCost(0);
+                                break;
+                            case 3:
+                                acCounter = Integer.parseInt(iacFreqLevelsL.getText());
+                                for (int j = acCounter; j > 1; j--) {
+                                    removeAcFreq(false);
+                                    calData.getValuationData().removeExtraAcFreq("IAC");
+                                    calData.getValuationData().resetTotalCostProperty();
+                                }
+                                iacExtraFreqContainers.clear();
+                                calData.getValuationData().getRangeList("IAC").clear();
+                                calData.getValuationData().getExtraAcRangeLists("IAC").clear();
+                                calData.getValuationData().setObservableIacCost(0);
+                                break;
+                            case 4:
+                                calData.getValuationData().getRangeList("RDC").clear();
+                                calData.getValuationData().setObservableRdcCost(0);
+                                break;
+                        }
+                        calData.getValuationData().resetTotalCostProperty();
+                    } else {
+                        cbList.get(finalI).setSelected(true);
+                        System.out.println("ValuationController -> initialize() -> measurement function not removed.");
                     }
-                    calData.getValuationData().resetTotalCostProperty();
+                } else if (newValue && !oldValue) {
+                    vBoxList.get(finalI).visibleProperty().set(true);
+                    vBoxList.get(finalI).managedProperty().set(true);
                 }
             });
         }
@@ -347,6 +366,34 @@ public class ValuationController {
         vacFreqDecrementBtn.onActionProperty().set(event -> acFreqDecrementHandler("VAC"));
         iacFreqIncrementBtn.onActionProperty().set(event -> acFreqIncrementHandler("IAC"));
         iacFreqDecrementBtn.onActionProperty().set(event -> acFreqDecrementHandler("IAC"));
+        // for base AC sections:
+        vacCB.setOnAction(event -> baseAcFreqHandler("VAC"));
+        iacCB.setOnAction(event -> baseAcFreqHandler("IAC"));
+    }
+
+    @FXML
+    private void baseAcFreqHandler(String function) {
+        String frequency;
+        TextField textField;
+        Label label;
+        switch (function) {
+            case "VAC":
+                frequency = calData.getValuationData().getBaseVacFrequency();
+                textField = vacFreqTF;
+                label = vacFreqUnitL;
+                break;
+            case "IAC":
+                frequency = calData.getValuationData().getBaseIacFrequency();
+                textField = iacFreqTF;
+                label = iacFreqUnitL;
+                break;
+            default:
+                System.out.println("ValuationController -> acFreqIncrementHandler() -> invalid method argument.");
+                return;
+        }
+        String[] freqArray = frequency.split(" ");
+        textField.setText(freqArray[0]);
+        label.setText(freqArray[1]);
     }
 
     @FXML
@@ -416,7 +463,10 @@ public class ValuationController {
                 addAcFreqContainer(isVoltage);
                 int lastIndex = acExtraFreqContainers.size() - 1;
                 // TODO: no check for index out of bounds
-                acExtraFreqContainers.get(lastIndex).getTableView().setUserData(acExtraFreqContainers.get(lastIndex));
+                AcFreqContainer container = acExtraFreqContainers.get(lastIndex);
+                container.getTableView().setUserData(acExtraFreqContainers.get(lastIndex));
+                container.getFreqTF().setText(frequency[0]);
+                container.getFreqUnitL().setText(frequency[1]);
             } else {
                 actionEvent.consume();
                 System.out.println("ValuationController -> acFreqIncrementHandler() -> AC section not added.");
