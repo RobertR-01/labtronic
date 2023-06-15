@@ -23,8 +23,8 @@
                 <Label text="VAC frequency levels:" fx:id="vacFreqL"/>
                 <HBox spacing="5" fx:id="vacFreqLevelsHBox">
                     <TextField text="1" fx:id="vacFreqLevelsL" editable="false" prefWidth="65"/>
-                    <Button fx:id="vacFreqDecrementBtn" text="-" onAction="#vacFreqDecrementHandler"/>
-                    <Button fx:id="vacFreqIncrementBtn" text="+" onAction="#vacFreqIncrementHandler"/>
+                    <Button fx:id="vacFreqDecrementBtn" text="-"/>
+                    <Button fx:id="vacFreqIncrementBtn" text="+"/>
                 </HBox>
             </HBox>
             <Separator orientation="VERTICAL"/>
@@ -33,7 +33,11 @@
             <HBox spacing="10" alignment="CENTER">
                 <CheckBox text="IAC" fx:id="iacCB" minWidth="45"/>
                 <Label text="IAC frequency levels:" fx:id="iacFreqL"/>
-                <Spinner fx:id="iacSpinner" initialValue="1" min="1" max="10" amountToStepBy="1" prefWidth="65"/>
+                <HBox spacing="5" fx:id="iacFreqLevelsHBox">
+                    <TextField text="1" fx:id="iacFreqLevelsL" editable="false" prefWidth="65"/>
+                    <Button fx:id="iacFreqDecrementBtn" text="-"/>
+                    <Button fx:id="iacFreqIncrementBtn" text="+"/>
+                </HBox>
             </HBox>
             <Separator orientation="VERTICAL"/>
             <CheckBox text="RDC" fx:id="rdcCB" minWidth="45"/>
