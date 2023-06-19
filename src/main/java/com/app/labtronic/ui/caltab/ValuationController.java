@@ -280,17 +280,15 @@ public class ValuationController {
         }
 
         for (int i = 0; i < cbList.size(); i++) {
-            // hiding/revealing base sections:
-//            vBoxList.get(i).visibleProperty().bind(cbList.get(i).selectedProperty());
-//            vBoxList.get(i).managedProperty().bind(vBoxList.get(i).visibleProperty());
+            // default state of all sections - hidden
             vBoxList.get(i).visibleProperty().set(false);
             vBoxList.get(i).managedProperty().set(false);
 
-            // reset the section cost and the total cost when hiding the entire section via check box (including extra
-            // frequencies for AC functions):
+            final boolean[] allowChange = {true};
             int finalI = i;
             cbList.get(i).selectedProperty().addListener((observable, oldValue, newValue) -> {
-                if (!newValue && oldValue) {
+                if (!newValue && oldValue && allowChange[0]) {
+                    // deselecting the checkbox
                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                     alert.initOwner(root.getScene().getWindow());
                     alert.setTitle("Warning");
@@ -301,6 +299,8 @@ public class ValuationController {
                         vBoxList.get(finalI).visibleProperty().set(false);
                         vBoxList.get(finalI).managedProperty().set(false);
 
+                        // reset the section cost and the total cost when hiding the entire section via check box
+                        // (including extra frequencies for AC functions):
                         int acCounter;
                         switch (finalI) {
                             case 0:
@@ -344,20 +344,39 @@ public class ValuationController {
                         }
                         calData.getValuationData().resetTotalCostProperty();
                     } else {
-                        cbList.get(finalI).setSelected(true);
-                        System.out.println("ValuationController -> initialize() -> measurement function not removed.");
+                        allowChange[0] = false;
+                        cbList.get(finalI).selectedProperty().set(true);
+                        allowChange[0] = true;
+                        System.out.println("ValuationController -> initialize() -> section not removed.");
                     }
-                } else if (newValue && !oldValue) {
-                    System.out.println("iterator: " + finalI);
+                } else if (newValue && !oldValue && allowChange[0]) {
+                    // selecting the checkbox
                     switch (finalI) {
                         case 1:
-                            baseAcFreqHandler("VAC");
-                            // TODO: missing visible / managed property setter call
+                            if (baseAcFreqHandler("VAC")) {
+                                vacSection.visibleProperty().set(true);
+                                vacSection.managedProperty().set(true);
+                            } else {
+                                allowChange[0] = false;
+                                cbList.get(finalI).selectedProperty().set(false);
+                                allowChange[0] = true;
+                                System.out.println("ValuationController -> initialize() -> failed to make VAC section "
+                                        + "visible");
+                            }
                             break;
                         case 3:
-                            baseAcFreqHandler("IAC");
+                            if (baseAcFreqHandler("IAC")) {
+                                iacSection.visibleProperty().set(true);
+                                iacSection.managedProperty().set(true);
+                            } else {
+                                allowChange[0] = false;
+                                cbList.get(finalI).selectedProperty().set(false);
+                                allowChange[0] = true;
+                                System.out.println("ValuationController -> initialize() -> failed to make IAC section "
+                                        + "visible");
+                            }
                             break;
-                        default:
+                        case 0, 2, 4:
                             vBoxList.get(finalI).visibleProperty().set(true);
                             vBoxList.get(finalI).managedProperty().set(true);
                             break;
@@ -380,30 +399,25 @@ public class ValuationController {
         vacFreqDecrementBtn.onActionProperty().set(event -> acFreqDecrementHandler("VAC"));
         iacFreqIncrementBtn.onActionProperty().set(event -> acFreqIncrementHandler("IAC"));
         iacFreqDecrementBtn.onActionProperty().set(event -> acFreqDecrementHandler("IAC"));
-        // for base AC sections:
-//        vacCB.setOnAction(event -> baseAcFreqHandler("VAC"));
-//        iacCB.setOnAction(event -> baseAcFreqHandler("IAC"));
     }
 
     @FXML
-    private void baseAcFreqHandler(String function) {
+    private boolean baseAcFreqHandler(String function) {
+        boolean result = false;
         TextField baseFreqValueTF;
         Label baseFreqUnitL;
-        VBox section;
         switch (function) {
             case "VAC":
                 baseFreqValueTF = vacFreqTF;
                 baseFreqUnitL = vacFreqUnitL;
-                section = vacSection;
                 break;
             case "IAC":
                 baseFreqValueTF = iacFreqTF;
                 baseFreqUnitL = iacFreqUnitL;
-                section = iacSection;
                 break;
             default:
                 System.out.println("ValuationController -> setBaseAcFrequency() -> invalid method argument.");
-                return;
+                return result;
         }
 
         Dialog<ButtonType> dialog = new Dialog<>();
@@ -418,15 +432,15 @@ public class ValuationController {
         } catch (IOException e) {
             System.out.println("Couldn't load the dialog.");
             e.printStackTrace();
-            return;
+            return result;
         }
 
         dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
         dialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
 
         FrequencyDlgController controller = fxmlLoader.getController();
-        Optional<ButtonType> result = dialog.showAndWait();
-        if (result.isPresent() && (result.get() == ButtonType.OK)) {
+        Optional<ButtonType> dlgResult = dialog.showAndWait();
+        if (dlgResult.isPresent() && (dlgResult.get() == ButtonType.OK)) {
             String[] frequency = controller.exportData();
             String frequencyString = frequency[0] + " " + frequency[1];
 
@@ -439,15 +453,15 @@ public class ValuationController {
                     break;
                 default:
                     System.out.println("ValuationController -> setBaseAcFrequency() -> invalid method argument.");
-                    return;
+                    return result;
             }
             baseFreqValueTF.setText(frequency[0]);
             baseFreqUnitL.setText(frequency[1]);
-            section.visibleProperty().set(true);
-            section.managedProperty().set(true);
+            result = true;
         } else {
             System.out.println("ValuationController -> setBaseAcFrequency() -> operation cancelled.");
         }
+        return result;
     }
 
     @FXML
