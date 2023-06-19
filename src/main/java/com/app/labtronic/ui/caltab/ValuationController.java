@@ -306,6 +306,7 @@ public class ValuationController {
                             case 0:
                                 calData.getValuationData().getRangeList("VDC").clear();
                                 calData.getValuationData().setObservableVdcCost(0);
+                                calData.getValuationData().removeActiveMeasFunction("VDC");
                                 break;
                             case 1:
                                 calData.getValuationData().setBaseVacFrequency(null);
@@ -314,6 +315,8 @@ public class ValuationController {
                                     removeAcFreq(true);
                                     calData.getValuationData().removeExtraAcFreq("VAC");
                                     calData.getValuationData().resetTotalCostProperty();
+                                    String frequency = calData.getValuationData().getBaseVacFrequency();
+                                    calData.getValuationData().removeActiveMeasFunction("VAC " + frequency);
                                 }
                                 vacExtraFreqContainers.clear();
                                 calData.getValuationData().getRangeList("VAC").clear();
@@ -323,6 +326,7 @@ public class ValuationController {
                             case 2:
                                 calData.getValuationData().getRangeList("IDC").clear();
                                 calData.getValuationData().setObservableIdcCost(0);
+                                calData.getValuationData().removeActiveMeasFunction("IDC");
                                 break;
                             case 3:
                                 calData.getValuationData().setBaseIacFrequency(null);
@@ -336,10 +340,13 @@ public class ValuationController {
                                 calData.getValuationData().getRangeList("IAC").clear();
                                 calData.getValuationData().getExtraAcRangeLists("IAC").clear();
                                 calData.getValuationData().setObservableIacCost(0);
+                                String frequency = calData.getValuationData().getBaseIacFrequency();
+                                calData.getValuationData().removeActiveMeasFunction("IAC " + frequency);
                                 break;
                             case 4:
                                 calData.getValuationData().getRangeList("RDC").clear();
                                 calData.getValuationData().setObservableRdcCost(0);
+                                calData.getValuationData().removeActiveMeasFunction("RDC");
                                 break;
                         }
                         calData.getValuationData().resetTotalCostProperty();
@@ -352,6 +359,13 @@ public class ValuationController {
                 } else if (newValue && !oldValue && allowChange[0]) {
                     // selecting the checkbox
                     switch (finalI) {
+                        case 0:
+                            // TODO: duplicate code for bunch of switch cases
+                            calData.getValuationData().addActiveMeasFunction("VDC");
+                            System.out.println("added function: " + "VDC");
+                            System.out.println("current functions: " + calData.getValuationData().getActiveMeasFunctions());                            vBoxList.get(finalI).visibleProperty().set(true);
+                            vBoxList.get(finalI).managedProperty().set(true);
+                            break;
                         case 1:
                             if (baseAcFreqHandler("VAC")) {
                                 vacSection.visibleProperty().set(true);
@@ -363,6 +377,11 @@ public class ValuationController {
                                 System.out.println("ValuationController -> initialize() -> failed to make VAC section "
                                         + "visible");
                             }
+                            break;
+                        case 2:
+                            calData.getValuationData().addActiveMeasFunction("IDC");
+                            vBoxList.get(finalI).visibleProperty().set(true);
+                            vBoxList.get(finalI).managedProperty().set(true);
                             break;
                         case 3:
                             if (baseAcFreqHandler("IAC")) {
@@ -376,7 +395,8 @@ public class ValuationController {
                                         + "visible");
                             }
                             break;
-                        case 0, 2, 4:
+                        case 4:
+                            calData.getValuationData().addActiveMeasFunction("RDC");
                             vBoxList.get(finalI).visibleProperty().set(true);
                             vBoxList.get(finalI).managedProperty().set(true);
                             break;
@@ -457,6 +477,11 @@ public class ValuationController {
             }
             baseFreqValueTF.setText(frequency[0]);
             baseFreqUnitL.setText(frequency[1]);
+
+            calData.getValuationData().addActiveMeasFunction(function + " " + frequencyString);
+            System.out.println("added function: " + function + " " + frequencyString);
+            System.out.println("current functions: " + calData.getValuationData().getActiveMeasFunctions());
+
             result = true;
         } else {
             System.out.println("ValuationController -> setBaseAcFrequency() -> operation cancelled.");
@@ -535,6 +560,10 @@ public class ValuationController {
                 container.getTableView().setUserData(acExtraFreqContainers.get(lastIndex));
                 container.getFreqTF().setText(frequency[0]);
                 container.getFreqUnitL().setText(frequency[1]);
+
+                calData.getValuationData().addActiveMeasFunction(function + " " + frequencyString);
+                System.out.println("added function: " + function + " " + frequencyString);
+                System.out.println("current functions: " + calData.getValuationData().getActiveMeasFunctions());
             } else {
                 actionEvent.consume();
                 System.out.println("ValuationController -> acFreqIncrementHandler() -> AC section not added.");
@@ -551,14 +580,17 @@ public class ValuationController {
     @FXML
     private void acFreqDecrementHandler(String function) {
         ObservableList<AcFreqContainer> acExtraFreqContainers;
+        List<String> extraFrequencies;
         boolean isVoltage;
         switch (function) {
             case "VAC":
                 acExtraFreqContainers = vacExtraFreqContainers;
+                extraFrequencies = calData.getValuationData().getVacExtraFrequencies();
                 isVoltage = true;
                 break;
             case "IAC":
                 acExtraFreqContainers = iacExtraFreqContainers;
+                extraFrequencies = calData.getValuationData().getIacExtraFrequencies();
                 isVoltage = false;
                 break;
             default:
@@ -582,9 +614,12 @@ public class ValuationController {
         Optional<ButtonType> result = alert.showAndWait();
 
         if (result.isPresent() && (result.get() == ButtonType.OK)) {
+            String frequency = extraFrequencies.get(extraFrequencies.size() - 1);
             removeAcFreq(isVoltage);
             calData.getValuationData().removeExtraAcFreq(function);
             calData.getValuationData().resetTotalCostProperty();
+
+            calData.getValuationData().removeActiveMeasFunction(function + " " + frequency);
         } else {
             System.out.println("ValuationController -> acFreqDecrementHandler() -> AC section not removed.");
         }

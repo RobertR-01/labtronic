@@ -18,7 +18,7 @@
 
             <Label text="Measurement function" underline="true"/>
 
-            <ListView/>
+            <ListView fx:id="activeFunctionsListView"/>
 
             <Separator/>
 
@@ -284,7 +284,8 @@
                     <ColumnConstraints percentWidth="50" hgrow="ALWAYS" halignment="CENTER"/>
                 </columnConstraints>
 
-                <Button text="Calculate" GridPane.columnIndex="0" GridPane.rowIndex="0" maxWidth="Infinity"/>
+                <Button fx:id="testButton" text="Calculate" GridPane.columnIndex="0" GridPane.rowIndex="0"
+                        maxWidth="Infinity"/>
                 <HBox GridPane.columnIndex="1" GridPane.rowIndex="0" spacing="5" alignment="CENTER">
                     <Label text="Coverage factor"/>
                     <Label text="k ="/>

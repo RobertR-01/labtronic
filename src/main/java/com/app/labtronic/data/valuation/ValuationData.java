@@ -263,6 +263,10 @@ public class ValuationData {
         }
     }
 
+    public ObservableList<String> getActiveMeasFunctions() {
+        return activeMeasFunctions;
+    }
+
     // results -> {first range exists check, duplicate range check}
     // both true -> addition successful
     public boolean[] addRange(ObservableList<MeasRangeData> rangeList, MeasRangeData range) {
@@ -389,7 +393,7 @@ public class ValuationData {
                     break;
             }
             if (freqLists != null && freqLists.size() != 0 && properties != null && properties.size() != 0
-            && frequencies != null && !frequencies.isEmpty()) {
+                    && frequencies != null && !frequencies.isEmpty()) {
                 String frequency = frequencies.get(frequencies.size() - 1);
                 freqLists.remove(frequency);
                 properties.remove(frequency);
@@ -455,10 +459,8 @@ public class ValuationData {
     }
 
     public void addActiveMeasFunction(String function) {
-        if (function != null && !function.isBlank()) {
-            if (!activeMeasFunctions.contains(function)) {
-                activeMeasFunctions.add(function);
-            }
+        if (function != null && !function.isBlank() && !activeMeasFunctions.contains(function)) {
+            activeMeasFunctions.add(function);
         } else {
             System.out.println("ValuationData -> addActiveMeasFunction() - invalid function string.");
         }

@@ -2,18 +2,30 @@ package com.app.labtronic.ui.caltab;
 
 import com.app.labtronic.data.ActiveSession;
 import com.app.labtronic.data.CalData;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
 import javafx.scene.layout.BorderPane;
 
 public class BudgetsController {
     @FXML
     private BorderPane root;
+    @FXML
+    private ListView<String> activeFunctionsListView;
+    @FXML
+    private Button testButton;
+
 
     private CalData calData;
+    private ObservableList<String> activeFunctionsList;
 
     @FXML
     private void initialize() {
         calData = ActiveSession.getActiveSessionInstance().getActiveCalTabs().get(ActiveSession.getLastAddedId());
+        activeFunctionsList = calData.getValuationData().getActiveMeasFunctions();
+
+        activeFunctionsListView.setItems(activeFunctionsList);
     }
 
 //    private void previewBudget(TableView<MeasRangeData> tableView) {
