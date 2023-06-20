@@ -240,10 +240,10 @@ public class ValuationData {
     }
 
     public void setBaseVacFrequency(String baseVacFrequency) {
-        if (baseVacFrequency != null && !baseVacFrequency.isBlank()) {
+        if (baseVacFrequency != null) {
             this.baseVacFrequency.set(baseVacFrequency);
         } else {
-            System.out.println("ValuationData -> setBaseVacFrequency() -> invalid frequency value.");
+            System.out.println("ValuationData -> setBaseVacFrequency() -> frequency value is null.");
         }
     }
 
@@ -256,10 +256,10 @@ public class ValuationData {
     }
 
     public void setBaseIacFrequency(String baseIacFrequency) {
-        if (baseIacFrequency != null && !baseIacFrequency.isBlank()) {
+        if (baseIacFrequency != null) {
             this.baseIacFrequency.set(baseIacFrequency);
         } else {
-            System.out.println("ValuationData -> setBaseIacFrequency() -> invalid frequency value.");
+            System.out.println("ValuationData -> setBaseIacFrequency() -> frequency value is null.");
         }
     }
 
