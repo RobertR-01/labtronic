@@ -24,7 +24,7 @@
 
             <Label text="Measurement range" underline="true"/>
 
-            <ListView/>
+            <ListView fx:id="activeFunctionRangesLV"/>
 
             <Separator/>
 
