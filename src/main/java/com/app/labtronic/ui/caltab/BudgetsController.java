@@ -47,7 +47,16 @@ public class BudgetsController {
 
         activeFunctionsListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue)
                 -> {
-//            String function = newValue.getSelectedItem();
+            String function = observable.getValue();
+            if (function.length() > 3) {
+
+            } else {
+
+
+            }
+            activeFunctionRangesLV.setItems(calData.getValuationData().getRangeList(function));
+
+
             if (observable.getValue().equals("VDC")) {
                 System.out.println("test");
                 activeFunctionRangesLV.setItems(calData.getValuationData().getRangeList("VDC"));
