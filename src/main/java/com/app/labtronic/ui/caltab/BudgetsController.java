@@ -47,23 +47,27 @@ public class BudgetsController {
 
         activeFunctionsListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue)
                 -> {
-            String function = observable.getValue();
-            if (function.length() > 3) {
+            String[] functionArray = observable.getValue().split(" ");
+            String measFunction = functionArray[0];
+            ObservableList<MeasRangeData> rangeList = calData.getValuationData().getRangeList(measFunction);
 
-            } else {
-
-
+            if (functionArray.length > 1) {
+                String frequency = functionArray[1] + " " + functionArray[2];
+                switch (measFunction) {
+                    case "VAC":
+                        if (calData.getValuationData().getVacExtraFrequencies().contains(frequency)) {
+                            rangeList = calData.getValuationData().getExtraAcRangeLists("VAC").get(frequency);
+                        }
+                        break;
+                    case "IAC":
+                        if (calData.getValuationData().getIacExtraFrequencies().contains(frequency)) {
+                            rangeList = calData.getValuationData().getExtraAcRangeLists("IAC").get(frequency);
+                        }
+                        break;
+                }
             }
-            activeFunctionRangesLV.setItems(calData.getValuationData().getRangeList(function));
 
-
-            if (observable.getValue().equals("VDC")) {
-                System.out.println("test");
-                activeFunctionRangesLV.setItems(calData.getValuationData().getRangeList("VDC"));
-            } else if (observable.getValue().equals("IDC")) {
-                System.out.println("test2");
-                activeFunctionRangesLV.setItems(calData.getValuationData().getRangeList("IDC"));
-            }
+            activeFunctionRangesLV.setItems(rangeList);
         });
 
         activeFunctionRangesLV.setCellFactory(new Callback<ListView<MeasRangeData>, ListCell<MeasRangeData>>() {
@@ -76,7 +80,7 @@ public class BudgetsController {
                         if (empty) {
                             setText(null);
                         } else {
-                            setText(String.valueOf(item.getRange()));
+                            setText(item.getRange() + " " + item.getUnit());
                         }
                     }
                 };
