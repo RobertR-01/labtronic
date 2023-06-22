@@ -56,27 +56,29 @@ public class BudgetsController {
 
         functionListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue)
                 -> {
-            String[] functionArray = observable.getValue().split(" ");
-            String measFunction = functionArray[0];
-            rangeList = calData.getValuationData().getRangeList(measFunction);
+            if (observable != null) {
+                String[] functionArray = observable.getValue().split(" ");
+                String measFunction = functionArray[0];
+                rangeList = calData.getValuationData().getRangeList(measFunction);
 
-            if (functionArray.length > 1) {
-                String frequency = functionArray[1] + " " + functionArray[2];
-                switch (measFunction) {
-                    case "VAC":
-                        if (calData.getValuationData().getVacExtraFrequencies().contains(frequency)) {
-                            rangeList = calData.getValuationData().getExtraAcRangeLists("VAC").get(frequency);
-                        }
-                        break;
-                    case "IAC":
-                        if (calData.getValuationData().getIacExtraFrequencies().contains(frequency)) {
-                            rangeList = calData.getValuationData().getExtraAcRangeLists("IAC").get(frequency);
-                        }
-                        break;
+                if (functionArray.length > 1) {
+                    String frequency = functionArray[1] + " " + functionArray[2];
+                    switch (measFunction) {
+                        case "VAC":
+                            if (calData.getValuationData().getVacExtraFrequencies().contains(frequency)) {
+                                rangeList = calData.getValuationData().getExtraAcRangeLists("VAC").get(frequency);
+                            }
+                            break;
+                        case "IAC":
+                            if (calData.getValuationData().getIacExtraFrequencies().contains(frequency)) {
+                                rangeList = calData.getValuationData().getExtraAcRangeLists("IAC").get(frequency);
+                            }
+                            break;
+                    }
                 }
-            }
 
-            rangeListView.setItems(rangeList);
+                rangeListView.setItems(rangeList);
+            }
         });
 
         rangeListView.setCellFactory(new Callback<ListView<MeasRangeData>, ListCell<MeasRangeData>>() {
@@ -97,6 +99,7 @@ public class BudgetsController {
             }
         });
 
+        /*
         // to make the list view always have something selected unless empty
         // TODO: duplicate code from the above
         rangeList.addListener(new ListChangeListener<MeasRangeData>() {
@@ -110,73 +113,32 @@ public class BudgetsController {
             }
         });
 
-        // TODO: unfinished
-        /*
         rangeListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue)
                 -> {
-//            pointList = rangeListView.getSelectionModel().getSelectedItem().getPoints();
+            pointList = FXCollections.observableArrayList(rangeListView.getSelectionModel().getSelectedItem().
+                    getPoints());
+            pointListView.setItems(pointList);
+        });
 
-
-
-            String[] functionArray = observable.getValue().split(" ");
-            String measFunction = functionArray[0];
-            ObservableList<MeasRangeData> rangeList = calData.getValuationData().getRangeList(measFunction);
-
-            if (functionArray.length > 1) {
-                String frequency = functionArray[1] + " " + functionArray[2];
-                switch (measFunction) {
-                    case "VAC":
-                        if (calData.getValuationData().getVacExtraFrequencies().contains(frequency)) {
-                            rangeList = calData.getValuationData().getExtraAcRangeLists("VAC").get(frequency);
+        pointListView.setCellFactory(new Callback<ListView<MeasPointData>, ListCell<MeasPointData>>() {
+            @Override
+            public ListCell<MeasPointData> call(ListView<MeasPointData> param) {
+                ListCell<MeasPointData> cell = new ListCell<>() {
+                    @Override
+                    protected void updateItem(MeasPointData item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setText(null);
+                        } else {
+                            setText(item.getPointValueProperty() + " " + item.getUnitProperty());
                         }
-                        break;
-                    case "IAC":
-                        if (calData.getValuationData().getIacExtraFrequencies().contains(frequency)) {
-                            rangeList = calData.getValuationData().getExtraAcRangeLists("IAC").get(frequency);
-                        }
-                        break;
-                }
+                    }
+                };
+                return cell;
             }
-
-            rangeListView.setItems(rangeList);
         });
         */
-
-        // template
-//        todoListView.setCellFactory(new Callback<ListView<TodoItem>, ListCell<TodoItem>>() {
-//            @Override
-//            public ListCell<TodoItem> call(ListView<TodoItem> param) {
-//                ListCell<TodoItem> cell = new ListCell<>() {
-//                    @Override
-//                    protected void updateItem(TodoItem item, boolean empty) {
-//                        super.updateItem(item, empty);
-//                        if (empty) {
-//                            setText(null);
-//                        } else {
-//                            setText(item.getShortDescription());
-//                            if (item.getDeadline().isBefore(LocalDate.now().plusDays(1))) {
-//                                setTextFill(Color.RED);
-//                            } else if (item.getDeadline().equals(LocalDate.now().plusDays(1))) {
-//                                setTextFill(Color.ORANGE);
-//                            }
-//                        }
-//                    }
-//                };
-//
-//                // associating the context menu with the non-empty cells
-//                cell.emptyProperty().addListener((obs, wasEmpty, isNowEmpty) -> {
-//                    if (isNowEmpty) {
-//                        cell.setContextMenu(null);
-//                    } else {
-//                        cell.setContextMenu(listContextMenu);
-//                    }
-//                });
-//
-//                return cell;
-//            }
-//        });
     }
-
 
     // TODO: prep some budget preview
 //    private void previewBudget(TableView<MeasRangeData> tableView) {
