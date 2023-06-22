@@ -18,19 +18,19 @@
 
             <Label text="Measurement function" underline="true"/>
 
-            <ListView fx:id="activeFunctionsListView"/>
+            <ListView fx:id="functionListView"/>
 
             <Separator/>
 
             <Label text="Measurement range" underline="true"/>
 
-            <ListView fx:id="activeFunctionRangesLV"/>
+            <ListView fx:id="rangeListView"/>
 
             <Separator/>
 
             <Label text="Measurement point" underline="true"/>
 
-            <ListView/>
+            <ListView fx:id="pointListView"/>
 
             <Separator/>
 

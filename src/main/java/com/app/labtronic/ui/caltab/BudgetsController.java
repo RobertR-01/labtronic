@@ -2,7 +2,9 @@ package com.app.labtronic.ui.caltab;
 
 import com.app.labtronic.data.ActiveSession;
 import com.app.labtronic.data.CalData;
+import com.app.labtronic.data.valuation.MeasPointData;
 import com.app.labtronic.data.valuation.MeasRangeData;
+import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -16,37 +18,104 @@ public class BudgetsController {
     @FXML
     private BorderPane root;
     @FXML
-    private ListView<String> activeFunctionsListView;
+    private ListView<String> functionListView;
     @FXML
-    private ListView<MeasRangeData> activeFunctionRangesLV;
+    private ListView<MeasRangeData> rangeListView;
+    @FXML
+    private ListView<MeasPointData> pointListView;
     @FXML
     private Button testButton;
 
 
     private CalData calData;
-    private ObservableList<String> activeFunctionsList;
-    private ObservableList<MeasRangeData> activeRange;
+    private ObservableList<String> functionList;
+    private ObservableList<MeasRangeData> rangeList;
+    private ObservableList<MeasPointData> pointList;
+    private MeasRangeData activeRange;
+    private MeasPointData activePoint;
 
     @FXML
     private void initialize() {
         calData = ActiveSession.getActiveSessionInstance().getActiveCalTabs().get(ActiveSession.getLastAddedId());
-        activeFunctionsList = calData.getValuationData().getActiveMeasFunctions();
+        functionList = calData.getValuationData().getActiveMeasFunctions();
+        rangeList = FXCollections.observableArrayList(); // TODO: check if needed
 
-        activeFunctionsListView.setItems(activeFunctionsList);
+        functionListView.setItems(functionList);
 
-        activeFunctionsList.addListener(new ListChangeListener<String>() {
+        // to make the list view always have something selected unless empty
+        functionList.addListener(new ListChangeListener<String>() {
             @Override
             public void onChanged(Change<? extends String> c) {
                 while (c.next()) {
                     if (c.wasAdded() && c.getList().size() == 1) {
-                        activeFunctionsListView.getSelectionModel().selectFirst();
+                        functionListView.getSelectionModel().selectFirst();
                     }
                 }
             }
         });
 
-        activeFunctionsListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue)
+        functionListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue)
                 -> {
+            String[] functionArray = observable.getValue().split(" ");
+            String measFunction = functionArray[0];
+            rangeList = calData.getValuationData().getRangeList(measFunction);
+
+            if (functionArray.length > 1) {
+                String frequency = functionArray[1] + " " + functionArray[2];
+                switch (measFunction) {
+                    case "VAC":
+                        if (calData.getValuationData().getVacExtraFrequencies().contains(frequency)) {
+                            rangeList = calData.getValuationData().getExtraAcRangeLists("VAC").get(frequency);
+                        }
+                        break;
+                    case "IAC":
+                        if (calData.getValuationData().getIacExtraFrequencies().contains(frequency)) {
+                            rangeList = calData.getValuationData().getExtraAcRangeLists("IAC").get(frequency);
+                        }
+                        break;
+                }
+            }
+
+            rangeListView.setItems(rangeList);
+        });
+
+        rangeListView.setCellFactory(new Callback<ListView<MeasRangeData>, ListCell<MeasRangeData>>() {
+            @Override
+            public ListCell<MeasRangeData> call(ListView<MeasRangeData> param) {
+                ListCell<MeasRangeData> cell = new ListCell<>() {
+                    @Override
+                    protected void updateItem(MeasRangeData item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setText(null);
+                        } else {
+                            setText(item.getRange() + " " + item.getUnit());
+                        }
+                    }
+                };
+                return cell;
+            }
+        });
+
+        // to make the list view always have something selected unless empty
+        // TODO: duplicate code from the above
+        rangeList.addListener(new ListChangeListener<MeasRangeData>() {
+            @Override
+            public void onChanged(Change<? extends MeasRangeData> c) {
+                while (c.next()) {
+                    if (c.wasAdded() && c.getList().size() == 1) {
+                        rangeListView.getSelectionModel().selectFirst();
+                    }
+                }
+            }
+        });
+
+        rangeListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue)
+                -> {
+//            pointList = rangeListView.getSelectionModel().getSelectedItem().getPoints();
+
+
+
             String[] functionArray = observable.getValue().split(" ");
             String measFunction = functionArray[0];
             ObservableList<MeasRangeData> rangeList = calData.getValuationData().getRangeList(measFunction);
@@ -67,25 +136,7 @@ public class BudgetsController {
                 }
             }
 
-            activeFunctionRangesLV.setItems(rangeList);
-        });
-
-        activeFunctionRangesLV.setCellFactory(new Callback<ListView<MeasRangeData>, ListCell<MeasRangeData>>() {
-            @Override
-            public ListCell<MeasRangeData> call(ListView<MeasRangeData> param) {
-                ListCell<MeasRangeData> cell = new ListCell<>() {
-                    @Override
-                    protected void updateItem(MeasRangeData item, boolean empty) {
-                        super.updateItem(item, empty);
-                        if (empty) {
-                            setText(null);
-                        } else {
-                            setText(item.getRange() + " " + item.getUnit());
-                        }
-                    }
-                };
-                return cell;
-            }
+            rangeListView.setItems(rangeList);
         });
 
         // template
