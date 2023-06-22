@@ -10,7 +10,7 @@ public class MeasRangeData {
     private String unit;
     private String rangeType;
     private ValuationDlgController.Function functionType;
-    private ArrayList<Double> points;
+    private ArrayList<MeasPointData> points;
     private int numberOfPoints;
     private double cost;
     private int resolution;
@@ -25,7 +25,7 @@ public class MeasRangeData {
     private SimpleStringProperty costProperty;
 
     public MeasRangeData(double range, String rangeType, String unit, ValuationDlgController.Function functionType,
-                         ArrayList<Double> points, int resolution) {
+                         ArrayList<MeasPointData> points, int resolution) {
         // TODO: validation
         this.range = range;
         this.rangeType = rangeType;
@@ -59,7 +59,7 @@ public class MeasRangeData {
         return functionType;
     }
 
-    public ArrayList<Double> getPoints() {
+    public ArrayList<MeasPointData> getPoints() {
         return new ArrayList<>(points);
     }
 
@@ -131,7 +131,7 @@ public class MeasRangeData {
         this.functionType = functionType;
     }
 
-    public void setPoints(ArrayList<Double> points) {
+    public void setPoints(ArrayList<MeasPointData> points) {
         this.points = points;
     }
 

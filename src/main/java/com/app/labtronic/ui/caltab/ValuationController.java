@@ -2,6 +2,7 @@ package com.app.labtronic.ui.caltab;
 
 import com.app.labtronic.data.ActiveSession;
 import com.app.labtronic.data.CalData;
+import com.app.labtronic.data.valuation.MeasPointData;
 import com.app.labtronic.data.valuation.MeasRangeData;
 import com.app.labtronic.ui.caltab.valuation.FrequencyDlgController;
 import com.app.labtronic.ui.caltab.valuation.RangePreviewController;
@@ -736,14 +737,14 @@ public class ValuationController {
         String rangeString = String.valueOf(oldRange.getRange());
         String rangeTypeString = oldRange.getRangeType();
         String unitString = oldRange.getUnit();
-        StringBuilder pointsBuilder = new StringBuilder();
-        for (double point : oldRange.getPoints()) {
-            pointsBuilder.append(point);
+        StringBuilder pointsStringBuilder = new StringBuilder();
+        for (MeasPointData point : oldRange.getPoints()) {
+            pointsStringBuilder.append(point.getPointValueProperty());
             if (oldRange.getPoints().indexOf(point) != oldRange.getPoints().size() - 1) {
-                pointsBuilder.append(", ");
+                pointsStringBuilder.append(", ");
             }
         }
-        controller.loadData(rangeString, rangeTypeString, unitString, pointsBuilder.toString());
+        controller.loadData(rangeString, rangeTypeString, unitString, pointsStringBuilder.toString());
 
         dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
         dialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);

@@ -1,6 +1,7 @@
 package com.app.labtronic.ui.caltab.valuation;
 
 import com.app.labtronic.data.CalData;
+import com.app.labtronic.data.valuation.MeasPointData;
 import com.app.labtronic.data.valuation.MeasRangeData;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -26,7 +27,7 @@ public class ValuationDlgController {
     private TextArea pointsTA;
 
     private Function functionType;
-    private ArrayList<Double> pointsList;
+    private ArrayList<MeasPointData> pointsList;
     private String pointsString;
     private List<Node> nodeList;
     private double range;
@@ -179,7 +180,7 @@ public class ValuationDlgController {
 
     // true -> ok
     private boolean validatePoints() {
-        List<Double> pointsCopy = new ArrayList<>(pointsList);
+        List<MeasPointData> pointsCopy = new ArrayList<>(pointsList);
         pointsList.clear(); // to prevent multiple sets of points being added to the list
         boolean result = false;
         String string = pointsTA.getText().trim();
@@ -187,8 +188,9 @@ public class ValuationDlgController {
         for (String point : stringArray) {
             try {
                 if (point != null) {
-                    double pointValue = Double.parseDouble(point);
-                    pointsList.add(pointValue);
+//                    double pointValue = Double.parseDouble(point);
+                    String pointUnit = unitCB.getValue();
+                    pointsList.add(new MeasPointData(point, pointUnit));
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Invalid input.");

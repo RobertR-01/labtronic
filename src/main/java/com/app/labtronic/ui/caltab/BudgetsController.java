@@ -110,6 +110,8 @@ public class BudgetsController {
             }
         });
 
+        // TODO: unfinished
+        /*
         rangeListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue)
                 -> {
 //            pointList = rangeListView.getSelectionModel().getSelectedItem().getPoints();
@@ -138,6 +140,7 @@ public class BudgetsController {
 
             rangeListView.setItems(rangeList);
         });
+        */
 
         // template
 //        todoListView.setCellFactory(new Callback<ListView<TodoItem>, ListCell<TodoItem>>() {
