@@ -94,7 +94,6 @@ public class ValuationDlgController {
     // TODO: move it to the MeasRangeData class
     @FXML
     private void setEurametPoints() {
-        System.out.println(resCategory); // for DCV and DCI
         if (validateRange()) {
             List<Double> eurametPointsList = new ArrayList<>();
             List<Integer> defaultValues = new ArrayList<>();

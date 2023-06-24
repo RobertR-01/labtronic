@@ -4,9 +4,13 @@ import com.app.labtronic.data.ActiveSession;
 import com.app.labtronic.data.CalData;
 import com.app.labtronic.data.valuation.MeasPointData;
 import com.app.labtronic.data.valuation.MeasRangeData;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListCell;
@@ -36,6 +40,21 @@ public class BudgetsController {
 
     @FXML
     private void initialize() {
+        // test button
+        testButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                System.out.println(rangeList.hashCode());
+                System.out.println();
+                for (MeasRangeData e : rangeList) {
+                    System.out.print(" ; ");
+                    System.out.print(e.getRange());
+                }
+                System.out.println();
+            }
+        });
+
+
         calData = ActiveSession.getActiveSessionInstance().getActiveCalTabs().get(ActiveSession.getLastAddedId());
         functionList = calData.getValuationData().getActiveMeasFunctions();
         rangeList = FXCollections.observableArrayList(); // TODO: check if needed
@@ -56,13 +75,16 @@ public class BudgetsController {
 
         functionListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue)
                 -> {
-            if (observable != null) {
+            if (observable != null && observable.getValue() != null) {
                 String[] functionArray = observable.getValue().split(" ");
                 String measFunction = functionArray[0];
+                String frequency;
+                String completeFunctionName = measFunction;
                 rangeList = calData.getValuationData().getRangeList(measFunction);
 
                 if (functionArray.length > 1) {
-                    String frequency = functionArray[1] + " " + functionArray[2];
+                    frequency = functionArray[1] + " " + functionArray[2];
+                    completeFunctionName += " " + frequency;
                     switch (measFunction) {
                         case "VAC":
                             if (calData.getValuationData().getVacExtraFrequencies().contains(frequency)) {
@@ -78,6 +100,28 @@ public class BudgetsController {
                 }
 
                 rangeListView.setItems(rangeList);
+
+                // select first item in the rangeListView after adding the first range for this function:
+                String finalCompleteFunctionName = completeFunctionName;
+                rangeList.addListener(new ListChangeListener<MeasRangeData>() {
+                    @Override
+                    public void onChanged(Change<? extends MeasRangeData> c) {
+                        if (!rangeList.isEmpty()) {
+                            String measFunctionTest = rangeList.get(0).getFunctionType().toString();
+                            String frequencyTest = rangeList.get(0).getFrequency();
+                            String completeFunctionNameTest = measFunctionTest;
+                            if (frequencyTest != null && !frequencyTest.isBlank()) {
+                                completeFunctionNameTest += " " + frequencyTest;
+                            }
+                            while (c.next()) {
+                                if (c.getList().size() == 1 && c.wasAdded() && completeFunctionNameTest.
+                                        equals(finalCompleteFunctionName)) {
+                                    rangeListView.getSelectionModel().selectFirst();
+                                }
+                            }
+                        }
+                    }
+                });
             }
         });
 
@@ -99,20 +143,39 @@ public class BudgetsController {
             }
         });
 
-        /*
-        // to make the list view always have something selected unless empty
-        // TODO: duplicate code from the above
-        rangeList.addListener(new ListChangeListener<MeasRangeData>() {
+        // resets range selection in rangeListView after swapping the selected measurement function:
+        functionListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
             @Override
-            public void onChanged(Change<? extends MeasRangeData> c) {
-                while (c.next()) {
-                    if (c.wasAdded() && c.getList().size() == 1) {
-                        rangeListView.getSelectionModel().selectFirst();
-                    }
-                }
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                rangeListView.getSelectionModel().selectFirst();
             }
         });
 
+//        functionList.addListener(new ListChangeListener<String>() {
+//            @Override
+//            public void onChanged(Change<? extends String> c) {
+//                System.out.println("tessssssssssst");
+////                while (c.next()) {
+////                    rangeListView.getSelectionModel().selectFirst();
+////                }
+//            }
+//        });
+
+
+//        rangeList.addListener(new ListChangeListener<MeasRangeData>() {
+//            @Override
+//            public void onChanged(Change<? extends MeasRangeData> c) {
+//                System.out.println("inside rangeList listener - pre while");
+//                while (c.next()) {
+//                    System.out.println("inside rangeList listener - inside while");
+//                    if (c.wasAdded() && c.getList().size() == 1) {
+//                        System.out.println("inside rangeList listener - inside if");
+//                        rangeListView.getSelectionModel().selectFirst();
+//                    }
+//                }
+//            }
+//        });
+/*
         rangeListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue)
                 -> {
             pointList = FXCollections.observableArrayList(rangeListView.getSelectionModel().getSelectedItem().

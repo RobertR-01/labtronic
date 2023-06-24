@@ -370,8 +370,8 @@ public class ValuationController {
                         case 0:
                             // TODO: duplicate code for bunch of switch cases
                             calData.getValuationData().addActiveMeasFunction("VDC");
-                            System.out.println("added function: " + "VDC");
-                            System.out.println("current functions: " + calData.getValuationData().getActiveMeasFunctions());
+//                            System.out.println("added function: " + "VDC");
+//                            System.out.println("current functions: " + calData.getValuationData().getActiveMeasFunctions());
                             vBoxList.get(finalI).visibleProperty().set(true);
                             vBoxList.get(finalI).managedProperty().set(true);
                             break;
@@ -488,8 +488,8 @@ public class ValuationController {
             baseFreqUnitL.setText(frequency[1]);
 
             calData.getValuationData().addActiveMeasFunction(function + " " + frequencyString);
-            System.out.println("added function: " + function + " " + frequencyString);
-            System.out.println("current functions: " + calData.getValuationData().getActiveMeasFunctions());
+//            System.out.println("added function: " + function + " " + frequencyString);
+//            System.out.println("current functions: " + calData.getValuationData().getActiveMeasFunctions());
 
             result = true;
         } else {
@@ -571,8 +571,8 @@ public class ValuationController {
                 container.getFreqUnitL().setText(frequency[1]);
 
                 calData.getValuationData().addActiveMeasFunction(function + " " + frequencyString);
-                System.out.println("added function: " + function + " " + frequencyString);
-                System.out.println("current functions: " + calData.getValuationData().getActiveMeasFunctions());
+//                System.out.println("added function: " + function + " " + frequencyString);
+//                System.out.println("current functions: " + calData.getValuationData().getActiveMeasFunctions());
             } else {
                 actionEvent.consume();
                 System.out.println("ValuationController -> acFreqIncrementHandler() -> AC section not added.");
