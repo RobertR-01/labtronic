@@ -148,39 +148,28 @@ public class BudgetsController {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 rangeListView.getSelectionModel().selectFirst();
+                // TODO: duplicate code (see the listener below)
+                if (rangeListView.getSelectionModel().getSelectedItem() != null) {
+                    pointList = FXCollections.observableArrayList(rangeListView.getSelectionModel().getSelectedItem().
+                            getPoints());
+                    pointListView.setItems(pointList);
+                    pointListView.getSelectionModel().selectFirst();
+                } else {
+                    pointListView.setItems(null);
+                }
             }
         });
 
-//        functionList.addListener(new ListChangeListener<String>() {
-//            @Override
-//            public void onChanged(Change<? extends String> c) {
-//                System.out.println("tessssssssssst");
-////                while (c.next()) {
-////                    rangeListView.getSelectionModel().selectFirst();
-////                }
-//            }
-//        });
-
-
-//        rangeList.addListener(new ListChangeListener<MeasRangeData>() {
-//            @Override
-//            public void onChanged(Change<? extends MeasRangeData> c) {
-//                System.out.println("inside rangeList listener - pre while");
-//                while (c.next()) {
-//                    System.out.println("inside rangeList listener - inside while");
-//                    if (c.wasAdded() && c.getList().size() == 1) {
-//                        System.out.println("inside rangeList listener - inside if");
-//                        rangeListView.getSelectionModel().selectFirst();
-//                    }
-//                }
-//            }
-//        });
-/*
         rangeListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue)
                 -> {
-            pointList = FXCollections.observableArrayList(rangeListView.getSelectionModel().getSelectedItem().
-                    getPoints());
-            pointListView.setItems(pointList);
+            if (rangeListView.getSelectionModel().getSelectedItem() != null) {
+                pointList = FXCollections.observableArrayList(rangeListView.getSelectionModel().getSelectedItem().
+                        getPoints());
+                pointListView.setItems(pointList);
+                pointListView.getSelectionModel().selectFirst();
+            } else {
+                pointListView.setItems(null);
+            }
         });
 
         pointListView.setCellFactory(new Callback<ListView<MeasPointData>, ListCell<MeasPointData>>() {
@@ -200,7 +189,6 @@ public class BudgetsController {
                 return cell;
             }
         });
-        */
     }
 
     // TODO: prep some budget preview
