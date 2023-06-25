@@ -15,6 +15,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.Spinner;
 import javafx.scene.layout.BorderPane;
 import javafx.util.Callback;
 
@@ -29,6 +30,8 @@ public class BudgetsController {
     private ListView<MeasPointData> pointListView;
     @FXML
     private Button testButton;
+    @FXML
+    private Spinner<Integer> dutResSpinner;
 
 
     private CalData calData;
@@ -187,6 +190,19 @@ public class BudgetsController {
                     }
                 };
                 return cell;
+            }
+        });
+
+        pointListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<MeasPointData>() {
+            @Override
+            public void changed(ObservableValue<? extends MeasPointData> observable, MeasPointData oldValue,
+                                MeasPointData newValue) {
+                if (pointListView.getSelectionModel().getSelectedItem() != null
+                        && rangeListView.getSelectionModel().getSelectedItem() != null) {
+                    activeRange = rangeListView.getSelectionModel().getSelectedItem();
+                    activePoint = pointListView.getSelectionModel().getSelectedItem();
+                    dutResSpinner.getValueFactory().setValue(activeRange.getResolution());
+                }
             }
         });
     }

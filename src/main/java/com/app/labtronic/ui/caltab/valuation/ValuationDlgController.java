@@ -25,6 +25,8 @@ public class ValuationDlgController {
     private Label pointsL;
     @FXML
     private TextArea pointsTA;
+    @FXML
+    private Spinner<Integer> resSpinner;
 
     private Function functionType;
     private ArrayList<MeasPointData> pointsList;
@@ -33,6 +35,7 @@ public class ValuationDlgController {
     private double range;
     private List<Node> emptyFields;
     private int resCategory;
+    private int resolution;
 
     private CalData calData;
 
@@ -260,7 +263,7 @@ public class ValuationDlgController {
         if (range != 0 && rangeTypeCB.getValue() != null && unitCB.getValue() != null && functionType != null
                 && pointsList != null && !pointsList.isEmpty() && resCategory != 0) {
             return new MeasRangeData(range, rangeTypeCB.getValue(), unitCB.getValue(), functionType, pointsList,
-                    resCategory);
+                    resCategory, resSpinner.getValueFactory().getValue());
         } else {
             return null;
         }
