@@ -9,14 +9,15 @@ public class MeasPointData {
     private UncertaintyData uncertaintyData;
 
     public MeasPointData(String pointValue, String unit) {
-        pointValueProperty = new SimpleStringProperty();
-        unitProperty = new SimpleStringProperty();
+        this.pointValueProperty = new SimpleStringProperty();
+        this.unitProperty = new SimpleStringProperty();
         if (pointValue != null) {
             this.pointValueProperty.set(pointValue);
         }
         if (unit != null) {
             this.unitProperty.set(unit);
         }
+        this.uncertaintyData = new UncertaintyData();
     }
 
     public String getPointValueProperty() {

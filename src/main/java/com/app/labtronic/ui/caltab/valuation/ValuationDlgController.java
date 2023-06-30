@@ -190,7 +190,8 @@ public class ValuationDlgController {
         for (String point : stringArray) {
             try {
                 if (point != null) {
-//                    double pointValue = Double.parseDouble(point);
+                    // checking if the point value string is valid (number):
+                    double pointValue = Double.parseDouble(point);
                     String pointUnit = unitCB.getValue();
                     pointsList.add(new MeasPointData(point, pointUnit));
                 }

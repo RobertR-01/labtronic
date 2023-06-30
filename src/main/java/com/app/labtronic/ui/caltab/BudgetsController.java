@@ -9,15 +9,15 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.control.Spinner;
+import javafx.scene.Node;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 import javafx.util.Callback;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class BudgetsController {
     @FXML
@@ -29,10 +29,33 @@ public class BudgetsController {
     @FXML
     private ListView<MeasPointData> pointListView;
     @FXML
-    private Button testButton;
+    private Button calculateButton;
     @FXML
     private Spinner<Integer> dutResSpinner;
 
+    @FXML
+    private TextField dutReading0;
+    @FXML
+    private TextField dutReading1;
+    @FXML
+    private TextField dutReading2;
+    @FXML
+    private TextField dutReading3;
+    @FXML
+    private TextField dutReading4;
+    @FXML
+    private TextField dutReading5;
+    @FXML
+    private TextField dutReading6;
+    @FXML
+    private TextField dutReading7;
+    @FXML
+    private TextField dutReading8;
+    @FXML
+    private TextField dutReading9;
+    private List<TextField> readingsTFList;
+    @FXML
+    private VBox dutReadingsVBox;
 
     private CalData calData;
     private ObservableList<String> functionList;
@@ -44,19 +67,32 @@ public class BudgetsController {
     @FXML
     private void initialize() {
         // test button
-        testButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                System.out.println(rangeList.hashCode());
-                System.out.println();
-                for (MeasRangeData e : rangeList) {
-                    System.out.print(" ; ");
-                    System.out.print(e.getRange());
-                }
-                System.out.println();
-            }
-        });
+//        testButton.setOnAction(new EventHandler<ActionEvent>() {
+//            @Override
+//            public void handle(ActionEvent event) {
+//                System.out.println(rangeList.hashCode());
+//                System.out.println();
+//                for (MeasRangeData e : rangeList) {
+//                    System.out.print(" ; ");
+//                    System.out.print(e.getRange());
+//                }
+//                System.out.println();
+//            }
+//        });
 
+        readingsTFList = List.of(dutReading0, dutReading1, dutReading2, dutReading3, dutReading4, dutReading5,
+                dutReading6, dutReading7, dutReading8, dutReading9);
+
+        for (TextField textField : readingsTFList) {
+            if (textField != null) {
+                textField.textProperty().addListener((observable, oldValue, newValue) -> {
+                    if (((!newValue.isEmpty() && oldValue.isEmpty()) || (!newValue.equalsIgnoreCase(oldValue)))
+                            && textField.getStyle().equals("-fx-border-color: red;")) {
+                        textField.setStyle("");
+                    }
+                });
+            }
+        }
 
         calData = ActiveSession.getActiveSessionInstance().getActiveCalTabs().get(ActiveSession.getLastAddedId());
         functionList = calData.getValuationData().getActiveMeasFunctions();
@@ -172,6 +208,8 @@ public class BudgetsController {
                 pointListView.getSelectionModel().selectFirst();
             } else {
                 pointListView.setItems(null);
+                activeRange = null;
+                activePoint = null;
             }
         });
 
@@ -202,9 +240,89 @@ public class BudgetsController {
                     activeRange = rangeListView.getSelectionModel().getSelectedItem();
                     activePoint = pointListView.getSelectionModel().getSelectedItem();
                     dutResSpinner.getValueFactory().setValue(activeRange.getResolution());
+                    loadReadings(activePoint);
+                    dutReadingsVBox.setDisable(false);
+                } else {
+                    activePoint = null;
+                    activeRange = null;
+                    clearReadingsTF();
+                    dutReadingsVBox.setDisable(true);
                 }
             }
         });
+    }
+
+    public void addRedOutline(Node node) {
+        node.setStyle("-fx-border-color: red;");
+    }
+
+    private void loadReadings(MeasPointData point) {
+        if (point != null) {
+            List<String> readings = point.getUncertaintyData().getDutReadings();
+            if (readings != null && readings.size() == 10) {
+                int i = 0;
+                for (String reading : readings) {
+                    readingsTFList.get(i).setText(reading);
+                    System.out.println("setting text to: " + reading);
+                    i++;
+                }
+            } else {
+                System.out.println("BudgetsController -> loadReadings() -> " +
+                        "couldn't load readings for this point (" + point.getPointValueProperty() + " "
+                        + point.getUnitProperty() + ").");
+                clearReadingsTF();
+            }
+        }
+    }
+
+    private void clearReadingsTF() {
+        for (TextField textField : readingsTFList) {
+            textField.setText("");
+        }
+    }
+
+    private boolean validateReadings() {
+        boolean result = true;
+        String reading;
+        for (TextField textField : readingsTFList) {
+            reading = textField.getText().trim();
+            try {
+                double readingValue = Double.parseDouble(reading);
+            } catch (NumberFormatException e) {
+                addRedOutline(textField);
+                int index = readingsTFList.indexOf(textField);
+//                System.out.println("Invalid input (reading No. " + (index + 1) + ").");
+//                System.out.println(e.getMessage());
+                //e.printStackTrace();
+                result = false;
+            }
+        }
+
+        if (!result) {
+            System.out.println("BudgetsController -> validateReadings() -> something's wrong.");
+        }
+        return result;
+    }
+
+    private void saveReadings(MeasPointData point) {
+        if (point != null) {
+            List<String> readings = new ArrayList<>();
+            for (TextField textField : readingsTFList) {
+                readings.add(textField.getText());
+            }
+            point.getUncertaintyData().setDutReadings(readings);
+        }
+    }
+
+    @FXML
+    private void calculateButtonHandler() {
+        if (activePoint != null) {
+            if (validateReadings()) {
+                saveReadings(activePoint);
+            }
+        } else {
+            System.out.println("There is currently no active measurement point.");
+        }
     }
 
     // TODO: prep some budget preview

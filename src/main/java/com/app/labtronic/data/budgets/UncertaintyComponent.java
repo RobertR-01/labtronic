@@ -13,15 +13,33 @@ public class UncertaintyComponent {
     private SimpleStringProperty degreesOfFreedom;
     private SimpleStringProperty significance;
 
-    public UncertaintyComponent(String symbol, double estimatedValue, String unit, double stdUncertainty,
-                                ProbabilityDistribution probabilityDistribution, double sensitivityCoefficient,
-                                double degreesOfFreedom) {
+    public UncertaintyComponent() {
+        this.symbol = new SimpleStringProperty();
+        this.estimatedValue = new SimpleStringProperty();
+        this.unit = new SimpleStringProperty();
+        this.stdUncertainty = new SimpleStringProperty();
+        this.probabilityDistribution = new SimpleStringProperty();
+        this.sensitivityCoefficient = new SimpleStringProperty();
+        this.convertedUncertainty = new SimpleStringProperty();
+        this.degreesOfFreedom = new SimpleStringProperty();
+        this.significance = new SimpleStringProperty();
+    }
+
+    public UncertaintyComponent(String symbol, ProbabilityDistribution probabilityDistribution) {
+        this();
         if (symbol != null && !symbol.isBlank()) {
             this.symbol.set(symbol);
         } else {
             this.symbol.set("null");
             System.out.println("UncertaintyComponent -> constructor call related error - invalid symbol string.");
         }
+        this.probabilityDistribution.set(String.valueOf(probabilityDistribution));
+    }
+
+    public UncertaintyComponent(String symbol, double estimatedValue, String unit, double stdUncertainty,
+                                ProbabilityDistribution probabilityDistribution, double sensitivityCoefficient,
+                                double degreesOfFreedom) {
+        this(symbol, probabilityDistribution);
         this.estimatedValue.set(String.valueOf(estimatedValue));
         if (unit != null && !unit.isBlank()) {
             this.unit.set(unit);
@@ -36,7 +54,6 @@ public class UncertaintyComponent {
             System.out.println("UncertaintyComponent -> constructor call related error - invalid stdUncertainty " +
                     "value.");
         }
-        this.probabilityDistribution.set(String.valueOf(probabilityDistribution));
         this.sensitivityCoefficient.set(String.valueOf(sensitivityCoefficient));
         this.convertedUncertainty.set(String.valueOf(0));
         this.degreesOfFreedom.set(String.valueOf(degreesOfFreedom));
@@ -51,7 +68,7 @@ public class UncertaintyComponent {
         }
     }
 
-    private enum ProbabilityDistribution {
+    public enum ProbabilityDistribution {
         N,
         R
     }

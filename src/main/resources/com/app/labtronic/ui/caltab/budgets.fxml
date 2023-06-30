@@ -56,10 +56,6 @@
                 </Label>
                 <Spinner fx:id="dutResSpinner" GridPane.columnIndex="1" GridPane.rowIndex="1" initialValue="0"
                          min="0" max="8" amountToStepBy="1" prefWidth="50" disable="true"/>
-
-                <Label text="Internal resolution: " GridPane.columnIndex="0" GridPane.rowIndex="2"
-                       wrapText="true"/>
-                <TextField fx:id="internalRes" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
             </GridPane>
         </VBox>
     </left>
@@ -78,7 +74,7 @@
                 </columnConstraints>
 
                 <Label text="Calibration method: " GridPane.columnIndex="0" GridPane.rowIndex="0" wrapText="true"/>
-                <ComboBox fx:id="calMethodSpinner" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                <ComboBox fx:id="calMethodSpinner" GridPane.columnIndex="1" GridPane.rowIndex="0" disable="true">
                     <items>
                         <FXCollections fx:factory="observableArrayList">
                             <String fx:value="Direct measurement"/>
@@ -90,7 +86,7 @@
                     </value>
                 </ComboBox>
 
-                <Label text="Readings resolution (reference standard): " GridPane.columnIndex="0" GridPane.rowIndex="1"
+                <Label text="Reference standard range: " GridPane.columnIndex="0" GridPane.rowIndex="1"
                        wrapText="true">
                     <minHeight>
                         <Control fx:constant="USE_PREF_SIZE"/>
@@ -99,8 +95,21 @@
                         <Control fx:constant="USE_COMPUTED_SIZE"/>
                     </prefHeight>
                 </Label>
-                <Spinner fx:id="standardResSpinner" GridPane.columnIndex="1" GridPane.rowIndex="1"
-                         initialValue="0" min="0" max="8" amountToStepBy="1" prefWidth="50"/>
+                <HBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="1" alignment="CENTER_LEFT">
+                    <ComboBox fx:id="refStdRangeSpinner" minWidth="100">
+                        <items>
+                            <FXCollections fx:factory="observableArrayList">
+                                <String fx:value="test1"/>
+                                <String fx:value="test2"/>
+                                <String fx:value="test3"/>
+                            </FXCollections>
+                        </items>
+                        <value>
+                            <String fx:value="test1"/>
+                        </value>
+                    </ComboBox>
+                    <Label text="mV"/>
+                </HBox>
 
                 <Label text="CMC: " GridPane.columnIndex="0" GridPane.rowIndex="2" wrapText="true">
                     <minHeight>
@@ -160,7 +169,8 @@
                     </GridPane.margin>
                 </Label>
 
-                <VBox GridPane.columnIndex="0" GridPane.rowIndex="1" alignment="CENTER">
+                <VBox fx:id="dutReadingsVBox" GridPane.columnIndex="0" GridPane.rowIndex="1" alignment="CENTER"
+                      disable="true">
                     <GridPane hgap="5" alignment="CENTER" vgap="1.5">
                         <columnConstraints>
                             <ColumnConstraints percentWidth="10"/>
@@ -284,8 +294,8 @@
                     <ColumnConstraints percentWidth="50" hgrow="ALWAYS" halignment="CENTER"/>
                 </columnConstraints>
 
-                <Button fx:id="testButton" text="Calculate" GridPane.columnIndex="0" GridPane.rowIndex="0"
-                        maxWidth="Infinity"/>
+                <Button fx:id="calculateButton" text="Calculate" GridPane.columnIndex="0" GridPane.rowIndex="0"
+                        maxWidth="Infinity" onAction="#calculateButtonHandler"/>
                 <HBox GridPane.columnIndex="1" GridPane.rowIndex="0" spacing="5" alignment="CENTER">
                     <Label text="Coverage factor"/>
                     <Label text="k ="/>
