@@ -69,8 +69,8 @@
 
             <GridPane vgap="10">
                 <columnConstraints>
-                    <ColumnConstraints percentWidth="35"/>
-                    <ColumnConstraints percentWidth="65"/>
+                    <ColumnConstraints percentWidth="30"/>
+                    <ColumnConstraints percentWidth="70"/>
                 </columnConstraints>
 
                 <Label text="Calibration method: " GridPane.columnIndex="0" GridPane.rowIndex="0" wrapText="true"/>
@@ -86,8 +86,7 @@
                     </value>
                 </ComboBox>
 
-                <Label text="Reference standard range: " GridPane.columnIndex="0" GridPane.rowIndex="1"
-                       wrapText="true">
+                <Label text="Reference standard:" GridPane.columnIndex="0" GridPane.rowIndex="1" wrapText="true">
                     <minHeight>
                         <Control fx:constant="USE_PREF_SIZE"/>
                     </minHeight>
@@ -95,33 +94,46 @@
                         <Control fx:constant="USE_COMPUTED_SIZE"/>
                     </prefHeight>
                 </Label>
-                <HBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="1" alignment="CENTER_LEFT">
-                    <ComboBox fx:id="refStdRangeSpinner" minWidth="100">
-                        <items>
-                            <FXCollections fx:factory="observableArrayList">
-                                <String fx:value="test1"/>
-                                <String fx:value="test2"/>
-                                <String fx:value="test3"/>
-                            </FXCollections>
-                        </items>
-                        <value>
-                            <String fx:value="test1"/>
-                        </value>
-                    </ComboBox>
-                    <Label text="mV"/>
-                </HBox>
+                <ComboBox fx:id="refStdSpinner" minWidth="100" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                    <items>
+                        <FXCollections fx:factory="observableArrayList">
+                            <String fx:value="8508A"/>
+                            <String fx:value="1281"/>
+                        </FXCollections>
+                    </items>
+                    <value>
+                        <String fx:value="8508A"/>
+                    </value>
+                </ComboBox>
 
-                <Label text="CMC: " GridPane.columnIndex="0" GridPane.rowIndex="2" wrapText="true">
-                    <minHeight>
-                        <Control fx:constant="USE_PREF_SIZE"/>
-                    </minHeight>
-                    <prefHeight>
-                        <Control fx:constant="USE_COMPUTED_SIZE"/>
-                    </prefHeight>
-                </Label>
-                <HBox GridPane.columnIndex="1" GridPane.rowIndex="2" spacing="5" alignment="CENTER_LEFT">
-                    <TextField minWidth="70" maxWidth="70"/>
-                    <Label text="\%"/>
+                <Label text="Reference standard range:" wrapText="true" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                <HBox GridPane.columnIndex="1" GridPane.rowIndex="2" spacing="5">
+                    <HBox alignment="CENTER_LEFT" spacing="5">
+                        <ComboBox fx:id="refStdRangeSpinner" minWidth="100">
+                            <items>
+                                <FXCollections fx:factory="observableArrayList">
+                                    <String fx:value="test1"/>
+                                    <String fx:value="test2"/>
+                                    <String fx:value="test3"/>
+                                </FXCollections>
+                            </items>
+                            <value>
+                                <String fx:value="test1"/>
+                            </value>
+                        </ComboBox>
+                        <Label text="mV"/>
+                    </HBox>
+                    <HBox HBox.hgrow="ALWAYS"/>
+                    <HBox alignment="CENTER">
+                        <HBox alignment="CENTER" spacing="5">
+                            <Label text="CMC: " wrapText="true"/>
+                            <HBox alignment="CENTER" spacing="5">
+                                <TextField minWidth="70" maxWidth="70"/>
+                                <Label text="\%"/>
+                            </HBox>
+                        </HBox>
+                    </HBox>
+
                 </HBox>
 
                 <Label text="Maximum permissible error: " GridPane.columnIndex="0" GridPane.rowIndex="3"
