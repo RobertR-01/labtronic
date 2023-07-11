@@ -57,6 +57,9 @@ public class BudgetsController {
     @FXML
     private VBox dutReadingsVBox;
 
+    @FXML
+    private Label instrumentType;
+
     private CalData calData;
     private ObservableList<String> functionList;
     private ObservableList<MeasRangeData> rangeList;
@@ -66,6 +69,7 @@ public class BudgetsController {
 
     @FXML
     private void initialize() {
+        calData = ActiveSession.getActiveSessionInstance().getActiveCalTabs().get(ActiveSession.getLastAddedId());
         // test button
 //        testButton.setOnAction(new EventHandler<ActionEvent>() {
 //            @Override
@@ -79,6 +83,20 @@ public class BudgetsController {
 //                System.out.println();
 //            }
 //        });
+
+        String category;
+        switch (calData.getCategory()) {
+            case CALIBRATOR:
+                category = "Calibrator";
+                break;
+            case DMM:
+                category = "Multimeter";
+                break;
+            default:
+                category = "missing";
+                break;
+        }
+        instrumentType.setText(category);
 
         readingsTFList = List.of(dutReading0, dutReading1, dutReading2, dutReading3, dutReading4, dutReading5,
                 dutReading6, dutReading7, dutReading8, dutReading9);
@@ -94,7 +112,6 @@ public class BudgetsController {
             }
         }
 
-        calData = ActiveSession.getActiveSessionInstance().getActiveCalTabs().get(ActiveSession.getLastAddedId());
         functionList = calData.getValuationData().getActiveMeasFunctions();
         rangeList = FXCollections.observableArrayList(); // TODO: check if needed
 
@@ -304,6 +321,12 @@ public class BudgetsController {
         return result;
     }
 
+    private void saveDUTResolution(int resolution, MeasRangeData range) {
+        if (resolution >= 0 && resolution <= 8) {
+            range.setResolution(resolution);
+        }
+    }
+
     private void saveReadings(MeasPointData point) {
         if (point != null) {
             List<String> readings = new ArrayList<>();
@@ -319,6 +342,7 @@ public class BudgetsController {
         if (activePoint != null) {
             if (validateReadings()) {
                 saveReadings(activePoint);
+                saveDUTResolution(dutResSpinner.getValueFactory().getValue(), activeRange);
             }
         } else {
             System.out.println("There is currently no active measurement point.");

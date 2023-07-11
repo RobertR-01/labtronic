@@ -55,7 +55,7 @@
                     </prefHeight>
                 </Label>
                 <Spinner fx:id="dutResSpinner" GridPane.columnIndex="1" GridPane.rowIndex="1" initialValue="0"
-                         min="0" max="8" amountToStepBy="1" prefWidth="50" disable="true"/>
+                         min="0" max="8" amountToStepBy="1" prefWidth="50"/>
             </GridPane>
         </VBox>
     </left>
@@ -112,18 +112,18 @@
                         <ComboBox fx:id="refStdRangeSpinner" minWidth="100">
                             <items>
                                 <FXCollections fx:factory="observableArrayList">
-                                    <String fx:value="test1"/>
-                                    <String fx:value="test2"/>
-                                    <String fx:value="test3"/>
+                                    <String fx:value="2"/>
+                                    <String fx:value="20"/>
+                                    <String fx:value="200"/>
                                 </FXCollections>
                             </items>
                             <value>
-                                <String fx:value="test1"/>
+                                <String fx:value="2"/>
                             </value>
                         </ComboBox>
                         <Label text="mV"/>
                     </HBox>
-                    <HBox HBox.hgrow="ALWAYS"/>
+                    <Separator HBox.hgrow="ALWAYS" orientation="VERTICAL"/>
                     <HBox alignment="CENTER">
                         <HBox alignment="CENTER" spacing="5">
                             <Label text="CMC: " wrapText="true"/>
