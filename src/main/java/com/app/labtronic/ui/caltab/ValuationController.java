@@ -796,6 +796,11 @@ public class ValuationController {
                 // check for duplicate range value / duplicate first range
                 MeasRangeData newRange = controller.exportData();
 
+                // assigning the default range resolution to all current points:
+                for (MeasPointData point : newRange.getPoints()) {
+                    point.getUncertaintyData().setDutResolution(newRange.getDefaultResolution());
+                }
+
                 if (newRange != null) {
                     if (newRange.getFunctionType().toString().equals("VAC")
                             || newRange.getFunctionType().toString().equals("IAC")) {
@@ -942,6 +947,11 @@ public class ValuationController {
             } else {
                 // check for duplicate range value / duplicate first range and process the results
                 MeasRangeData newRange = controller.exportData();
+
+                // assigning the default range resolution to all current points:
+                for (MeasPointData point : newRange.getPoints()) {
+                    point.getUncertaintyData().setDutResolution(newRange.getDefaultResolution());
+                }
 
                 if (newRange != null) {
                     if (newRange.getFunctionType().toString().equals("VAC")

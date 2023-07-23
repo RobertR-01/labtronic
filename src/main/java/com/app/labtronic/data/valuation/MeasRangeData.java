@@ -13,10 +13,10 @@ public class MeasRangeData {
     private ArrayList<MeasPointData> points;
     private int numberOfPoints;
     private double cost;
-    private int resolutionCategory;
+    private int resolutionCategory; // price-list
     private double rangeBaseUnitValue;
     private String frequency;
-    private int resolution;
+    private int defaultResolution;
 
     // for the TableView in ValuationController
     private SimpleStringProperty rangeProperty;
@@ -26,7 +26,7 @@ public class MeasRangeData {
     private SimpleStringProperty costProperty;
 
     public MeasRangeData(double range, String rangeType, String unit, ValuationDlgController.Function functionType,
-                         ArrayList<MeasPointData> points, int resolutionCategory, int resolution) {
+                         ArrayList<MeasPointData> points, int resolutionCategory, int defaultResolution) {
         // TODO: validation
         this.range = range;
         this.rangeType = rangeType;
@@ -38,7 +38,7 @@ public class MeasRangeData {
         this.cost = 0;
         this.rangeBaseUnitValue = calculateRangeBaseUnitValue();
         this.frequency = null;
-        this.resolution = resolution;
+        this.defaultResolution = defaultResolution;
     }
 
     public double getRange() {
@@ -153,12 +153,12 @@ public class MeasRangeData {
         return frequency;
     }
 
-    public int getResolution() {
-        return resolution;
+    public int getDefaultResolution() {
+        return defaultResolution;
     }
 
-    public void setResolution(int resolution) {
-        this.resolution = resolution;
+    public void setDefaultResolution(int defaultResolution) {
+        this.defaultResolution = defaultResolution;
     }
 
     public void setFrequency(String frequency) {

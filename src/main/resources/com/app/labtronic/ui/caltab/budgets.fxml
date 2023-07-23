@@ -55,7 +55,7 @@
                     </prefHeight>
                 </Label>
                 <Spinner fx:id="dutResSpinner" GridPane.columnIndex="1" GridPane.rowIndex="1" initialValue="0"
-                         min="0" max="8" amountToStepBy="1" prefWidth="50"/>
+                         min="0" max="8" amountToStepBy="1" prefWidth="50" disable="true"/>
             </GridPane>
         </VBox>
     </left>

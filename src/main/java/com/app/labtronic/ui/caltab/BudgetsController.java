@@ -256,14 +256,17 @@ public class BudgetsController {
                         && rangeListView.getSelectionModel().getSelectedItem() != null) {
                     activeRange = rangeListView.getSelectionModel().getSelectedItem();
                     activePoint = pointListView.getSelectionModel().getSelectedItem();
-                    dutResSpinner.getValueFactory().setValue(activeRange.getResolution());
+                    dutResSpinner.getValueFactory().setValue(activePoint.getUncertaintyData().getDutResolution());
                     loadReadings(activePoint);
                     dutReadingsVBox.setDisable(false);
+                    dutResSpinner.setDisable(false);
                 } else {
                     activePoint = null;
                     activeRange = null;
                     clearReadingsTF();
                     dutReadingsVBox.setDisable(true);
+                    dutResSpinner.getValueFactory().setValue(0);
+                    dutResSpinner.setDisable(true);
                 }
             }
         });
@@ -321,9 +324,9 @@ public class BudgetsController {
         return result;
     }
 
-    private void saveDUTResolution(int resolution, MeasRangeData range) {
+    private void saveDUTResolution(int resolution, MeasPointData point) {
         if (resolution >= 0 && resolution <= 8) {
-            range.setResolution(resolution);
+            point.getUncertaintyData().setDutResolution(resolution);
         }
     }
 
@@ -342,7 +345,7 @@ public class BudgetsController {
         if (activePoint != null) {
             if (validateReadings()) {
                 saveReadings(activePoint);
-                saveDUTResolution(dutResSpinner.getValueFactory().getValue(), activeRange);
+                saveDUTResolution(dutResSpinner.getValueFactory().getValue(), activePoint);
             }
         } else {
             System.out.println("There is currently no active measurement point.");

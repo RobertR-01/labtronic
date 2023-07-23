@@ -25,6 +25,7 @@ public class UncertaintyData {
     private double cmcMaxUncertainty;
     private double finalUncertainty;
     private final double COVERAGE_FACTOR = 2;
+    private int dutResolution;
 
     private List<UncertaintyComponent> components;
 
@@ -52,5 +53,17 @@ public class UncertaintyData {
 
     public List<String> getDutReadings() {
         return dutReadings;
+    }
+
+    public void setDutResolution(int resolution) {
+        if (resolution >= 0 && resolution <= 8) {
+            this.dutResolution = resolution;
+        } else {
+            this.dutResolution = 0;
+        }
+    }
+
+    public int getDutResolution() {
+        return dutResolution;
     }
 }
