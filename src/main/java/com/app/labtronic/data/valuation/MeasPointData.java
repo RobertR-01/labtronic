@@ -12,10 +12,10 @@ public class MeasPointData {
         this.pointValueProperty = new SimpleStringProperty();
         this.unitProperty = new SimpleStringProperty();
         if (pointValue != null) {
-            this.pointValueProperty.set(pointValue);
+            this.pointValueProperty.set(pointValue.trim());
         }
         if (unit != null) {
-            this.unitProperty.set(unit);
+            this.unitProperty.set(unit.trim());
         }
         this.uncertaintyData = new UncertaintyData();
     }
@@ -50,5 +50,24 @@ public class MeasPointData {
 
     public void setUncertaintyData(UncertaintyData uncertaintyData) {
         this.uncertaintyData = uncertaintyData;
+    }
+
+    @Override
+    public boolean equals(Object point) {
+        boolean result = false;
+        if (point instanceof MeasPointData) {
+            try {
+                double oldValue = Double.parseDouble(this.getPointValueProperty());
+                double newValue = Double.parseDouble(((MeasPointData) point).getPointValueProperty());
+                if (oldValue == newValue && this.getUnitProperty().equals(((MeasPointData) point).getUnitProperty())) {
+                    result = true;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("MeasPointData -> equals() error");
+                e.printStackTrace();
+            }
+        }
+
+        return result;
     }
 }

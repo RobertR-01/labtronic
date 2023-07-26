@@ -193,7 +193,13 @@ public class ValuationDlgController {
                     // checking if the point value string is valid (number):
                     double pointValue = Double.parseDouble(point);
                     String pointUnit = unitCB.getValue();
-                    pointsList.add(new MeasPointData(point, pointUnit));
+                    MeasPointData newPoint = new MeasPointData(point, pointUnit);
+                    if (!pointsList.contains(newPoint)) {
+                        pointsList.add(newPoint);
+                    } else {
+                        result = false;
+                        break;
+                    }
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Invalid input.");
@@ -271,11 +277,12 @@ public class ValuationDlgController {
     }
 
     // TODO: validation
-    public void loadData(String range, String rangeType, String unit, String pointsList) {
+    public void loadData(String range, String rangeType, String unit, String pointsList, int defaultRangeResolution) {
         rangeTF.setText(range);
         rangeTypeCB.setValue(rangeType);
         unitCB.setValue(unit);
         pointsTA.setText(pointsList);
+        resSpinner.getValueFactory().setValue(defaultRangeResolution);
     }
 
     private void setResCategory(String resolution) {
@@ -302,6 +309,14 @@ public class ValuationDlgController {
     public List<Node> getEmptyFields() {
         return emptyFields;
     }
+
+//    public void updateDefaultResolutionSpinner(int resolution) {
+//        if (resolution >= 0 && resolution <= 8) {
+//            resSpinner.getValueFactory().setValue(resolution);
+//        } else {
+//            resSpinner.getValueFactory().setValue(0);
+//        }
+//    }
 
     public enum Function {
         VDC,

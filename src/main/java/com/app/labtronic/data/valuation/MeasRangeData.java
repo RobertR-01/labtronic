@@ -62,7 +62,7 @@ public class MeasRangeData {
     }
 
     public ArrayList<MeasPointData> getPoints() {
-        return new ArrayList<>(points);
+        return points;
     }
 
     public int getNumberOfPoints() {

@@ -744,7 +744,9 @@ public class ValuationController {
                 pointsStringBuilder.append(", ");
             }
         }
-        controller.loadData(rangeString, rangeTypeString, unitString, pointsStringBuilder.toString());
+        int defaultRangeResolution = oldRange.getDefaultResolution();
+        controller.loadData(rangeString, rangeTypeString, unitString, pointsStringBuilder.toString(),
+                defaultRangeResolution);
 
         dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
         dialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
@@ -781,7 +783,8 @@ public class ValuationController {
 
                 if (!validationResults.get(2)) {
                     controller.addRedOutline(controller.getPointsTA());
-                    content.append("Invalid measurement points!\nEnter numeric values separated with a comma.\n\n");
+                    content.append("Invalid measurement points!\nEnter numeric values separated with a comma. No " +
+                            "duplicate points allowed.\n\n");
                 }
 
                 if (!validationResults.get(3)) {
@@ -793,12 +796,35 @@ public class ValuationController {
                 alert.setContentText(content.toString());
                 alert.showAndWait();
             } else {
+                // old points backup
+                List<MeasPointData> oldPoints = oldRange.getPoints();
+
                 // check for duplicate range value / duplicate first range
                 MeasRangeData newRange = controller.exportData();
 
                 // assigning the default range resolution to all current points:
                 for (MeasPointData point : newRange.getPoints()) {
                     point.getUncertaintyData().setDutResolution(newRange.getDefaultResolution());
+                }
+
+                // prevent overriding current measurement points if the new ones have the same nominal values
+                // TODO: not working properly
+                List<MeasPointData> newPoints = newRange.getPoints();
+                for (MeasPointData oldPoint : oldPoints) {
+                    if (newPoints.contains(oldPoint)) {
+                        System.out.println("points are equal");
+                        int index = newPoints.indexOf(oldPoint);
+                        System.out.println("index: " + index);
+                        System.out.println("oldPoint res: " + oldPoint.getUncertaintyData().getDutResolution());
+                        System.out.println("pre sawp: " + newRange.getPoints().get(index));
+                        System.out.println("old point: " + oldPoint);
+                        newRange.getPoints().set(index, oldPoint);
+                        System.out.println("post sawp: " + newRange.getPoints().get(index));
+                        System.out.println("newPoint res: " + newPoints.get(index).getUncertaintyData().getDutResolution());
+                        System.out.println("new range points res: " + newRange.getPoints().get(index).getUncertaintyData().getDutResolution());
+                    } else {
+                        System.out.println("nope");
+                    }
                 }
 
                 if (newRange != null) {
@@ -933,7 +959,8 @@ public class ValuationController {
 
                 if (!validationResults.get(2)) {
                     controller.addRedOutline(controller.getPointsTA());
-                    content.append("Invalid measurement points!\nEnter numeric values separated with a comma.\n\n");
+                    content.append("Invalid measurement points!\nEnter numeric values separated with a comma. No " +
+                            "duplicate points allowed.\n\n");
                 }
 
                 if (!validationResults.get(3)) {
