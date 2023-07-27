@@ -812,18 +812,8 @@ public class ValuationController {
                 List<MeasPointData> newPoints = newRange.getPoints();
                 for (MeasPointData oldPoint : oldPoints) {
                     if (newPoints.contains(oldPoint)) {
-                        System.out.println("points are equal");
                         int index = newPoints.indexOf(oldPoint);
-                        System.out.println("index: " + index);
-                        System.out.println("oldPoint res: " + oldPoint.getUncertaintyData().getDutResolution());
-                        System.out.println("pre sawp: " + newRange.getPoints().get(index));
-                        System.out.println("old point: " + oldPoint);
                         newRange.getPoints().set(index, oldPoint);
-                        System.out.println("post sawp: " + newRange.getPoints().get(index));
-                        System.out.println("newPoint res: " + newPoints.get(index).getUncertaintyData().getDutResolution());
-                        System.out.println("new range points res: " + newRange.getPoints().get(index).getUncertaintyData().getDutResolution());
-                    } else {
-                        System.out.println("nope");
                     }
                 }
 
