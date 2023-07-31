@@ -74,11 +74,10 @@
                 </columnConstraints>
 
                 <Label text="Calibration method: " GridPane.columnIndex="0" GridPane.rowIndex="0" wrapText="true"/>
-                <ComboBox fx:id="calMethodSpinner" GridPane.columnIndex="1" GridPane.rowIndex="0" disable="true">
+                <ComboBox fx:id="calMethodSpinner" GridPane.columnIndex="1" GridPane.rowIndex="0">
                     <items>
                         <FXCollections fx:factory="observableArrayList">
                             <String fx:value="Direct measurement"/>
-                            <String fx:value="Comparative"/>
                         </FXCollections>
                     </items>
                     <value>
@@ -98,7 +97,6 @@
                     <items>
                         <FXCollections fx:factory="observableArrayList">
                             <String fx:value="8508A"/>
-                            <String fx:value="1281"/>
                         </FXCollections>
                     </items>
                     <value>
@@ -109,7 +107,7 @@
                 <Label text="Reference standard range:" wrapText="true" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
                 <HBox GridPane.columnIndex="1" GridPane.rowIndex="2" spacing="5">
                     <HBox alignment="CENTER_LEFT" spacing="5">
-                        <ComboBox fx:id="refStdRangeSpinner" minWidth="100">
+                        <ComboBox fx:id="refStdRangeCB" minWidth="100">
                             <items>
                                 <FXCollections fx:factory="observableArrayList">
                                     <String fx:value="2"/>
@@ -128,7 +126,7 @@
                         <HBox alignment="CENTER" spacing="5">
                             <Label text="CMC: " wrapText="true"/>
                             <HBox alignment="CENTER" spacing="5">
-                                <TextField minWidth="70" maxWidth="70"/>
+                                <TextField minWidth="70" maxWidth="70" editable="false"/>
                                 <Label text="\%"/>
                             </HBox>
                         </HBox>
@@ -148,11 +146,11 @@
                 <HBox GridPane.columnIndex="0" GridPane.rowIndex="4" spacing="5" GridPane.columnSpan="2"
                       GridPane.halignment="CENTER" alignment="CENTER">
                     <Label text="&#x00B1; ("/>
-                    <TextField minWidth="50" maxWidth="50"/>
+                    <TextField minWidth="50" maxWidth="50" editable="false"/>
                     <Label text="ppm Reading(*) +"/>
-                    <TextField minWidth="50" maxWidth="50"/>
+                    <TextField minWidth="50" maxWidth="50" editable="false"/>
                     <Label text="ppm FS(*) +"/>
-                    <TextField minWidth="50" maxWidth="50"/>
+                    <TextField minWidth="50" maxWidth="50" editable="false"/>
                     <Label text="&#x00B5;V )"/>
                 </HBox>
             </GridPane>

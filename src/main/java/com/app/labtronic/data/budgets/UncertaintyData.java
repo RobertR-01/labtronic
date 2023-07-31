@@ -26,6 +26,7 @@ public class UncertaintyData {
     private double finalUncertainty;
     private final double COVERAGE_FACTOR = 2;
     private int dutResolution;
+    private String refStdRange;
 
     private List<UncertaintyComponent> components;
 
@@ -38,6 +39,8 @@ public class UncertaintyData {
         this.components = List.of(repeatability, refStdUncertainty, resolution, refStdStability, predictionError);
 
         this.dutReadings = new ArrayList<>();
+
+        this.refStdRange = "placeholder";
     }
 
     public List<UncertaintyComponent> getComponents() {
@@ -65,5 +68,16 @@ public class UncertaintyData {
 
     public int getDutResolution() {
         return dutResolution;
+    }
+
+    public String getRefStdRange() {
+        return refStdRange;
+    }
+
+    // further validation must be done by the caller
+    public void setRefStdRange(String refStdRange) {
+        if (refStdRange != null && !refStdRange.trim().isBlank()) {
+            this.refStdRange = refStdRange;
+        }
     }
 }
