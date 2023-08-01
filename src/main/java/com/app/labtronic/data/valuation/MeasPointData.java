@@ -7,6 +7,7 @@ public class MeasPointData {
     private SimpleStringProperty pointValueProperty;
     private SimpleStringProperty unitProperty;
     private UncertaintyData uncertaintyData;
+    private MeasRangeData range;
 
     public MeasPointData(String pointValue, String unit) {
         this.pointValueProperty = new SimpleStringProperty();
@@ -50,6 +51,16 @@ public class MeasPointData {
 
     public void setUncertaintyData(UncertaintyData uncertaintyData) {
         this.uncertaintyData = uncertaintyData;
+    }
+
+    public MeasRangeData getRange() {
+        return range;
+    }
+
+    public void setRange(MeasRangeData range) {
+        if (range != null) {
+            this.range = range;
+        }
     }
 
     @Override

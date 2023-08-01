@@ -96,11 +96,11 @@
                 <ComboBox fx:id="refStdSpinner" minWidth="100" GridPane.columnIndex="1" GridPane.rowIndex="1">
                     <items>
                         <FXCollections fx:factory="observableArrayList">
-                            <String fx:value="8508A"/>
+                            <String fx:value="4708"/>
                         </FXCollections>
                     </items>
                     <value>
-                        <String fx:value="8508A"/>
+                        <String fx:value="4708"/>
                     </value>
                 </ComboBox>
 

@@ -27,6 +27,8 @@ public class UncertaintyData {
     private final double COVERAGE_FACTOR = 2;
     private int dutResolution;
     private String refStdRange;
+    private String calibrationMethod;
+    private String refStandard;
 
     private List<UncertaintyComponent> components;
 
@@ -41,6 +43,8 @@ public class UncertaintyData {
         this.dutReadings = new ArrayList<>();
 
         this.refStdRange = "placeholder";
+        this.calibrationMethod = "Direct Measurement";
+        this.refStandard = "4708";
     }
 
     public List<UncertaintyComponent> getComponents() {
@@ -78,6 +82,18 @@ public class UncertaintyData {
     public void setRefStdRange(String refStdRange) {
         if (refStdRange != null && !refStdRange.trim().isBlank()) {
             this.refStdRange = refStdRange;
+        }
+    }
+
+    public String getRefStandard() {
+        return refStandard;
+    }
+
+    public void setRefStandard(String refStandard) {
+        if (refStandard != null && !refStandard.trim().isBlank()) {
+            this.refStandard = refStandard;
+        } else {
+            System.out.println("UncertaintyData -> setRefStandard() -> invalid reference standard string.");
         }
     }
 }

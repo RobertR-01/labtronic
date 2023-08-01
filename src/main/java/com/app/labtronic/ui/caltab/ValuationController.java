@@ -805,6 +805,7 @@ public class ValuationController {
                 // assigning the default range resolution to all current points:
                 for (MeasPointData point : newRange.getPoints()) {
                     point.getUncertaintyData().setDutResolution(newRange.getDefaultResolution());
+                    point.setRange(newRange);
                 }
 
                 // prevent overriding current measurement points if the new ones have the same nominal values
@@ -968,6 +969,7 @@ public class ValuationController {
                 // assigning the default range resolution to all current points:
                 for (MeasPointData point : newRange.getPoints()) {
                     point.getUncertaintyData().setDutResolution(newRange.getDefaultResolution());
+                    point.setRange(newRange);
                 }
 
                 if (newRange != null) {
