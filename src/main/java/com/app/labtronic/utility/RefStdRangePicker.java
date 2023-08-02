@@ -70,8 +70,10 @@ public class RefStdRangePicker {
 
         String pointUnit = point.getUnitProperty();
         char[] unitCharArray = pointUnit.toCharArray();
-        char pointMetricPrefix;
-        pointMetricPrefix = unitCharArray[0];
+        char metricPrefix = '\u0000';
+        if (unitCharArray.length > 1) {
+            metricPrefix = unitCharArray[0];
+        }
 
         double pointValue;
         try {
@@ -80,9 +82,56 @@ public class RefStdRangePicker {
             System.out.println("RefStdRangePicker -> pickDefaultRange() -> Can't parse the point's value.");
             return;
         }
-        double pointValueBaseUnit;
-        switch (pointUnit) {
-            case
+
+        UnitConverter.ConversionResult conversionResult = UnitConverter.convertToBaseUnit(pointValue, metricPrefix);
+        if (conversionResult == null) {
+            System.out.println("RefStdRangePicker -> pickDefaultRange() -> error when converting a value to its base " +
+                    "unit counterpart.");
+            return;
         }
+        double pointValueInBaseUnit = conversionResult.getValue();
+
+        // determine ref range:
+
+    }
+
+    private String getDCVRange(double pointValue, String referenceStandard) {
+        if (pointValue < 0) {
+            pointValue *= -1;
+        }
+
+        String range = null;
+        if (referenceStandard.equals("4708")) {
+            if (pointValue >= 0 && pointValue < 0.0002) {
+
+            } else if (pointValue >= 0.0002 && pointValue < 0.002) {
+
+            } else if (pointValue >= 0.002 && pointValue < 0.02) {
+
+            } else if (pointValue >= 0.02 && pointValue < 0.2) {
+
+            } else if (pointValue >= 0.2 && pointValue < 2) {
+
+            } else if (pointValue >= 2 && pointValue < 20) {
+
+            } else if (pointValue >= 20 && pointValue < 200) {
+
+            } else if (pointValue >= 200 && pointValue < 1100) {
+
+            }
+
+
+
+        } else if (referenceStandard.equals("SQ7000")) {
+
+
+
+
+
+        } else {
+            System.out.println("RefStdRangePicker -> getDCVRange() -> invalid reference standard string.");
+        }
+
+        return range;
     }
 }
