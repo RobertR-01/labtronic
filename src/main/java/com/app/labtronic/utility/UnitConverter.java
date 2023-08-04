@@ -62,25 +62,29 @@ public class UnitConverter {
 
     // metric unit passed must follow this pattern: mV, μA, MΩ etc.
     // (no delimiters between the metric prefix and the base unit)
-    public static Map.Entry<String, Double> getMetricPrefix(String metricUnit) {
+    public static MetricPrefixData getMetricPrefix(String metricUnit) {
         if (metricUnit != null && !metricUnit.trim().isBlank() && (metricUnit.length() > 1)) {
-            Map.Entry<String, Double> prefixEntry;
+            MetricPrefixData prefixData = null;
             String prefix;
 
             // deca check
-            if (metricUnit.length() > 2) {
-
+            if (metricUnit.length() > 2 && METRIC_PREFIX_MAP.containsKey(metricUnit.substring(0, 1))) {
+                prefix = metricUnit.substring(0, 1);
+            } else if (metricUnit.length() > 1  && METRIC_PREFIX_MAP.containsKey(metricUnit.substring(0, 0))) {
+                prefix = metricUnit.substring(0, 0);
             }
-            prefix = metricUnit.substring(0, 1);
+            prefixData = new MetricPrefixData(prefix, METRIC_PREFIX_MAP.get(prefix));
 
 
             char[] charArray = metricUnit.toCharArray();
             if (charArray.length > 1) {
-                metricUnit.
+//                metricUnit.
             } else if (charArray.length > 2) {
                 // deca
             }
         }
+
+        return null;
     }
 
     public static class ConversionResult {
@@ -92,6 +96,24 @@ public class UnitConverter {
 
         public double getValue() {
             return value;
+        }
+    }
+
+    public static class MetricPrefixData {
+        private final String prefix;
+        private final double multiplier;
+
+        private MetricPrefixData(String prefix, double multiplier) {
+            this.prefix = prefix;
+            this.multiplier = multiplier;
+        }
+
+        public String getPrefix() {
+            return prefix;
+        }
+
+        public double getMultiplier() {
+            return multiplier;
         }
     }
 }

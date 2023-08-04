@@ -3,7 +3,6 @@ package com.app.labtronic.ui.caltab.valuation;
 import com.app.labtronic.data.CalData;
 import com.app.labtronic.data.valuation.MeasPointData;
 import com.app.labtronic.data.valuation.MeasRangeData;
-import com.app.labtronic.utility.UnitConverter;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
@@ -222,7 +221,7 @@ public class ValuationDlgController {
         if (pointsList != null && !pointsList.isEmpty()) {
             double pointValueInBaseUnit;
             for (MeasPointData point : pointsList) {
-                pointValueInBaseUnit = UnitConverter.convertToBaseUnit()
+//                pointValueInBaseUnit = UnitConverter.convertToBaseUnit()
             }
         }
         return result;
