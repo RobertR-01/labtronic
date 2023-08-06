@@ -35,76 +35,72 @@ public class UnitConverter {
 
     }
 
-    public static ConversionResult convertToBaseUnit(double value, char metricPrefix) {
+    public static double convertToBaseUnit(double value, String metricUnit) {
         double valueInBaseUnit = value;
-        double multiplier;
-        switch (metricPrefix) {
-            case 'μ':
-                multiplier = 0.000001;
-                break;
-            case 'm':
-                multiplier = 0.001;
-                break;
-            case 'k':
-                multiplier = 1000;
-                break;
-            case 'M':
-                multiplier = 1000000;
-                break;
-            default:
-                System.out.println("UnitConverter -> convertToBaseUnit() -> invalid metric prefix.");
-                return null;
-        }
+        MetricPrefixData metricPrefixData = getMetricPrefix(metricUnit);
+        double multiplier = metricPrefixData.getMultiplier();
+        String prefix = metricPrefixData.getPrefix();
+
         valueInBaseUnit *= multiplier;
 
-        return new ConversionResult(valueInBaseUnit);
+//        return new ConversionResult(valueInBaseUnit);
+        return valueInBaseUnit;
     }
 
     // metric unit passed must follow this pattern: mV, μA, MΩ etc.
     // (no delimiters between the metric prefix and the base unit)
     public static MetricPrefixData getMetricPrefix(String metricUnit) {
+        MetricPrefixData prefixData = null;
         if (metricUnit != null && !metricUnit.trim().isBlank() && (metricUnit.length() > 1)) {
-            MetricPrefixData prefixData = null;
-            String prefix;
+            double multiplier = 1;
+            String prefix = null;
 
-            // deca check
-            if (metricUnit.length() > 2 && METRIC_PREFIX_MAP.containsKey(metricUnit.substring(0, 1))) {
+            if (metricUnit.length() > 2 && METRIC_PREFIX_MAP.containsKey(metricUnit.substring(0, 2))) {
+                // deca (da) check:
+                prefix = metricUnit.substring(0, 2);
+                System.out.println("UnitConverter -> getMetricPrefix() -> if");
+            } else if (METRIC_PREFIX_MAP.containsKey(metricUnit.substring(0, 1))) {
+                // any other prefix from the map:
                 prefix = metricUnit.substring(0, 1);
-            } else if (metricUnit.length() > 1  && METRIC_PREFIX_MAP.containsKey(metricUnit.substring(0, 0))) {
-                prefix = metricUnit.substring(0, 0);
+                System.out.println("UnitConverter -> getMetricPrefix() -> if-else");
+            } else {
+                System.out.println("UnitConverter -> getMetricPrefix() -> no valid metric prefix found. Returning " +
+                        "null.");
             }
-            prefixData = new MetricPrefixData(prefix, METRIC_PREFIX_MAP.get(prefix));
 
-
-            char[] charArray = metricUnit.toCharArray();
-            if (charArray.length > 1) {
-//                metricUnit.
-            } else if (charArray.length > 2) {
-                // deca
+            if (prefix != null) {
+                multiplier = METRIC_PREFIX_MAP.get(prefix);
+                prefixData = new MetricPrefixData(prefix, multiplier);
             }
+        } else {
+            System.out.println("UnitConverter -> getMetricPrefix() -> invalid string argument. Returning null.");
         }
 
-        return null;
+        return prefixData;
     }
 
-    public static class ConversionResult {
-        private final double value;
-
-        private ConversionResult(double value) {
-            this.value = value;
-        }
-
-        public double getValue() {
-            return value;
-        }
-    }
+//    public static class ConversionResult {
+//        private final double value;
+//
+//        private ConversionResult(double value) {
+//            this.value = value;
+//        }
+//
+//        public double getValue() {
+//            return value;
+//        }
+//    }
 
     public static class MetricPrefixData {
         private final String prefix;
         private final double multiplier;
 
         private MetricPrefixData(String prefix, double multiplier) {
-            this.prefix = prefix;
+            if (prefix != null && !prefix.trim().isBlank()) {
+                this.prefix = prefix;
+            } else {
+                this.prefix = null;
+            }
             this.multiplier = multiplier;
         }
 

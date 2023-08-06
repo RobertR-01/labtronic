@@ -1,11 +1,7 @@
 package com.app.labtronic.utility;
 
-import com.app.labtronic.data.valuation.MeasPointData;
-import com.app.labtronic.ui.caltab.valuation.ValuationDlgController;
-
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class RefStdRangePicker {
     private static final HashMap<String, List<String>> REF_RANGES_4708 = new HashMap<>();
@@ -25,6 +21,7 @@ public class RefStdRangePicker {
         REF_RANGES_SQ7000.put("RDC", List.of("20 Ω", "200 Ω", "2 kΩ", "20 kΩ", "200 kΩ", "2 MΩ", "20 MΩ", "200 MΩ"));
     }
 
+    /*
     public static void pickRefRange(String referenceStd, MeasPointData point) {
         if (referenceStd == null || referenceStd.trim().isBlank() || point == null) {
             System.out.println("RefStdRangePicker -> pickDefaultRange() -> some error occurred while selecting range");
@@ -69,11 +66,11 @@ public class RefStdRangePicker {
         }
 
         String pointUnit = point.getUnitProperty();
-        char[] unitCharArray = pointUnit.toCharArray();
-        char metricPrefix = '\u0000';
-        if (unitCharArray.length > 1) {
-            metricPrefix = unitCharArray[0];
-        }
+//        char[] unitCharArray = pointUnit.toCharArray();
+//        char metricPrefix = '\u0000';
+//        if (unitCharArray.length > 1) {
+//            metricPrefix = unitCharArray[0];
+//        }
 
         double pointValue;
         try {
@@ -83,7 +80,8 @@ public class RefStdRangePicker {
             return;
         }
 
-        UnitConverter.ConversionResult conversionResult = UnitConverter.convertToBaseUnit(pointValue, metricPrefix);
+//        UnitConverter.ConversionResult conversionResult = UnitConverter.convertToBaseUnit(pointValue, metricPrefix);
+        double valueInBaseUnit = UnitConverter.convertToBaseUnit(pointValue, pointUnit);
         if (conversionResult == null) {
             System.out.println("RefStdRangePicker -> pickDefaultRange() -> error when converting a value to its base " +
                     "unit counterpart.");
@@ -94,6 +92,7 @@ public class RefStdRangePicker {
         // determine ref range:
 
     }
+    */
 
     private String getDCVRange(double pointValue, String referenceStandard) {
         if (pointValue < 0) {
