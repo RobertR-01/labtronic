@@ -35,13 +35,22 @@ public class UnitConverter {
 
     }
 
-    public static double convertToBaseUnit(double value, String metricUnit) {
+    public static double convertValueToBaseUnit(double value, String metricUnit) {
         double valueInBaseUnit = value;
-        MetricPrefixData metricPrefixData = getMetricPrefix(metricUnit);
-        double multiplier = metricPrefixData.getMultiplier();
-        String prefix = metricPrefixData.getPrefix();
-
-        valueInBaseUnit *= multiplier;
+        if (metricUnit != null && !metricUnit.trim().isBlank() && (metricUnit.length() > 1)) {
+            MetricPrefixData metricPrefixData = getMetricPrefix(metricUnit);
+            if (metricPrefixData != null) {
+                double multiplier = metricPrefixData.getMultiplier();
+                String prefix = metricPrefixData.getPrefix();
+                valueInBaseUnit *= multiplier;
+            } else {
+                System.out.println("UnitConverter -> convertToBaseUnit() -> \"metricPrefixData == null\". " +
+                        "Returning -1.0.");
+            }
+        } else {
+            System.out.println("UnitConverter -> convertToBaseUnit() -> invalid string argument. Returning -1.0.");
+            valueInBaseUnit = -1d;
+        }
 
 //        return new ConversionResult(valueInBaseUnit);
         return valueInBaseUnit;
@@ -58,11 +67,9 @@ public class UnitConverter {
             if (metricUnit.length() > 2 && METRIC_PREFIX_MAP.containsKey(metricUnit.substring(0, 2))) {
                 // deca (da) check:
                 prefix = metricUnit.substring(0, 2);
-                System.out.println("UnitConverter -> getMetricPrefix() -> if");
             } else if (METRIC_PREFIX_MAP.containsKey(metricUnit.substring(0, 1))) {
                 // any other prefix from the map:
                 prefix = metricUnit.substring(0, 1);
-                System.out.println("UnitConverter -> getMetricPrefix() -> if-else");
             } else {
                 System.out.println("UnitConverter -> getMetricPrefix() -> no valid metric prefix found. Returning " +
                         "null.");
@@ -77,6 +84,28 @@ public class UnitConverter {
         }
 
         return prefixData;
+    }
+
+    public static String getUnitWithoutMetricPrefix(String metricUnit) {
+        String baseUnit = null;
+        MetricPrefixData prefixData = null;
+
+        if (metricUnit != null && !metricUnit.trim().isBlank() && (metricUnit.length() > 1)) {
+            prefixData = getMetricPrefix(metricUnit);
+            if (prefixData != null) {
+                baseUnit = metricUnit.replaceAll(prefixData.getPrefix(), "");
+            } else {
+                System.out.println("UnitConverter -> getUnitWithoutMetricPrefix() -> \"prefixData == null\". " +
+                        "Returning null.");
+            }
+        } else if (metricUnit != null && !metricUnit.trim().isBlank() && (metricUnit.length() == 1)) {
+            baseUnit = metricUnit;
+        } else {
+            System.out.println("UnitConverter -> getUnitWithoutMetricPrefix() -> invalid string argument. " +
+                    "Returning null.");
+        }
+
+        return baseUnit;
     }
 
 //    public static class ConversionResult {

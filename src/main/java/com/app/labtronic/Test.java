@@ -10,15 +10,22 @@ public class Test {
 //        System.out.println(doubleProperty.get());
 //        System.out.println(binding.getValue());
 
-        UnitConverter.MetricPrefixData metricPrefixData = UnitConverter.getMetricPrefix("");
-        if (metricPrefixData == null) {
-            System.out.println("----------------------------------------------");
-            System.out.println("| Test -> main() -> metricPrefixData == null |");
-            System.out.println("----------------------------------------------");
-        } else {
-            System.out.println(metricPrefixData.getPrefix());
-            System.out.println(metricPrefixData.getMultiplier());
-        }
-        System.out.println("*fin*");
+//        UnitConverter.MetricPrefixData metricPrefixData = UnitConverter.getMetricPrefix("");
+//        if (metricPrefixData == null) {
+//            System.out.println("----------------------------------------------");
+//            System.out.println("| Test -> main() -> metricPrefixData == null |");
+//            System.out.println("----------------------------------------------");
+//        } else {
+//            System.out.println(metricPrefixData.getPrefix());
+//            System.out.println(metricPrefixData.getMultiplier());
+//        }
+//        System.out.println("*fin*");
+
+        // μ
+        String unit = "kA";
+        double value = 200;
+        double valueInBaseUnit = UnitConverter.convertValueToBaseUnit(value, unit);
+        String baseUnit = UnitConverter.getUnitWithoutMetricPrefix(unit);
+        System.out.println(value + " " + unit + " = " + valueInBaseUnit + " " + baseUnit);
     }
 }
