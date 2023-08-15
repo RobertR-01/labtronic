@@ -922,6 +922,8 @@ public class ValuationController {
         TableView<MeasRangeData> finalTableView = tableView;
         buttonOK.addEventFilter(ActionEvent.ACTION, actionEvent -> {
             // any false value = form issue
+            ValuationDlgController.Function functionType = controller.getFunctionType();
+            // TODO: add function parameter to validateForms
             List<Boolean> validationResults = controller.validateForms();
             boolean formProblem = false;
             for (Boolean check : validationResults) {

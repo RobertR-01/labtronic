@@ -3,6 +3,7 @@ package com.app.labtronic.ui.caltab.valuation;
 import com.app.labtronic.data.CalData;
 import com.app.labtronic.data.valuation.MeasPointData;
 import com.app.labtronic.data.valuation.MeasRangeData;
+import com.app.labtronic.utility.UnitConverter;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
@@ -219,9 +220,12 @@ public class ValuationDlgController {
         boolean result = false;
         String unit = unitCB.getValue();
         if (pointsList != null && !pointsList.isEmpty()) {
+            double pointValue;
             double pointValueInBaseUnit;
             for (MeasPointData point : pointsList) {
-//                pointValueInBaseUnit = UnitConverter.convertToBaseUnit()
+                // TODO: check for NumberFormatException
+                pointValue = Double.parseDouble(point.getPointValueProperty());
+                pointValueInBaseUnit = UnitConverter.convertValueToBaseUnit(pointValue, unit);
             }
         }
         return result;
@@ -321,6 +325,10 @@ public class ValuationDlgController {
 
     public List<Node> getEmptyFields() {
         return emptyFields;
+    }
+
+    public Function getFunctionType() {
+        return functionType;
     }
 
 //    public void updateDefaultResolutionSpinner(int resolution) {
