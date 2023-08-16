@@ -25,7 +25,7 @@ public class Test {
         String unit = "kA";
         double value = 200;
         double valueInBaseUnit = UnitConverter.convertValueToBaseUnit(value, unit);
-        String baseUnit = UnitConverter.getUnitWithoutMetricPrefix(unit);
+        String baseUnit = UnitConverter.getBaseUnit(unit);
         System.out.println(value + " " + unit + " = " + valueInBaseUnit + " " + baseUnit);
     }
 }

@@ -86,7 +86,7 @@ public class UnitConverter {
         return prefixData;
     }
 
-    public static String getUnitWithoutMetricPrefix(String metricUnit) {
+    public static String getBaseUnit(String metricUnit) {
         String baseUnit = null;
         MetricPrefixData prefixData = null;
 
