@@ -8,34 +8,48 @@ public class MeasPointValidator {
     }
 
     public static boolean checkPoint(double value, String metricUnit, ValuationDlgController.Function function) {
+        if (value < 0) {
+            value *= -1;
+        }
         boolean isPointOK = false;
         String baseUnit = null;
         if (metricUnit != null && !metricUnit.trim().isBlank() && function != null) {
             baseUnit = UnitConverter.getBaseUnit(metricUnit);
             double baseUnitValue = UnitConverter.convertValueToBaseUnit(value, metricUnit);
+            double cmcFloor = 0;
+            double cmcCeiling = 0;
             switch (function) {
                 case VDC:
-                    isPointOK = checkVDCPoint(baseUnitValue);
+                    cmcFloor = 0.01;
+                    cmcCeiling = 1000;
                     break;
                 case VAC:
-                    isPointOK = checkVACPoint(baseUnitValue);
+                    cmcFloor = 0.01;
+                    cmcCeiling = 1000;
                     break;
                 case IDC:
-                    isPointOK = checkIDCPoint(baseUnitValue);
+                    cmcFloor = 0.00001;
+                    cmcCeiling = 10;
                     break;
                 case IAC:
-                    isPointOK = checkIACPoint(baseUnitValue);
+                    cmcFloor = 0.00001;
+                    cmcCeiling = 10;
                     break;
                 case RDC:
-                    isPointOK = checkRDCPoint(baseUnitValue);
+                    cmcFloor = 0.1;
+                    cmcCeiling = 100000000;
                     break;
+            }
+            if (baseUnitValue >= cmcFloor && baseUnitValue <= cmcCeiling) {
+                isPointOK = true;
             }
         }
         return isPointOK;
     }
 
     private static boolean checkVDCPoint(double baseUnitValue) {
-
+        boolean isPointOK = false;
+        if (baseUnitValue)
     }
 
     private static boolean checkVACPoint(double baseUnitValue) {
