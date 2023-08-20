@@ -1,6 +1,7 @@
 package com.app.labtronic;
 
-import com.app.labtronic.utility.UnitConverter;
+import com.app.labtronic.ui.caltab.valuation.ValuationDlgController;
+import com.app.labtronic.utility.MeasPointValidator;
 
 public class Test {
     public static void main(String[] args) {
@@ -22,10 +23,17 @@ public class Test {
 //        System.out.println("*fin*");
 
         // μ
-        String unit = "kA";
-        double value = 200;
-        double valueInBaseUnit = UnitConverter.convertValueToBaseUnit(value, unit);
-        String baseUnit = UnitConverter.getBaseUnit(unit);
-        System.out.println(value + " " + unit + " = " + valueInBaseUnit + " " + baseUnit);
+//        String unit = "kA";
+//        double value = 200;
+//        double valueInBaseUnit = UnitConverter.convertValueToBaseUnit(value, unit);
+//        String baseUnit = UnitConverter.getBaseUnit(unit);
+//        System.out.println(value + " " + unit + " = " + valueInBaseUnit + " " + baseUnit);
+
+        double value = 0.000001;
+        String metricUnit = "kV";
+        ValuationDlgController.Function function = ValuationDlgController.Function.IDC;
+        boolean result = MeasPointValidator.checkPoint(value, metricUnit, function);
+        String string = (result) ? " OK." : " not OK.";
+        System.out.println("Point: " + value + " " + metricUnit + " of " + function.name() + " function is " + string);
     }
 }

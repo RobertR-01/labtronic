@@ -773,7 +773,7 @@ public class ValuationController {
                     for (Node node : controller.getEmptyFields()) {
                         controller.addRedOutline(node);
                     }
-                    content.append("Missing input data!\nNo fields in the form may remain empty.\n\n");
+                    content.append("Missing input data!\nNone of the forms may remain empty.\n\n");
                 }
 
                 if (!validationResults.get(1)) {
@@ -790,6 +790,11 @@ public class ValuationController {
                 if (!validationResults.get(3)) {
                     controller.addRedOutline(controller.getRangeTF());
                     content.append("Invalid range value!\nEnter a non-zero value for the range field.\n\n");
+                }
+
+                if (!validationResults.get(4)) {
+                    controller.addRedOutline(controller.getPointsTA());
+                    content.append("One or more points have their value outside CMC boundaries.\n\n");
                 }
 
                 alert.setTitle(title);
@@ -942,7 +947,7 @@ public class ValuationController {
                     for (Node node : controller.getEmptyFields()) {
                         controller.addRedOutline(node);
                     }
-                    content.append("Missing input data!\nNo fields in the form may remain empty.\n\n");
+                    content.append("Missing input data!\nNone of the forms may remain empty.\n\n");
                 }
 
                 if (!validationResults.get(1)) {
@@ -959,6 +964,11 @@ public class ValuationController {
                 if (!validationResults.get(3)) {
                     controller.addRedOutline(controller.getRangeTF());
                     content.append("Invalid range value!\nEnter a non-zero value for the range field.\n\n");
+                }
+
+                if (!validationResults.get(4)) {
+                    controller.addRedOutline(controller.getPointsTA());
+                    content.append("One or more points have their value outside CMC boundaries.\n\n");
                 }
 
                 alert.setTitle(title);

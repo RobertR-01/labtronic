@@ -3,7 +3,7 @@ package com.app.labtronic.ui.caltab.valuation;
 import com.app.labtronic.data.CalData;
 import com.app.labtronic.data.valuation.MeasPointData;
 import com.app.labtronic.data.valuation.MeasRangeData;
-import com.app.labtronic.utility.UnitConverter;
+import com.app.labtronic.utility.MeasPointValidator;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
@@ -216,8 +216,8 @@ public class ValuationDlgController {
     }
 
     // call after validate points (pointsList must be properly filled)
-    private boolean validatePointValues() {
-        boolean result = false;
+    private boolean checkIfPointsInCMCRange() {
+        boolean result = true;
         String unit = unitCB.getValue();
         if (pointsList != null && !pointsList.isEmpty()) {
             double pointValue;
@@ -225,7 +225,10 @@ public class ValuationDlgController {
             for (MeasPointData point : pointsList) {
                 // TODO: check for NumberFormatException
                 pointValue = Double.parseDouble(point.getPointValueProperty());
-                pointValueInBaseUnit = UnitConverter.convertValueToBaseUnit(pointValue, unit);
+                if (!MeasPointValidator.checkPoint(pointValue, unit, functionType)) {
+                    result = false;
+                    break;
+                }
             }
         }
         return result;
@@ -276,6 +279,7 @@ public class ValuationDlgController {
         results.add(validateRange());
         results.add(validatePoints());
         results.add(checkForZeroRange());
+        results.add(checkIfPointsInCMCRange());
         return results;
     }
 

@@ -20,18 +20,14 @@ public class MeasPointValidator {
             double cmcCeiling = 0;
             switch (function) {
                 case VDC:
-                    cmcFloor = 0.01;
+                    cmcFloor = 0.0001;
                     cmcCeiling = 1000;
                     break;
                 case VAC:
                     cmcFloor = 0.01;
                     cmcCeiling = 1000;
                     break;
-                case IDC:
-                    cmcFloor = 0.00001;
-                    cmcCeiling = 10;
-                    break;
-                case IAC:
+                case IDC, IAC:
                     cmcFloor = 0.00001;
                     cmcCeiling = 10;
                     break;
@@ -45,26 +41,5 @@ public class MeasPointValidator {
             }
         }
         return isPointOK;
-    }
-
-    private static boolean checkVDCPoint(double baseUnitValue) {
-        boolean isPointOK = false;
-        if (baseUnitValue)
-    }
-
-    private static boolean checkVACPoint(double baseUnitValue) {
-
-    }
-
-    private static boolean checkIDCPoint(double baseUnitValue) {
-
-    }
-
-    private static boolean checkIACPoint(double baseUnitValue) {
-
-    }
-
-    private static boolean checkRDCPoint(double baseUnitValue) {
-
     }
 }
