@@ -35,25 +35,22 @@ public class UnitConverter {
 
     }
 
-    public static double convertValueToBaseUnit(double value, String metricUnit) {
-        double valueInBaseUnit = value;
+    public static ConversionResult convertValueToBaseUnit(double value, String metricUnit) {
+        ConversionResult result = null;
         if (metricUnit != null && !metricUnit.trim().isBlank() && (metricUnit.length() > 1)) {
             MetricPrefixData metricPrefixData = getMetricPrefix(metricUnit);
             if (metricPrefixData != null) {
                 double multiplier = metricPrefixData.getMultiplier();
                 String prefix = metricPrefixData.getPrefix();
-                valueInBaseUnit *= multiplier;
+                result = new ConversionResult(value * multiplier);
             } else {
                 System.out.println("UnitConverter -> convertToBaseUnit() -> \"metricPrefixData == null\". " +
-                        "Returning -1.0.");
+                        "Returning null.");
             }
         } else {
-            System.out.println("UnitConverter -> convertToBaseUnit() -> invalid string argument. Returning -1.0.");
-            valueInBaseUnit = -1d;
+            System.out.println("UnitConverter -> convertToBaseUnit() -> invalid string argument. Returning null.");
         }
-
-//        return new ConversionResult(valueInBaseUnit);
-        return valueInBaseUnit;
+        return result;
     }
 
     // metric unit passed must follow this pattern: mV, μA, MΩ etc.
@@ -108,17 +105,17 @@ public class UnitConverter {
         return baseUnit;
     }
 
-//    public static class ConversionResult {
-//        private final double value;
-//
-//        private ConversionResult(double value) {
-//            this.value = value;
-//        }
-//
-//        public double getValue() {
-//            return value;
-//        }
-//    }
+    public static class ConversionResult {
+        private final double value;
+
+        private ConversionResult(double value) {
+            this.value = value;
+        }
+
+        public double getValue() {
+            return value;
+        }
+    }
 
     public static class MetricPrefixData {
         private final String prefix;

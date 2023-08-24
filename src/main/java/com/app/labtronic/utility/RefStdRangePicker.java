@@ -1,7 +1,11 @@
 package com.app.labtronic.utility;
 
+import com.app.labtronic.data.valuation.MeasPointData;
+import com.app.labtronic.ui.caltab.valuation.ValuationDlgController;
+
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class RefStdRangePicker {
     private static final HashMap<String, List<String>> REF_RANGES_4708 = new HashMap<>();
@@ -21,11 +25,11 @@ public class RefStdRangePicker {
         REF_RANGES_SQ7000.put("RDC", List.of("20 Ω", "200 Ω", "2 kΩ", "20 kΩ", "200 kΩ", "2 MΩ", "20 MΩ", "200 MΩ"));
     }
 
-    /*
-    public static void pickRefRange(String referenceStd, MeasPointData point) {
+
+    public static String pickRefRange(String referenceStd, MeasPointData point) {
         if (referenceStd == null || referenceStd.trim().isBlank() || point == null) {
             System.out.println("RefStdRangePicker -> pickDefaultRange() -> some error occurred while selecting range");
-            return;
+            return null;
         }
 
         String referenceStandard = point.getUncertaintyData().getRefStandard();
@@ -39,30 +43,7 @@ public class RefStdRangePicker {
                 break;
             default:
                 System.out.println("RefStdRangePicker -> pickRefRange() -> invalid reference standard.");
-                return;
-        }
-
-        ValuationDlgController.Function function = point.getRange().getFunctionType();
-        List<String> rangeList;
-        switch (function) {
-            case VDC:
-                rangeList = refStdRanges.get("VDC");
-                break;
-            case VAC:
-                rangeList = refStdRanges.get("VAC");
-                break;
-            case IDC:
-                rangeList = refStdRanges.get("IDC");
-                break;
-            case IAC:
-                rangeList = refStdRanges.get("IAC");
-                break;
-            case RDC:
-                rangeList = refStdRanges.get("RDC");
-                break;
-            default:
-                System.out.println("RefStdRangePicker -> pickRefRange() -> invalid function type.");
-                return;
+                return null;
         }
 
         String pointUnit = point.getUnitProperty();
@@ -77,24 +58,54 @@ public class RefStdRangePicker {
             pointValue = Double.parseDouble(point.getPointValueProperty());
         } catch (NumberFormatException e) {
             System.out.println("RefStdRangePicker -> pickDefaultRange() -> Can't parse the point's value.");
-            return;
+            return null;
         }
 
-//        UnitConverter.ConversionResult conversionResult = UnitConverter.convertToBaseUnit(pointValue, metricPrefix);
-        double valueInBaseUnit = UnitConverter.convertToBaseUnit(pointValue, pointUnit);
+        UnitConverter.ConversionResult conversionResult = UnitConverter.convertValueToBaseUnit(pointValue, pointUnit);
         if (conversionResult == null) {
             System.out.println("RefStdRangePicker -> pickDefaultRange() -> error when converting a value to its base " +
                     "unit counterpart.");
-            return;
+            return null;
         }
         double pointValueInBaseUnit = conversionResult.getValue();
 
         // determine ref range:
 
-    }
-    */
+        ValuationDlgController.Function function = point.getRange().getFunctionType();
+        List<String> refRangeList;
+        String range;
+        switch (function) {
+            case VDC:
+                refRangeList = refStdRanges.get("VDC");
+                range = getDCVRange(pointValueInBaseUnit, referenceStandard);
+                break;
+            case VAC:
+                refRangeList = refStdRanges.get("VAC");
+                break;
+            case IDC:
+                refRangeList = refStdRanges.get("IDC");
+                break;
+            case IAC:
+                refRangeList = refStdRanges.get("IAC");
+                break;
+            case RDC:
+                refRangeList = refStdRanges.get("RDC");
+                break;
+            default:
+                System.out.println("RefStdRangePicker -> pickRefRange() -> invalid function type.");
+                return null;
+        }
 
-    private String getDCVRange(double pointValue, String referenceStandard) {
+        return range;
+    }
+
+
+    private static String getDCVRange(double pointValue, String referenceStandard, List<String> refRangeList) {
+        if (refRangeList == null || refRangeList.isEmpty()) {
+            System.out.println("RefStdRangePicker -> getDCVRange() -> problem with refRangeList. Returning null.");
+            return null;
+        }
+
         if (pointValue < 0) {
             pointValue *= -1;
         }
@@ -115,18 +126,27 @@ public class RefStdRangePicker {
 
             } else if (pointValue >= 20 && pointValue < 200) {
 
+            } else if (pointValue >= 200 && pointValue <= 1000) {
+
+            }
+        } else if (referenceStandard.equals("SQ7000")) {
+            if (pointValue >= 0 && pointValue < 0.0002) {
+
+            } else if (pointValue >= 0.0002 && pointValue < 0.002) {
+
+            } else if (pointValue >= 0.002 && pointValue < 0.02) {
+
+            } else if (pointValue >= 0.02 && pointValue < 0.2) {
+
+            } else if (pointValue >= 0.2 && pointValue < 2) {
+
+            } else if (pointValue >= 2 && pointValue < 20) {
+
+            } else if (pointValue >= 20 && pointValue < 200) {
+
             } else if (pointValue >= 200 && pointValue < 1100) {
 
             }
-
-
-
-        } else if (referenceStandard.equals("SQ7000")) {
-
-
-
-
-
         } else {
             System.out.println("RefStdRangePicker -> getDCVRange() -> invalid reference standard string.");
         }

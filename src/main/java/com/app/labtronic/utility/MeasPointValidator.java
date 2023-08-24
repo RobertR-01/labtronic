@@ -15,7 +15,13 @@ public class MeasPointValidator {
         String baseUnit = null;
         if (metricUnit != null && !metricUnit.trim().isBlank() && function != null) {
             baseUnit = UnitConverter.getBaseUnit(metricUnit);
-            double baseUnitValue = UnitConverter.convertValueToBaseUnit(value, metricUnit);
+            UnitConverter.ConversionResult conversionResult = UnitConverter.convertValueToBaseUnit(value, metricUnit);
+            if (conversionResult == null) {
+                System.out.println("MeasPointValidator -> checkPoint() -> error when converting a point's value to " +
+                        "its base unit counterpart. Returning null");
+                return false;
+            }
+            double baseUnitValue = conversionResult.getValue();
             double cmcFloor = 0;
             double cmcCeiling = 0;
             switch (function) {
