@@ -30,7 +30,7 @@ public class MeasPointValidator {
                     cmcCeiling = 1000;
                     break;
                 case VAC:
-                    cmcFloor = 0.01;
+                    cmcFloor = 0.0002;
                     cmcCeiling = 1000;
                     break;
                 case IDC, IAC:

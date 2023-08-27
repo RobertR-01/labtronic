@@ -44,11 +44,15 @@ public class UnitConverter {
                 String prefix = metricPrefixData.getPrefix();
                 result = new ConversionResult(value * multiplier);
             } else {
-                System.out.println("UnitConverter -> convertToBaseUnit() -> \"metricPrefixData == null\". " +
+                System.out.println("UnitConverter -> convertValueToBaseUnit() -> \"metricPrefixData == null\". " +
                         "Returning null.");
             }
+        } else if (metricUnit != null && !metricUnit.trim().isBlank() && (metricUnit.length() == 1)) {
+//            System.out.println("UnitConverter -> convertValueToBaseUnit() -> no metric prefix, returning original" +
+//                    " value.");
+            result = new ConversionResult(value);
         } else {
-            System.out.println("UnitConverter -> convertToBaseUnit() -> invalid string argument. Returning null.");
+            System.out.println("UnitConverter -> convertValueToBaseUnit() -> invalid string argument. Returning null.");
         }
         return result;
     }
