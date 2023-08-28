@@ -31,13 +31,13 @@ public class RefStdRangePicker {
 
     public static String pickRefRange(String referenceStd, MeasPointData point) {
         if (referenceStd == null || referenceStd.trim().isBlank() || point == null) {
-            System.out.println("RefStdRangePicker -> pickRefRange() -> some error occurred while selecting range");
+            System.out.println("RefStdRangePicker -> pickRefRange() -> invalid method argument.");
             return null;
         }
 
-        String referenceStandard = point.getUncertaintyData().getRefStandard();
+//        String referenceStandard = point.getUncertaintyData().getRefStandard();
         Map<String, List<String>> refStdRanges;
-        switch (referenceStandard) {
+        switch (referenceStd) {
             case "4708":
                 refStdRanges = REF_RANGES_4708;
                 break;
@@ -73,7 +73,7 @@ public class RefStdRangePicker {
         String range = null;
         switch (function) {
             case VDC:
-                range = getDCVRange(pointValueInBaseUnit, referenceStandard);
+                range = getDCVRange(pointValueInBaseUnit, referenceStd);
                 break;
             case VAC:
 

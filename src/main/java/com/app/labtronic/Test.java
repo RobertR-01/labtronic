@@ -43,12 +43,12 @@ public class Test {
 
         MeasRangeData rangeData = new MeasRangeData(200, "N/A", "V", ValuationDlgController.Function.VDC,
                 new ArrayList<>(), 0, 0);
-        MeasPointData point = new MeasPointData("0.199", "V");
+        MeasPointData point = new MeasPointData("11", "mV");
         point.setRange(rangeData);
 //        System.out.println(RefStdRangePicker.getRefRanges4708());
 //        System.out.println(UnitConverter.convertValueToBaseUnit(100, "V").getValue());
         System.out.println("----------------------------");
-        String range = RefStdRangePicker.pickRefRange("4708", point);
+        String range = RefStdRangePicker.pickRefRange("SQ7000", point);
         System.out.println("Point: " + point.getPointValueProperty() + " " + point.getUnitProperty()
                 + "; range: " + range);
         System.out.println("----------------------------");
