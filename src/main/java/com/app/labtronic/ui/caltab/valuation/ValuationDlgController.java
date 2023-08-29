@@ -182,6 +182,7 @@ public class ValuationDlgController {
     }
 
     // true -> ok
+    // TODO:
     private boolean validatePoints() {
         List<MeasPointData> pointsCopy = new ArrayList<>(pointsList);
         pointsList.clear(); // to prevent multiple sets of points being added to the list

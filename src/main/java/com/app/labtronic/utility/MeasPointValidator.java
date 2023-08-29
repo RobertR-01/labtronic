@@ -7,7 +7,9 @@ public class MeasPointValidator {
 
     }
 
+    // TODO: multiple exit points
     public static boolean checkPoint(double value, String metricUnit, ValuationDlgController.Function function) {
+        double originalValue = value;
         if (value < 0) {
             value *= -1;
         }
@@ -30,14 +32,26 @@ public class MeasPointValidator {
                     cmcCeiling = 1000;
                     break;
                 case VAC:
+                    if (originalValue < 0) {
+                        System.out.println("MeasPointValidator -> checkPoint() -> negative VAC value.");
+                        return false;
+                    }
                     cmcFloor = 0.0002;
                     cmcCeiling = 1000;
                     break;
                 case IDC, IAC:
+                    if (originalValue < 0 && function == ValuationDlgController.Function.IAC) {
+                        System.out.println("MeasPointValidator -> checkPoint() -> negative IAC value.");
+                        return false;
+                    }
                     cmcFloor = 0.00001;
                     cmcCeiling = 10;
                     break;
                 case RDC:
+                    if (originalValue < 0) {
+                        System.out.println("MeasPointValidator -> checkPoint() -> negative RDC value.");
+                        return false;
+                    }
                     cmcFloor = 0.1;
                     cmcCeiling = 100000000;
                     break;

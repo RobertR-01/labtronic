@@ -73,7 +73,7 @@ public class RefStdRangePicker {
         String range = null;
         switch (function) {
             case VDC:
-                range = getDCVRange(pointValueInBaseUnit, referenceStd);
+                range = getVDCRange(pointValueInBaseUnit, referenceStd);
                 break;
             case VAC:
 
@@ -95,8 +95,7 @@ public class RefStdRangePicker {
         return range;
     }
 
-    // TODO: change access modifier
-    public static String getDCVRange(double pointValue, String referenceStandard) {
+    private static String getVDCRange(double pointValue, String referenceStandard) {
         if (pointValue < 0) {
             pointValue *= -1;
         }
@@ -122,7 +121,7 @@ public class RefStdRangePicker {
             } else if (pointValue >= 200 && pointValue <= 1000) {
                 range = rangeList.get(7);
             } else {
-                System.out.println("RefStdRangePicker -> getDCVRange() -> no valid 4708 range present.");
+                System.out.println("RefStdRangePicker -> getVDCRange() -> no valid 4708 range present.");
             }
         } else if (referenceStandard.equals("SQ7000")) {
             rangeList = REF_RANGES_SQ7000.get("VDC");
@@ -140,17 +139,126 @@ public class RefStdRangePicker {
                 range = rangeList.get(5);
             } else if (pointValue >= 20 && pointValue < 200) {
                 range = rangeList.get(6);
-            } else if (pointValue >= 200 && pointValue < 1100) {
+            } else if (pointValue >= 200 && pointValue <= 1000) {
                 range = rangeList.get(7);
             } else {
-                System.out.println("RefStdRangePicker -> getDCVRange() -> no valid SQ7000 range present.");
+                System.out.println("RefStdRangePicker -> getVDCRange() -> no valid SQ7000 range present.");
             }
         } else {
-            System.out.println("RefStdRangePicker -> getDCVRange() -> invalid reference standard string.");
+            System.out.println("RefStdRangePicker -> getVDCRange() -> invalid reference standard string.");
         }
 
         return range;
     }
+
+
+    // TODO: no check for negative values? (see: MeasPointValidator)
+    private static String getVACRange(double pointValue, String referenceStandard) {
+        List<String> rangeList;
+        String range = null;
+        if (referenceStandard.equals("4708")) {
+            rangeList = REF_RANGES_4708.get("VAC");
+            if (pointValue >= 0.0002 && pointValue < 0.002) {
+                range = rangeList.get(0);
+            } else if (pointValue >= 0.002 && pointValue < 0.02) {
+                range = rangeList.get(1);
+            } else if (pointValue >= 0.02 && pointValue < 0.2) {
+                range = rangeList.get(2);
+            } else if (pointValue >= 0.2 && pointValue < 2) {
+                range = rangeList.get(3);
+            } else if (pointValue >= 2 && pointValue < 20) {
+                range = rangeList.get(4);
+            } else if (pointValue >= 20 && pointValue < 200) {
+                range = rangeList.get(5);
+            } else if (pointValue >= 200 && pointValue <= 1000) {
+                range = rangeList.get(6);
+            } else {
+                System.out.println("RefStdRangePicker -> getVACRange() -> no valid 4708 range present.");
+            }
+        } else if (referenceStandard.equals("SQ7000")) {
+            rangeList = REF_RANGES_SQ7000.get("VAC");
+            if (pointValue >= 0.0001 && pointValue < 0.0002) {
+                range = rangeList.get(0);
+            } else if (pointValue >= 0.0002 && pointValue < 0.002) {
+                range = rangeList.get(1);
+            } else if (pointValue >= 0.002 && pointValue < 0.02) {
+                range = rangeList.get(2);
+            } else if (pointValue >= 0.02 && pointValue < 0.2) {
+                range = rangeList.get(3);
+            } else if (pointValue >= 0.2 && pointValue < 2) {
+                range = rangeList.get(4);
+            } else if (pointValue >= 2 && pointValue < 20) {
+                range = rangeList.get(5);
+            } else if (pointValue >= 20 && pointValue < 200) {
+                range = rangeList.get(6);
+            } else if (pointValue >= 200 && pointValue <= 1000) {
+                range = rangeList.get(7);
+            } else {
+                System.out.println("RefStdRangePicker -> getVACRange() -> no valid SQ7000 range present.");
+            }
+        } else {
+            System.out.println("RefStdRangePicker -> getVACRange() -> invalid reference standard string.");
+        }
+
+        return range;
+    }
+
+    private static String getIDCRange(double pointValue, String referenceStandard) {
+        if (pointValue < 0) {
+            pointValue *= -1;
+        }
+
+        List<String> rangeList;
+        String range = null;
+        if (referenceStandard.equals("4708")) {
+            rangeList = REF_RANGES_4708.get("VDC");
+            if (pointValue >= 0.0001 && pointValue < 0.0002) {
+                range = rangeList.get(0);
+            } else if (pointValue >= 0.0002 && pointValue < 0.002) {
+                range = rangeList.get(1);
+            } else if (pointValue >= 0.002 && pointValue < 0.02) {
+                range = rangeList.get(2);
+            } else if (pointValue >= 0.02 && pointValue < 0.2) {
+                range = rangeList.get(3);
+            } else if (pointValue >= 0.2 && pointValue < 2) {
+                range = rangeList.get(4);
+            } else if (pointValue >= 2 && pointValue < 20) {
+                range = rangeList.get(5);
+            } else if (pointValue >= 20 && pointValue < 200) {
+                range = rangeList.get(6);
+            } else if (pointValue >= 200 && pointValue <= 1000) {
+                range = rangeList.get(7);
+            } else {
+                System.out.println("RefStdRangePicker -> getVDCRange() -> no valid 4708 range present.");
+            }
+        } else if (referenceStandard.equals("SQ7000")) {
+            rangeList = REF_RANGES_SQ7000.get("VDC");
+            if (pointValue >= 0.0001 && pointValue < 0.0002) {
+                range = rangeList.get(0);
+            } else if (pointValue >= 0.0002 && pointValue < 0.002) {
+                range = rangeList.get(1);
+            } else if (pointValue >= 0.002 && pointValue < 0.02) {
+                range = rangeList.get(2);
+            } else if (pointValue >= 0.02 && pointValue < 0.2) {
+                range = rangeList.get(3);
+            } else if (pointValue >= 0.2 && pointValue < 2) {
+                range = rangeList.get(4);
+            } else if (pointValue >= 2 && pointValue < 20) {
+                range = rangeList.get(5);
+            } else if (pointValue >= 20 && pointValue < 200) {
+                range = rangeList.get(6);
+            } else if (pointValue >= 200 && pointValue <= 1000) {
+                range = rangeList.get(7);
+            } else {
+                System.out.println("RefStdRangePicker -> getVDCRange() -> no valid SQ7000 range present.");
+            }
+        } else {
+            System.out.println("RefStdRangePicker -> getVDCRange() -> invalid reference standard string.");
+        }
+
+        return range;
+    }
+
 
     public static HashMap<String, List<String>> getRefRanges4708() {
         return REF_RANGES_4708;
