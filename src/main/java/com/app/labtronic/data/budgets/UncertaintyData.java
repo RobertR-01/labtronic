@@ -42,8 +42,9 @@ public class UncertaintyData {
 
         this.dutReadings = new ArrayList<>();
 
-        this.refStdRange = "placeholder";
+        this.refStdRange = "";
         this.calibrationMethod = "Direct Measurement";
+
         this.refStandard = "4708";
     }
 

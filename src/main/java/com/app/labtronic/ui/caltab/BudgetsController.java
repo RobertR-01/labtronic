@@ -58,6 +58,10 @@ public class BudgetsController {
     private List<TextField> readingsTFList;
     @FXML
     private VBox dutReadingsVBox;
+    @FXML
+    private ComboBox<String> refStdSelector;
+    @FXML
+    private Label refStdRangeUnit;
 
     @FXML
     private Label instrumentType;
@@ -258,20 +262,33 @@ public class BudgetsController {
                         && rangeListView.getSelectionModel().getSelectedItem() != null) {
                     activeRange = rangeListView.getSelectionModel().getSelectedItem();
                     activePoint = pointListView.getSelectionModel().getSelectedItem();
+
                     dutResSpinner.getValueFactory().setValue(activePoint.getUncertaintyData().getDutResolution());
                     loadReadings(activePoint);
+
                     dutReadingsVBox.setDisable(false);
+
                     dutResSpinner.setDisable(false);
+
+                    refStdSelector.setDisable(false);
+                    refStdSelector.setValue(activePoint.getUncertaintyData().getRefStandard());
+//                    refStdRangeCB.setValue("");
+
                     refStdRangeCB.setValue(activePoint.getUncertaintyData().getRefStdRange());
                     refStdRangeCB.setDisable(false);
                 } else {
                     activePoint = null;
                     activeRange = null;
+
                     clearReadingsTF();
                     dutReadingsVBox.setDisable(true);
+
                     dutResSpinner.getValueFactory().setValue(0);
                     dutResSpinner.setDisable(true);
-                    refStdRangeCB.setValue("2");
+
+                    refStdSelector.setDisable(true);
+
+                    refStdRangeCB.setValue("");
                     refStdRangeCB.setDisable(true);
                 }
             }
@@ -330,9 +347,24 @@ public class BudgetsController {
         return result;
     }
 
+    private void selectRefStdRange(MeasPointData point) {
+        if (point != null) {
+
+        } else {
+            return;
+        }
+        String range;
+    }
+
     private void saveDUTResolution(int resolution, MeasPointData point) {
         if (resolution >= 0 && resolution <= 8 && point != null) {
             point.getUncertaintyData().setDutResolution(resolution);
+        }
+    }
+
+    private void saveRefStdSelection(String refStandard, MeasPointData point) {
+        if (refStandard != null && !refStandard.trim().isBlank() && point != null) {
+            point.getUncertaintyData().setRefStandard(refStandard);
         }
     }
 
@@ -358,6 +390,7 @@ public class BudgetsController {
             if (validateReadings()) {
                 saveReadings(activePoint);
                 saveDUTResolution(dutResSpinner.getValueFactory().getValue(), activePoint);
+                saveRefStdSelection(refStdSelector.getValue(), activePoint);
                 saveRefStdRange(refStdRangeCB.getValue(), activePoint);
             }
         } else {

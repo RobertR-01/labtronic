@@ -41,9 +41,9 @@ public class Test {
 //        System.out.println("Point: " + value + " " + metricUnit + " of " + function.name() + " function is " + string);
 
 
-        MeasRangeData rangeData = new MeasRangeData(200, "N/A", "V", ValuationDlgController.Function.VDC,
+        MeasRangeData rangeData = new MeasRangeData(10, "N/A", "A", ValuationDlgController.Function.IDC,
                 new ArrayList<>(), 0, 0);
-        MeasPointData point = new MeasPointData("11", "mV");
+        MeasPointData point = new MeasPointData("111111", "mA");
         point.setRange(rangeData);
 //        System.out.println(RefStdRangePicker.getRefRanges4708());
 //        System.out.println(UnitConverter.convertValueToBaseUnit(100, "V").getValue());

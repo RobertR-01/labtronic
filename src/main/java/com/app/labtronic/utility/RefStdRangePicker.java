@@ -5,7 +5,6 @@ import com.app.labtronic.ui.caltab.valuation.ValuationDlgController;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class RefStdRangePicker {
     private static final HashMap<String, List<String>> REF_RANGES_4708 = new HashMap<>();
@@ -35,18 +34,9 @@ public class RefStdRangePicker {
             return null;
         }
 
-//        String referenceStandard = point.getUncertaintyData().getRefStandard();
-        Map<String, List<String>> refStdRanges;
-        switch (referenceStd) {
-            case "4708":
-                refStdRanges = REF_RANGES_4708;
-                break;
-            case "SQ7000":
-                refStdRanges = REF_RANGES_SQ7000;
-                break;
-            default:
-                System.out.println("RefStdRangePicker -> pickRefRange() -> invalid reference standard.");
-                return null;
+        if (!(referenceStd.equals("4708") || referenceStd.equals("SQ7000"))) {
+            System.out.println("RefStdRangePicker -> pickRefRange() -> invalid reference standard.");
+            return null;
         }
 
         String pointUnit = point.getUnitProperty();
@@ -70,22 +60,22 @@ public class RefStdRangePicker {
         // determine ref range:
 
         ValuationDlgController.Function function = point.getRange().getFunctionType();
-        String range = null;
+        String range;
         switch (function) {
             case VDC:
                 range = getVDCRange(pointValueInBaseUnit, referenceStd);
                 break;
             case VAC:
-
+                range = getVACRange(pointValueInBaseUnit, referenceStd);
                 break;
             case IDC:
-
+                range = getIDCRange(pointValueInBaseUnit, referenceStd);
                 break;
             case IAC:
-
+                range = getIACRange(pointValueInBaseUnit, referenceStd);
                 break;
             case RDC:
-
+                range = getRDCRange(pointValueInBaseUnit, referenceStd);
                 break;
             default:
                 System.out.println("RefStdRangePicker -> pickRefRange() -> invalid function type.");

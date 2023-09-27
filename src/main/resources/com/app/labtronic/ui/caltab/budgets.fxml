@@ -93,33 +93,33 @@
                         <Control fx:constant="USE_COMPUTED_SIZE"/>
                     </prefHeight>
                 </Label>
-                <ComboBox fx:id="refStdSpinner" minWidth="100" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                <ComboBox fx:id="refStdSelector" minWidth="100" GridPane.columnIndex="1" GridPane.rowIndex="1"
+                          disable="true">
                     <items>
                         <FXCollections fx:factory="observableArrayList">
                             <String fx:value="4708"/>
+                            <String fx:value="SQ7000"/>
                         </FXCollections>
                     </items>
                     <value>
-                        <String fx:value="4708"/>
+                        <String fx:value=""/>
                     </value>
                 </ComboBox>
 
-                <Label text="Reference standard range:" wrapText="true" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                <Label text="Reference standard's range:" wrapText="true" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
                 <HBox GridPane.columnIndex="1" GridPane.rowIndex="2" spacing="5">
                     <HBox alignment="CENTER_LEFT" spacing="5">
-                        <ComboBox fx:id="refStdRangeCB" minWidth="100">
+                        <ComboBox fx:id="refStdRangeCB" minWidth="100" disable="true">
                             <items>
                                 <FXCollections fx:factory="observableArrayList">
-                                    <String fx:value="2"/>
-                                    <String fx:value="20"/>
-                                    <String fx:value="200"/>
+
                                 </FXCollections>
                             </items>
                             <value>
-                                <String fx:value="2"/>
+                                <String fx:value=""/>
                             </value>
                         </ComboBox>
-                        <Label text="mV"/>
+                        <Label fx:id="refStdRangeUnit" minWidth="20"/>
                     </HBox>
                     <Separator HBox.hgrow="ALWAYS" orientation="VERTICAL"/>
                     <HBox alignment="CENTER">
