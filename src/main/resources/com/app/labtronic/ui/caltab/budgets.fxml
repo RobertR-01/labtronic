@@ -109,7 +109,7 @@
                 <Label text="Reference standard's range:" wrapText="true" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
                 <HBox GridPane.columnIndex="1" GridPane.rowIndex="2" spacing="5">
                     <HBox alignment="CENTER_LEFT" spacing="5">
-                        <ComboBox fx:id="refStdRangeCB" minWidth="100" disable="true">
+                        <ComboBox fx:id="refStdRangeSelector" minWidth="100" disable="true">
                             <items>
                                 <FXCollections fx:factory="observableArrayList">
 

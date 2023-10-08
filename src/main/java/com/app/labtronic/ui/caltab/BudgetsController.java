@@ -4,6 +4,7 @@ import com.app.labtronic.data.ActiveSession;
 import com.app.labtronic.data.CalData;
 import com.app.labtronic.data.valuation.MeasPointData;
 import com.app.labtronic.data.valuation.MeasRangeData;
+import com.app.labtronic.utility.RefStdRangePicker;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -33,7 +34,7 @@ public class BudgetsController {
     @FXML
     private Spinner<Integer> dutResSpinner;
     @FXML
-    private ComboBox<String> refStdRangeCB;
+    private ComboBox<String> refStdRangeSelector;
 
     @FXML
     private TextField dutReading0;
@@ -274,8 +275,8 @@ public class BudgetsController {
                     refStdSelector.setValue(activePoint.getUncertaintyData().getRefStandard());
 //                    refStdRangeCB.setValue("");
 
-                    refStdRangeCB.setValue(activePoint.getUncertaintyData().getRefStdRange());
-                    refStdRangeCB.setDisable(false);
+                    refStdRangeSelector.setValue(activePoint.getUncertaintyData().getRefStdRange());
+                    refStdRangeSelector.setDisable(false);
                 } else {
                     activePoint = null;
                     activeRange = null;
@@ -288,11 +289,14 @@ public class BudgetsController {
 
                     refStdSelector.setDisable(true);
 
-                    refStdRangeCB.setValue("");
-                    refStdRangeCB.setDisable(true);
+                    refStdRangeSelector.setValue("");
+                    refStdRangeSelector.setDisable(true);
                 }
             }
         });
+
+        // range selector change listener
+//        refStdRangeSelector.setValue(selectRefStdRange(activePoint, refStdSelector.getValue()));
     }
 
     public void addRedOutline(Node node) {
@@ -347,13 +351,14 @@ public class BudgetsController {
         return result;
     }
 
-    private void selectRefStdRange(MeasPointData point) {
-        if (point != null) {
+    private String selectRefStdRange(MeasPointData point, String referenceStandard) {
+        String range = null;
 
-        } else {
-            return;
+        if (point != null) {
+            range = RefStdRangePicker.pickRefRange(referenceStandard, point);
         }
-        String range;
+
+        return range;
     }
 
     private void saveDUTResolution(int resolution, MeasPointData point) {
@@ -391,7 +396,7 @@ public class BudgetsController {
                 saveReadings(activePoint);
                 saveDUTResolution(dutResSpinner.getValueFactory().getValue(), activePoint);
                 saveRefStdSelection(refStdSelector.getValue(), activePoint);
-                saveRefStdRange(refStdRangeCB.getValue(), activePoint);
+                saveRefStdRange(refStdRangeSelector.getValue(), activePoint);
             }
         } else {
             System.out.println("There is currently no active measurement point.");

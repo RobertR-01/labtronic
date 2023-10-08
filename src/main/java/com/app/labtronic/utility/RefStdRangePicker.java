@@ -334,7 +334,6 @@ public class RefStdRangePicker {
         return range;
     }
 
-
     public static HashMap<String, List<String>> getRefRanges4708() {
         return REF_RANGES_4708;
     }
