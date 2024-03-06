@@ -1,0 +1,41 @@
+fat TODO list:
+- how to fix the current controls extraction problem:
+    create another section container class
+
+    one constructor for base sections DC
+    one for AC
+
+    fields are refs to existing controls
+    setuserdata to table view with the instance of the container
+
+
+    ac container class extends section container?
+
+    -------------------
+
+- fix combo box focus when selecting "First" in the new range dialog!!!
+- 0 handling for range and points
+
+- rename service valuation tab to service scope (?)
+
+- general cleanup: remove duplicate code, turn repeated blocks into methods (e.g. ContextMenu setup); remove test printouts; make some class template for dialog/pupup invoking etc.
+
+- implement tableview handlers for editing and adding items
+
+- implement/extend data saving to CalData instance functionality for all sub-tabs
+
+- implement a functionality for inspecting range in the tableview to see the actual points
+
+- conditions sub-tab
+
+- figure out how to store reference standard data
+
+- measurements sub-tab -> figure out how to cycle through all ranges/points
+
+- figure out how to save CalData to an external file / database
+
+- results sub-tab
+
+- figure out how to generate protocol/certificate, how to save them (maybe make them editable?)
+
+- sorting for the measurement range holding collections!!!

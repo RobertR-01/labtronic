@@ -2,6 +2,6 @@
     -fx-stroke: -fx-text-fill;
 }
 
-#toolbarButton {
+.toolbarBtn {
     -fx-background-color: transparent;
 }

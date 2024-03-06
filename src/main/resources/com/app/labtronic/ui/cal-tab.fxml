@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<TabPane fx:id="rootTabPane" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+         fx:controller="com.app.labtronic.ui.CalTabController" tabClosingPolicy="UNAVAILABLE">
+    <tabs>
+        <Tab text="General Information">
+            <fx:include fx:id="genInfo" source="caltab/gen-info.fxml"/>
+        </Tab>
+        <Tab text="Service Valuation">
+            <fx:include fx:id="valuation" source="caltab/valuation.fxml"/>
+        </Tab>
+        <Tab text="Uncertainty Budgets">
+            <fx:include fx:id="budgets" source="caltab/budgets.fxml"/>
+        </Tab>
+        <Tab text="Environmental Conditions">
+            <fx:include fx:id="conditions" source="caltab/conditions.fxml"/>
+        </Tab>
+        <Tab text="Results">
+            <fx:include fx:id="results" source="caltab/results.fxml"/>
+        </Tab>
+    </tabs>
+</TabPane>
