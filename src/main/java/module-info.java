@@ -22,6 +22,8 @@ module com.app.labtronic {
     exports com.app.labtronic.ui.caltab;
     exports com.app.labtronic.ui.caltab.valuation;
     exports com.app.labtronic.data.valuation;
+    exports com.app.labtronic.data.budgets;
     opens com.app.labtronic.ui.caltab to javafx.fxml;
     opens com.app.labtronic.ui.caltab.valuation to javafx.fxml;
+    opens com.app.labtronic.ui.caltab.budgets to javafx.fxml;
 }

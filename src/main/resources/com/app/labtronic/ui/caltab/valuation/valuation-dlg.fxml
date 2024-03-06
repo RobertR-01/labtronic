@@ -37,8 +37,12 @@
                 </value>
             </ComboBox>
 
-            <Label text="Range type: " GridPane.columnIndex="0" GridPane.rowIndex="3"/>
-            <ComboBox fx:id="rangeTypeCB" GridPane.columnIndex="1" GridPane.rowIndex="3">
+            <Label text="Resolution: " GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+            <Spinner fx:id="resSpinner" GridPane.columnIndex="1" GridPane.rowIndex="3" min="0" max="8"
+                     initialValue="0" amountToStepBy="1"/>
+
+            <Label text="Range type: " GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+            <ComboBox fx:id="rangeTypeCB" GridPane.columnIndex="1" GridPane.rowIndex="4">
                 <items>
                     <FXCollections fx:factory="observableArrayList">
                         <String fx:value="First"/>
@@ -50,12 +54,12 @@
                 </value>
             </ComboBox>
 
-            <Label text="Use default EURAMET points: " wrapText="true" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
-            <Button fx:id="eurametButton" text="EURAMET" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+            <Label text="Use default EURAMET points: " wrapText="true" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+            <Button fx:id="eurametButton" text="EURAMET" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
 
-            <Label GridPane.columnIndex="0" GridPane.rowIndex="5" wrapText="true" GridPane.valignment="TOP"
+            <Label GridPane.columnIndex="0" GridPane.rowIndex="6" wrapText="true" GridPane.valignment="TOP"
                    fx:id="pointsL"/>
-            <TextArea fx:id="pointsTA" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+            <TextArea fx:id="pointsTA" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
         </GridPane>
     </content>
 </DialogPane>

@@ -10,12 +10,15 @@ public class MeasRangeData {
     private String unit;
     private String rangeType;
     private ValuationDlgController.Function functionType;
-    private ArrayList<Double> points;
+    private ArrayList<MeasPointData> points;
     private int numberOfPoints;
     private double cost;
-    private int resolution;
+    private int resolutionCategory; // price-list
     private double rangeBaseUnitValue;
+    private String frequency;
+    private int defaultResolution;
 
+    // for the TableView in ValuationController
     private SimpleStringProperty rangeProperty;
     private SimpleStringProperty unitProperty;
     private SimpleStringProperty numberOfPointsProperty;
@@ -23,7 +26,7 @@ public class MeasRangeData {
     private SimpleStringProperty costProperty;
 
     public MeasRangeData(double range, String rangeType, String unit, ValuationDlgController.Function functionType,
-                         ArrayList<Double> points, int resolution) {
+                         ArrayList<MeasPointData> points, int resolutionCategory, int defaultResolution) {
         // TODO: validation
         this.range = range;
         this.rangeType = rangeType;
@@ -31,9 +34,11 @@ public class MeasRangeData {
         this.functionType = functionType;
         this.points = points;
         this.numberOfPoints = points.size();
-        this.resolution = resolution;
+        this.resolutionCategory = resolutionCategory;
         this.cost = 0;
         this.rangeBaseUnitValue = calculateRangeBaseUnitValue();
+        this.frequency = null;
+        this.defaultResolution = defaultResolution;
     }
 
     public double getRange() {
@@ -56,8 +61,8 @@ public class MeasRangeData {
         return functionType;
     }
 
-    public ArrayList<Double> getPoints() {
-        return new ArrayList<>(points);
+    public ArrayList<MeasPointData> getPoints() {
+        return points;
     }
 
     public int getNumberOfPoints() {
@@ -68,8 +73,8 @@ public class MeasRangeData {
         return cost;
     }
 
-    public int getResolution() {
-        return resolution;
+    public int getResolutionCategory() {
+        return resolutionCategory;
     }
 
     public String getRangeProperty() {
@@ -128,7 +133,7 @@ public class MeasRangeData {
         this.functionType = functionType;
     }
 
-    public void setPoints(ArrayList<Double> points) {
+    public void setPoints(ArrayList<MeasPointData> points) {
         this.points = points;
     }
 
@@ -140,10 +145,32 @@ public class MeasRangeData {
         this.cost = cost;
     }
 
-    public void setResolution(int resolution) {
-        this.resolution = resolution;
+    public void setResolutionCategory(int resolutionCategory) {
+        this.resolutionCategory = resolutionCategory;
     }
 
+    public String getFrequency() {
+        return frequency;
+    }
+
+    public int getDefaultResolution() {
+        return defaultResolution;
+    }
+
+    public void setDefaultResolution(int defaultResolution) {
+        this.defaultResolution = defaultResolution;
+    }
+
+    public void setFrequency(String frequency) {
+        if ((functionType.toString().equals("VAC") || functionType.toString().equals("IAC")) &&frequency != null
+                && !frequency.isBlank()) {
+            this.frequency = frequency;
+        } else {
+            System.out.println("MeasRangeData -> setFrequency() -> invalid frequency string.");
+        }
+    }
+
+    // range value converted to the corresponding base SI unit
     private double calculateRangeBaseUnitValue() {
         double multiplier = 0;
         switch (unit) {
@@ -162,7 +189,7 @@ public class MeasRangeData {
         int number0fBasePoints = 0;
         double extraPointCost = 0;
         double baseRangeCost = 0;
-        switch (resolution) {
+        switch (resolutionCategory) {
             case 4:
                 if (rangeType.equalsIgnoreCase("first")) {
                     baseRangeCost = 150;

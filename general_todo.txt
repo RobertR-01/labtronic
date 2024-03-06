@@ -1,4 +1,18 @@
 fat TODO list:
+- how to fix the current controls extraction problem:
+    create another section container class
+
+    one constructor for base sections DC
+    one for AC
+
+    fields are refs to existing controls
+    setuserdata to table view with the instance of the container
+
+
+    ac container class extends section container?
+
+    -------------------
+
 - fix combo box focus when selecting "First" in the new range dialog!!!
 - 0 handling for range and points
 

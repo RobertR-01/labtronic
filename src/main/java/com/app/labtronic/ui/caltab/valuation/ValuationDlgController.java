@@ -1,7 +1,9 @@
 package com.app.labtronic.ui.caltab.valuation;
 
 import com.app.labtronic.data.CalData;
+import com.app.labtronic.data.valuation.MeasPointData;
 import com.app.labtronic.data.valuation.MeasRangeData;
+import com.app.labtronic.utility.MeasPointValidator;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
@@ -24,14 +26,17 @@ public class ValuationDlgController {
     private Label pointsL;
     @FXML
     private TextArea pointsTA;
+    @FXML
+    private Spinner<Integer> resSpinner;
 
     private Function functionType;
-    private ArrayList<Double> pointsList;
+    private ArrayList<MeasPointData> pointsList;
     private String pointsString;
     private List<Node> nodeList;
     private double range;
     private List<Node> emptyFields;
     private int resCategory;
+    private int resolution;
 
     private CalData calData;
 
@@ -93,7 +98,6 @@ public class ValuationDlgController {
     // TODO: move it to the MeasRangeData class
     @FXML
     private void setEurametPoints() {
-        System.out.println(resCategory); // for DCV and DCI
         if (validateRange()) {
             List<Double> eurametPointsList = new ArrayList<>();
             List<Integer> defaultValues = new ArrayList<>();
@@ -178,8 +182,9 @@ public class ValuationDlgController {
     }
 
     // true -> ok
+    // TODO:
     private boolean validatePoints() {
-        List<Double> pointsCopy = new ArrayList<>(pointsList);
+        List<MeasPointData> pointsCopy = new ArrayList<>(pointsList);
         pointsList.clear(); // to prevent multiple sets of points being added to the list
         boolean result = false;
         String string = pointsTA.getText().trim();
@@ -187,8 +192,16 @@ public class ValuationDlgController {
         for (String point : stringArray) {
             try {
                 if (point != null) {
+                    // checking if the point value string is valid (number):
                     double pointValue = Double.parseDouble(point);
-                    pointsList.add(pointValue);
+                    String pointUnit = unitCB.getValue();
+                    MeasPointData newPoint = new MeasPointData(point, pointUnit);
+                    if (!pointsList.contains(newPoint)) {
+                        pointsList.add(newPoint);
+                    } else {
+                        result = false;
+                        break;
+                    }
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Invalid input.");
@@ -199,6 +212,25 @@ public class ValuationDlgController {
                 break;
             }
             result = true;
+        }
+        return result;
+    }
+
+    // call after validate points (pointsList must be properly filled)
+    private boolean checkIfPointsInCMCRange() {
+        boolean result = true;
+        String unit = unitCB.getValue();
+        if (pointsList != null && !pointsList.isEmpty()) {
+            double pointValue;
+            double pointValueInBaseUnit;
+            for (MeasPointData point : pointsList) {
+                // TODO: check for NumberFormatException
+                pointValue = Double.parseDouble(point.getPointValueProperty());
+                if (!MeasPointValidator.checkPoint(pointValue, unit, functionType)) {
+                    result = false;
+                    break;
+                }
+            }
         }
         return result;
     }
@@ -248,6 +280,7 @@ public class ValuationDlgController {
         results.add(validateRange());
         results.add(validatePoints());
         results.add(checkForZeroRange());
+        results.add(checkIfPointsInCMCRange());
         return results;
     }
 
@@ -259,18 +292,19 @@ public class ValuationDlgController {
         if (range != 0 && rangeTypeCB.getValue() != null && unitCB.getValue() != null && functionType != null
                 && pointsList != null && !pointsList.isEmpty() && resCategory != 0) {
             return new MeasRangeData(range, rangeTypeCB.getValue(), unitCB.getValue(), functionType, pointsList,
-                    resCategory);
+                    resCategory, resSpinner.getValueFactory().getValue());
         } else {
             return null;
         }
     }
 
     // TODO: validation
-    public void loadData(String range, String rangeType, String unit, String pointsList) {
+    public void loadData(String range, String rangeType, String unit, String pointsList, int defaultRangeResolution) {
         rangeTF.setText(range);
         rangeTypeCB.setValue(rangeType);
         unitCB.setValue(unit);
         pointsTA.setText(pointsList);
+        resSpinner.getValueFactory().setValue(defaultRangeResolution);
     }
 
     private void setResCategory(String resolution) {
@@ -297,6 +331,18 @@ public class ValuationDlgController {
     public List<Node> getEmptyFields() {
         return emptyFields;
     }
+
+    public Function getFunctionType() {
+        return functionType;
+    }
+
+//    public void updateDefaultResolutionSpinner(int resolution) {
+//        if (resolution >= 0 && resolution <= 8) {
+//            resSpinner.getValueFactory().setValue(resolution);
+//        } else {
+//            resSpinner.getValueFactory().setValue(0);
+//        }
+//    }
 
     public enum Function {
         VDC,

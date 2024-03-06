@@ -6,29 +6,19 @@
          fx:controller="com.app.labtronic.ui.CalTabController" tabClosingPolicy="UNAVAILABLE">
     <tabs>
         <Tab text="General Information">
-            <content>
-                <fx:include fx:id="genInfo" source="caltab/gen-info.fxml"/>
-            </content>
+            <fx:include fx:id="genInfo" source="caltab/gen-info.fxml"/>
         </Tab>
         <Tab text="Service Valuation">
-            <content>
-                <fx:include fx:id="valuation" source="caltab/valuation.fxml"/>
-            </content>
+            <fx:include fx:id="valuation" source="caltab/valuation.fxml"/>
         </Tab>
         <Tab text="Uncertainty Budgets">
-            <content>
-                <fx:include fx:id="budgets" source="caltab/budgets.fxml"/>
-            </content>
+            <fx:include fx:id="budgets" source="caltab/budgets.fxml"/>
         </Tab>
         <Tab text="Environmental Conditions">
-            <content>
-                <fx:include fx:id="conditions" source="caltab/conditions.fxml"/>
-            </content>
+            <fx:include fx:id="conditions" source="caltab/conditions.fxml"/>
         </Tab>
         <Tab text="Results">
-            <content>
-                <fx:include fx:id="results" source="caltab/results.fxml"/>
-            </content>
+            <fx:include fx:id="results" source="caltab/results.fxml"/>
         </Tab>
     </tabs>
 </TabPane>

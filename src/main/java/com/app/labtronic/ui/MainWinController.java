@@ -99,6 +99,7 @@ public class MainWinController {
         if (result.isPresent() && result.get() == ButtonType.OK) {
             // creating a new calibration tab:
             Tab newCalTab = new Tab();
+
             if (root.getCenter() == null) {
                 tabPane = new TabPane();
                 tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.ALL_TABS);

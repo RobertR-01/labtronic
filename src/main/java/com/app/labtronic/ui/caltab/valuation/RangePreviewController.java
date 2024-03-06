@@ -35,11 +35,12 @@ public class RangePreviewController {
         }
     }
 
+    // TODO: validation?
     public void loadTableViewData(MeasRangeData rangeData) {
         if (rangeData != null) {
-            List<Double> points = rangeData.getPoints();
-            for (double point : points) {
-                pointsObservableList.add(new MeasPointData(String.valueOf(point), rangeData.getUnit()));
+            List<MeasPointData> points = rangeData.getPoints();
+            for (MeasPointData point : points) {
+                pointsObservableList.add(new MeasPointData(point.getPointValueProperty(), rangeData.getUnit()));
             }
         }
     }

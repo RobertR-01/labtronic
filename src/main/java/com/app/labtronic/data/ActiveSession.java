@@ -6,7 +6,7 @@ import java.util.Map;
 public class ActiveSession {
     private static final ActiveSession ACTIVE_SESSION = new ActiveSession();
     private final Map<Long, CalData> activeCalTabs;
-    private static Long LAST_ADDED_ID = -1L;
+    private static Long LAST_ADDED_ID;
 
     private ActiveSession() {
         activeCalTabs = new HashMap<>();
