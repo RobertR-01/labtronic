@@ -9,6 +9,7 @@ A WIP project of a desktop applicaton for performing various tasks related to th
 - [Features](#star2-features)
 - [Usage](#zap-usage)
   - [Requirements](#electric_plug-requirements)
+  - [How to use the Service Valuation tab](#heavy_dollar_sign-how-to-use-the-service-valuation-tab)
 - [Development](#wrench-development)
   - [Planned features](#bulb-planned-features)
   - [Pre-Requisites](#pencil-pre-requisites)
@@ -45,6 +46,9 @@ To test the application in its curent state just download the latest [pre-releas
 #### :electric_plug: Requirements
 - Windows OS
 - Java 19+
+
+### :heavy_dollar_sign: How to use the Service Valuation tab
+
 
 ## :wrench: Development
 The application is still under development. The project's source code the can be freely cloned, inspected and modified using an IDE of choice. 
