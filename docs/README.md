@@ -79,7 +79,7 @@ To prepare a calibration service quote (according to the customer's requirements
 </div>
 
 <div align="center">
-  <img src="/docs/media/valuation/valuation_step_5.png" width="50%" height="50%" align="center">
+  <img src="/docs/media/valuation/valuation_step_5.png" width="75%" height="75%" align="center">
   <p align="center">
     <i>5. You can inspect the measurement points assigned to that range by double clicking it inside the table</i>
   </p>
@@ -95,7 +95,7 @@ To prepare a calibration service quote (according to the customer's requirements
 <div align="center">
   <img src="/docs/media/valuation/valuation_step_7.png" width="100%" height="100%" align="center">
   <p align="center">
-    <i>7. The total price of the service can be viewd at the top-right side of this tab. The price of each section (measurement function) and its corresponding ranges can be viewd ad the top of each table and in the "Cost" column.</i>
+    <i>7. The total price of the service can be viewd at the top-right side of this tab. The price of each section (measurement function) and its corresponding ranges can be viewd at the top of each table and inside the "Cost" column.</i>
   </p>
 </div>
 
