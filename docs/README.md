@@ -37,7 +37,7 @@ See the [:zap: Usage](#zap-usage) section for more in-depth information on how t
 - validation for most input fields used so far to prevent both missing/incorrect data, but also more subtle errors like illegal calibration range/points outside the CMC boundaries, negative AC values etc.
 
 <p align="center">
-  <img src="/docs/media/preview_1.png" width="75%" height="75%" align="center">
+  <img src="/docs/media/preview_main_window.png" width="100%" height="100%" align="center">
 </p>
 
 ## :zap: Usage
@@ -48,7 +48,56 @@ To test the application in its curent state just download the latest [pre-releas
 - Java 19+
 
 ### :heavy_dollar_sign: How to use the Service Valuation tab
+To prepare a calibration service quote (according to the customer's requirements) use the Service Valuation tab by following these steps:
 
+<div align="center">
+  <img src="/docs/media/valuation/valuation_step_1.png" width="100%" height="100%" align="center">
+  <p align="center">
+    <i>1. Tick a checkbox for any of the measurement fucntions at the top</i>
+  </p>
+</div>
+
+<div align="center">
+  <img src="/docs/media/valuation/valuation_step_2.png" width="100%" height="100%" align="center">
+  <p align="center">
+    <i>2. Add a new measurement range for this function either by using the "+" button or via the right click context menu (invoked by clicking inside the table)</i>
+  </p>
+</div>
+
+<div align="center">
+  <img src="/docs/media/valuation/valuation_step_3.png" width="50%" height="50%" align="center">
+  <p align="center">
+    <i>3. Fill in all necessary info in the new range creation dialog</i>
+  </p>
+</div>
+
+<div align="center">
+  <img src="/docs/media/valuation/valuation_step_4.png" width="100%" height="100%" align="center">
+  <p align="center">
+    <i>4. The newly added measurement range is now visible in the corresponding function's table</i>
+  </p>
+</div>
+
+<div align="center">
+  <img src="/docs/media/valuation/valuation_step_5.png" width="50%" height="50%" align="center">
+  <p align="center">
+    <i>5. You can inspect the measurement points assigned to that range by double clicking it inside the table</i>
+  </p>
+</div>
+
+<div align="center">
+  <img src="/docs/media/valuation/valuation_step_6.png" width="100%" height="100%" align="center">
+  <p align="center">
+    <i>6. When adding a new AC section (voltage or current), the frequency level and its unit must be entered in an extra popup. Multiple AC sections for different frequencies can be added and removed via "+|-" buttons at the top.</i>
+  </p>
+</div>
+
+<div align="center">
+  <img src="/docs/media/valuation/valuation_step_7.png" width="100%" height="100%" align="center">
+  <p align="center">
+    <i>7. The total price of the service can be viewd at the top-right side of this tab. The price of each section (measurement function) and its corresponding ranges can be viewd ad the top of each table and in the "Cost" column.</i>
+  </p>
+</div>
 
 ## :wrench: Development
 The application is still under development. The project's source code the can be freely cloned, inspected and modified using an IDE of choice. 
@@ -67,37 +116,23 @@ The application is still under development. The project's source code the can be
 ## :camera: Gallery
 
 <div align="center">
-  <img src="/docs/media/preview_3.png" width="75%" height="75%" align="center">
+  <img src="/docs/media/preview_customer_registration_popup.png" width="50%" height="50%" align="center">
   <p align="center">
-    <i>Main menu</i>
+    <i>Customer registration pupup</i>
   </p>
 </div>
 
 <div align="center">
-  <img src="/docs/media/preview_2.png" width="75%" height="75%" align="center">
+  <img src="/docs/media/preview_valuation_1.png" width="100%" height="100%" align="center">
   <p align="center">
-    <i>Slots game window (half of the symbols disabled)</i>
+    <i>Service Valuation tab</i>
   </p>
 </div>
 
 <div align="center">
-  <img src="/docs/media/profile_preview_1.png" width="75%" height="75%" align="center">
+  <img src="/docs/media/preview_budgets.png" width="100%" height="100%" align="center">
   <p align="center">
-    <i>In-game profile selection window</i>
-  </p>
-</div>
-
-<div align="center">
-  <img src="/docs/media/profile_preview_2.png" width="35%" height="35%" align="center">
-  <p align="center">
-    <i>Editing the selected profile</i>
-  </p>
-</div>
-
-<div align="center">
-  <img src="/docs/media/nudge_preview.png" width="60%" height="60%" align="center">
-  <p align="center">
-    <i>Nudge feature info window</i>
+    <i>Uncertainty Budgets tab (WIP)</i>
   </p>
 </div>
 
