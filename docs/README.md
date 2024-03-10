@@ -1,6 +1,6 @@
 # LabTronic
 
-A WIP project of a desktop applicaton for performing various tasks related to the calibration process of digital multimeters and multifunction calibrators.
+A work-in-progress project of a desktop applicaton for performing various tasks related to the calibration process of digital multimeters and multifunction calibrators.
 
 ## :ledger: Index
 
@@ -48,6 +48,15 @@ To test the application in its curent state just download the latest [pre-releas
 - Java 19+
 
 ### :heavy_dollar_sign: How to use the Service Valuation tab
+The algorithm implemented for performing a service valuation for both DMMs and calibrators reflects the guidelines described in this pricing table:
+
+<div align="center">
+  <img src="/docs/media/valuation/pricing_table.png" width="100%" height="100%" align="center">
+  <p align="center">
+    <i>Pricing table used as a foundation for the valuation algortihm used in this application.</i>
+  </p>
+</div>
+
 To prepare a calibration service quote (according to the customer's requirements) use the Service Valuation tab by following these steps:
 
 <div align="center">
@@ -67,7 +76,7 @@ To prepare a calibration service quote (according to the customer's requirements
 <div align="center">
   <img src="/docs/media/valuation/valuation_step_3.png" width="50%" height="50%" align="center">
   <p align="center">
-    <i>3. Fill in all necessary info in the new range creation dialog</i>
+    <i>3. Fill in all necessary info in the new range creation dialog. The EURAMET button can be used to automatically generate measurement points for this range (following the guidelines of EURAMET cg-15 guidelines).</i>
   </p>
 </div>
 
