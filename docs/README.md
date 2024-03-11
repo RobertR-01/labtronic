@@ -41,7 +41,7 @@ See the [:zap: Usage](#zap-usage) section for more in-depth information on how t
 </p>
 
 ## :zap: Usage
-To test the application in its curent state just download the latest [pre-release](https://github.com/RobertR-01/mini-casino/releases), unzip it and run the `.jar` file.
+To test the application in its curent state just download the latest [pre-release](https://github.com/RobertR-01/labtronic/releases), unzip it and run the `.jar` file.
 
 #### :electric_plug: Requirements
 - Windows OS
