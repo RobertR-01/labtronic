@@ -137,6 +137,7 @@ The application is still under development. The project's source code the can be
     <i>Customer registration dialog</i>
   </p>
 </div>
+&nbsp;
 
 <div align="center">
   <img src="/docs/media/preview_valuation_1.png" width="100%" height="100%" align="center">
@@ -144,6 +145,7 @@ The application is still under development. The project's source code the can be
     <i>Service Valuation tab</i>
   </p>
 </div>
+&nbsp;
 
 <div align="center">
   <img src="/docs/media/preview_budgets.png" width="100%" height="100%" align="center">
