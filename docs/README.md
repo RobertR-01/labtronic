@@ -48,63 +48,70 @@ To test the application in its curent state just download the latest [pre-releas
 - Java 19+
 
 ### :heavy_dollar_sign: How to use the Service Valuation tab
-The algorithm implemented for performing a service valuation for both DMMs and calibrators reflects the guidelines described in this pricing table:
+The algorithm implemented for performing a service valuation for both DMMs and calibrators reflects the guidelines outlined in this pricing table:
 
 <div align="center">
-  <img src="/docs/media/valuation/pricing_table.png" width="100%" height="100%" align="center">
+  <img src="/docs/media/pricing_table.png" width="75%" height="75%" align="center">
   <p align="center">
-    <i>Pricing table used as a foundation for the valuation algortihm used in this application.</i>
+    <i>Pricing table used as a base for the valuation algortihm</i>
   </p>
 </div>
+&nbsp;
 
 To prepare a calibration service quote (according to the customer's requirements) use the Service Valuation tab by following these steps:
 
 <div align="center">
   <img src="/docs/media/valuation/valuation_step_1.png" width="100%" height="100%" align="center">
   <p align="center">
-    <i>1. Tick a checkbox for any of the measurement fucntions at the top</i>
+    <i>#1. Tick a checkbox for any of the measurement fucntions at the top.</i>
   </p>
 </div>
+&nbsp;
 
 <div align="center">
   <img src="/docs/media/valuation/valuation_step_2.png" width="100%" height="100%" align="center">
   <p align="center">
-    <i>2. Add a new measurement range for this function either by using the "+" button or via the right click context menu (invoked by clicking inside the table)</i>
+    <i>#2. Add a new measurement range for the selected function either by using the "+" button or via the right click context menu (invoked by clicking inside the table).</i>
   </p>
 </div>
+&nbsp;
 
 <div align="center">
   <img src="/docs/media/valuation/valuation_step_3.png" width="50%" height="50%" align="center">
   <p align="center">
-    <i>3. Fill in all necessary info in the new range creation dialog. The EURAMET button can be used to automatically generate measurement points for this range (following the guidelines of EURAMET cg-15 guidelines).</i>
+    <i>#3. Fill in all necessary info in the new range creation dialog. The EURAMET button can be used to automatically generate measurement points for this range (following the guidelines of EURAMET cg-15).</i>
   </p>
 </div>
+&nbsp;
 
 <div align="center">
   <img src="/docs/media/valuation/valuation_step_4.png" width="100%" height="100%" align="center">
   <p align="center">
-    <i>4. The newly added measurement range is now visible in the corresponding function's table</i>
+    <i>#4. The newly added measurement range is now visible in the table within a corresponding section.</i>
   </p>
 </div>
+&nbsp;
 
 <div align="center">
   <img src="/docs/media/valuation/valuation_step_5.png" width="75%" height="75%" align="center">
   <p align="center">
-    <i>5. You can inspect the measurement points assigned to that range by double clicking it inside the table</i>
+    <i>#5. You can inspect the measurement points assigned to that range by double clicking it inside the table.</i>
   </p>
 </div>
+&nbsp;
 
 <div align="center">
   <img src="/docs/media/valuation/valuation_step_6.png" width="100%" height="100%" align="center">
   <p align="center">
-    <i>6. When adding a new AC section (voltage or current), the frequency level and its unit must be entered in an extra popup. Multiple AC sections for different frequencies can be added and removed via "+|-" buttons at the top.</i>
+    <i>#6. While adding a new AC section (voltage or current), the frequency level and its unit must be entered in an extra dialog. Any additional AC sections for different frequencies can be added and removed via the "+|-" buttons at the top.</i>
   </p>
 </div>
+&nbsp;
 
 <div align="center">
   <img src="/docs/media/valuation/valuation_step_7.png" width="100%" height="100%" align="center">
   <p align="center">
-    <i>7. The total price of the service can be viewd at the top-right side of this tab. The price of each section (measurement function) and its corresponding ranges can be viewd at the top of each table and inside the "Cost" column.</i>
+    <i>#7. The total price of the service can be viewed at the top-right side of this tab. The price of each section (measurement function) and its corresponding ranges can be viewed at the top of each table and inside the "Cost" column.</i>
   </p>
 </div>
 
@@ -127,7 +134,7 @@ The application is still under development. The project's source code the can be
 <div align="center">
   <img src="/docs/media/preview_customer_registration_popup.png" width="50%" height="50%" align="center">
   <p align="center">
-    <i>Customer registration pupup</i>
+    <i>Customer registration dialog</i>
   </p>
 </div>
 
