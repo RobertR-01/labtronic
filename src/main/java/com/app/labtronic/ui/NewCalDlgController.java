@@ -114,13 +114,13 @@ public class NewCalDlgController {
         }
 
         // initialize some input for testing:
-        kubackiOrdinalNoTF.setText("test");
-        switezRegNoTF.setText("test");
-        customerNameTF.setText("test");
-        customerAddressTF.setText("test");
-        manufacturerTF.setText("test");
-        typeTF.setText("test");
-        serialNoTF.setText("test");
+        kubackiOrdinalNoTF.setText("1");
+        switezRegNoTF.setText("OUM03.WUM.473.1.2024");
+        customerNameTF.setText("John Doe");
+        customerAddressTF.setText("123 Maple Street, Anytown, PA 17101");
+        manufacturerTF.setText("FLUKE");
+        typeTF.setText("8845A");
+        serialNoTF.setText("51871564");
     }
 
     public boolean validateForm() {

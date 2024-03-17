@@ -1,4 +1,4 @@
-package com.app.labtronic;
+package com.app.labtronic.ui;
 
 import com.app.labtronic.ui.MainApp;
 

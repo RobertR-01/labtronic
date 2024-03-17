@@ -43,12 +43,12 @@
 
                 <Label text="Lab name: " GridPane.columnIndex="0" GridPane.rowIndex="6" GridPane.valignment="TOP"/>
                 <TextArea fx:id="labName" GridPane.columnIndex="1" GridPane.rowIndex="6" wrapText="true">
-                    Okręgowy Urząd Miar we Wrocławiu, Laboratorium Elektryczności
+                    LabTronic Calibration Laboratory
                 </TextArea>
 
                 <Label text="Address: " GridPane.columnIndex="0" GridPane.rowIndex="7" GridPane.valignment="TOP"/>
                 <TextArea fx:id="labAddress" GridPane.columnIndex="1" GridPane.rowIndex="7" wrapText="true">
-                    53-647 Wrocław, ul. Młodych Techników 61/63
+                    312 Another Street, Anothertown, PA 10171
                 </TextArea>
             </GridPane>
         </VBox>
