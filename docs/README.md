@@ -41,11 +41,10 @@ See the [:zap: Usage](#zap-usage) section for more in-depth information on how t
 </p>
 
 ## :zap: Usage
-To test the application in its curent state just download the latest [pre-release](https://github.com/RobertR-01/labtronic/releases), unzip it and run the `.jar` file.
+To test the application in its curent state just download the latest [pre-release](https://github.com/RobertR-01/labtronic/releases), unzip it and run the launch script `bin/LabTronic.bat`. No JVM required (the package comes with all required Java/JavaFX dependencies; runtime image assembled with JavaFX JLink Plugin).
 
 #### :electric_plug: Requirements
 - Windows OS
-- Java 19+
 
 ### :heavy_dollar_sign: How to use the Service Valuation tab
 The algorithm implemented for performing a service valuation for both DMMs and calibrators reflects the guidelines outlined in this pricing table:
